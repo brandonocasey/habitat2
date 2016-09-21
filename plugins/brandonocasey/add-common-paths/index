@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Only add to the path if its not already there
+current_plugin_dir="$1"; shift
+dotfiles_dir="$1"; shift
+
+# path_add comes from habitat lib
+
+cat <<EOF
+path_add "/usr/local/bin"
+path_add "/usr/bin"
+path_add "/bin"
+path_add "/usr/sbin"
+path_add "/sbin"
+path_add "$dotfiles_dir/bin"
+path_add "./vendor/bin"
+path_add "./bin"
+
+EOF
+
+if type -t npm 2>&1 >/dev/null; then
+cat <<EOF
+	path_add "$(npm bin --global)"
+	path_add "./node_modules/.bin"
+	path_add "../node_modules/.bin"
+	path_add "../../node_modules/.bin"
+	path_add "../../../node_modules/.bin"
+EOF
+fi
+
+
+if type -t brew 2>&1 >/dev/null; then
+cat <<EOF
+	path_add "$(brew --prefix)/bin"
+EOF
+fi

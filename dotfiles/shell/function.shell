@@ -1,0 +1,124 @@
+#==============================================================
+# => Bash Functions
+#
+# Aliases for commonly used things that are too big to put into
+# an alias and functions that do special things that you find
+# yourself repeating all the time
+#==============================================================
+
+file_sizes() {
+    local dir="."
+    if [ -n "$1" ]; then
+        dir="$1"
+    fi
+
+    find "$dir" | xargs stat -f '%z %N' | sort -n
+}
+
+rm_empty() {
+    local search_in="./*"
+    if [ -n "$1" ]; then
+        search_in="$1"
+    fi
+
+    for i in "$search_in"; do
+        if [ ! -s "$i" ];then
+            rm -rf "$i"
+        fi
+    done
+}
+
+
+#--------------------------------------------------------------
+#
+# Print Commands
+#
+#--------------------------------------------------------------
+
+rainbow() {
+    ( x=`tput op` y=`printf %$((${COLUMNS}-6))s`;for i in {0..256};do o=00$i;echo -e ${o:${#o}-3:3} `tput setaf $i;tput setab $i`${y// /=}$x;done; )
+}
+
+nkill() {
+    if [ "$#" -lt "1" ]; then
+        echo '  Usage:'
+        echo '    nkill <process_name> ...'
+        echo
+        echo '  Example:'
+        echo '    nkill httpd ssh-agent'
+        echo
+        return 1
+    fi
+
+    pgrep -fl "$@"
+    if [ "$?" = "1" ]; then
+        echo 'No processes match'
+        return 1
+    fi
+    echo 'Hit [Enter] to pkill, [Ctrl+C] to abort'
+    read && sudo pkill -9 -f "$@"
+}
+
+m_valgrind() {
+    if command -v "valgrind" 2>&1 >/dev/null; then
+        echo "valgrind is not installed"
+    fi
+
+    if [ "$#" -ne "2" ]; then
+        echo 'Usage:'
+        echo '  m_valgrind log_output binary'
+        echo
+        echo 'Example:'
+        echo '  m_valgrind /tmp/http_valgrind.log httpd'
+        echo
+        return 1
+    fi
+    sudo valgrind --leak-check=full --show-reachable=yes --log-file="$1" --trace-redir=yes -v "$2"
+}
+
+tcpd() {
+    local pcap="/tmp/${RANDOM}.pcap"
+    (sudo nohup /usr/sbin/tcpdump -q -s 0 -i any -w "$pcap" 2>&1 > /dev/null &)
+    local pid="$(ps aux | grep $pcap | grep -v grep | awk '{ print $2 }')"
+
+
+    trap "sudo kill -9 '$pid'; echo; echo '$pcap';trap - SIGINT; trap; return 0" SIGINT
+    if [ -z "$pid" ]; then
+        echo 'tcpdump failed to start'
+        return 1
+    fi
+    printf 'Hit [Any Key] to kill tcpdump'
+    read && sudo kill -9 "$pid"
+    sudo chown "$USER":"$USER" "$pcap"
+    echo "$pcap"
+    trap - SIGINT
+    trap
+}
+
+tcpx() {
+    local pcap="/tmp/${RANDOM}.pcap"
+    if [ -z "$1" ]; then
+        echo "Must define path to transfer file to like:"
+        echo "0.0.0.0:/Users/bcasey/Desktop"
+        return 1
+    fi
+    local cmd="$1"; shift
+    (sudo nohup /usr/sbin/tcpdump -q -s 0 -i any -w "$pcap" 2>&1 > /dev/null &)
+    local pid="$(ps aux | grep $pcap | grep -v grep | awk '{ print $2 }')"
+
+
+    trap "sudo kill '$pid'; echo; echo '$pcap';trap - SIGINT; trap; return 0" SIGINT
+    if [ -z "$pid" ]; then
+        echo 'tcpdump failed to start'
+        return 1
+    fi
+    printf "Hit [Any Key] to kill tcpdump and transfer $pcap to $cmd"
+    read && sudo kill -9 "$pid"
+    sudo chown "$USER":"$USER" "$pcap"
+    trap - SIGINT
+    trap
+    rsync -aPz "$pcap" "$cmd"
+    if [ "$?" = "0" ]; then
+        rm -f "$pcap"
+    fi
+}

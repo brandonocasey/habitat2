@@ -1,0 +1,106 @@
+#==============================================================
+# => Bash Aliases
+#
+# Shorten commands, add commands you frequently mistype, add
+# helpful little shortcuts for things, and finally add
+# usefull automatic default parameters to commands you use
+# already
+#==============================================================
+
+# Ask before over-writting a file
+alias mv='mv -i'
+
+# Ask before deleting a file, and automatically make it recursive
+alias rm='rm -Ri'
+
+# Ask before over-writting a file and recursively copy by default
+alias cp='cp -iR'
+
+# We want free disc space in human readable output, trust me
+alias df='df -h'
+
+# TODO: fix this stuff
+if [ -z "$(uname | grep -i 'Darwin')" ]; then
+    # Show me all files and info about them
+    alias ll='ls -lh --color'
+
+    # Show me all files, including .dotfiles, and all info about them
+    alias la='ls -lha --color'
+
+    # Show me colors for regualr ls too
+    alias ls='ls --color'
+else
+    alias ls='ls -G'
+    # Show me all files and info about them
+    alias ll='ls -lhG'
+
+    # Show me all files, including .dotfiles, and all info about them
+    alias la='ls -lhaG'
+fi
+
+# Automatically make directories recursivly
+alias mkdir='mkdir -p'
+
+# Vim misspellings nuff' said
+alias cim='vim'
+alias bim='vim'
+alias fim='vim'
+alias gim='vim'
+alias vi='vim'
+alias grep='grep --color="always"'
+
+# easily move up one directory
+alias ..='cd ..'
+
+# easily move up two directories
+alias ....='cd ../..'
+
+# easy mysql connection just tack on a -h
+alias sql='mysql -umysql -pmysql'
+
+# easy mysql dump just tack on a -h
+alias sqld='mysqldump -umysql -pmysql --routines --single-transaction'
+
+# share history between terminal sessions
+alias he="history -a" # export history
+alias hi="history -n" # import history
+
+# Get your current public IP
+alias public_ip="curl icanhazip.com"
+
+# Auto install web dependancies
+alias deps_install="composer install;npm install;bower install"
+alias deps_update="composer update;npm update;bower update"
+
+alias reverse="perl -e 'print reverse <>'"
+alias npmre="rm -rf ./node_modules && npm i"
+alias maclock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
+
+man() {
+    vim -c "if exists(':Man') | q! | else | cq! | endif"
+    if [ "$?" -eq 0 ]; then
+        vim -c "Man $1 $2" -c 'silent only'
+    else
+        "$(which man)" "$@"
+    fi
+}
+
+# use rlwrap if we have it
+telnet() {
+    if command -v rlwrap 2>&1 1>/dev/null; then
+        rlwrap telnet "$@"
+    else
+        "$(which telnet)" "$@"
+    fi
+}
+
+# use multitail if we have it
+tail() {
+    if command -v multitail 2>&1 1>/dev/null; then
+        multitail "$@"
+    else
+        "$(which tail)" -f "$@"
+    fi
+}
+
+

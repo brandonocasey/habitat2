@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+habitat_help() {
+  echo
+  echo "  Usage: . habitat [options]"
+  echo
+  echo "  -d, --debug   print debug statements"
+  echo "  -f, --force   force habitat to rebuild now rather than once a day"
+  echo "  -h, --help    show this help"
+  echo
+}
+
+habitat_main() {
+  local habitat_rebuild_time="1440"
+  local habitat_dir="$HOME/BrandonProjects/habitat2"
+  local habitat_symlink="$habitat_dir/.habitat"
+  local debug=1
+
+  while [ $# -gt 0 ]; do
+    local argv="$1"; shift
+
+    case "$argv" in
+      -d|--debug) debug=0;;
+      -h|--help) habitat_help && habitat_clean && return ;;
+      -f|--force-build) habitat_rebuild_time=0 ;;
+    esac
+  done
+
+  habitat_run() {
+    if [ -f "$habitat_dir/.build_lock" ]; then
+      return
+    fi
+    touch "$habitat_dir/.build_lock"
+    "$habitat_dir/bin/run.sh" "$habitat_dir" "$habitat_symlink"
+    rm -f "$habitat_dir/.build_lock"
+  }
+
+  if [ -L "$habitat_symlink" ]; then
+      local old_ifs="$IFS"
+      IFS="
+"
+    for file in $(find "$habitat_dir/lib" -name '*.sh' && find -L "$habitat_symlink" -name '*.sh'); do
+      if [ "$debug" = 0 ]; then
+        time . "$file"
+        echo "$file"
+      else
+        . "$file"
+      fi
+    done
+    IFS="$old_ifs"
+  else
+    echo "Doing first run synchronously to build files"
+    echo "subsequent builds will be asynchronous"
+    habitat_run
+    return
+  fi
+
+  # add something to block two terminals from building here
+  if [ -z "$(find "$habitat_symlink" -type l -mmin "-${habitat_rebuild_time}" 2>/dev/null)" ]; then
+    (habitat_run & 1>/dev/null 2>/dev/null)
+  fi
+  habitat_clean
+}
+
+habitat_clean() {
+  unset -f habitat_run
+  unset -f habitat_help
+  unset -f habitat_main
+  unset -f habitat_clean
+}
+
+habitat_main "$@"
+alias habitat=". $HOME/BrandonProjects/habitat2/habitat"

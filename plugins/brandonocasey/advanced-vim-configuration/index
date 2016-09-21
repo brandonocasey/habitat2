@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+current_plugin_dir="$1"; shift
+dotfiles_dir="$1"; shift
+
+VIM_CONFIG="$HOME/.vimrc"
+NVIM_CONFIG="$HOME/.config/nvim/init.vim"
+mkdir -p "$(dirname "$NVIM_CONFIG")"
+mkdir -p "$(dirname "$VIM_CONFIG")"
+
+cat "$current_plugin_dir"/index.vim | sed "s~__HABITAT_DOTFILES__~'$dotfiles_dir'~g" > $NVIM_CONFIG
+cat "$current_plugin_dir"/index.vim | sed "s~__HABITAT_DOTFILES__~'$dotfiles_dir'~g" > $VIM_CONFIG
+
+echo "(vim +PlugClean +PlugInstall +PlugUpdate +PlugUpgrade +qall 2>/dev/null 1>/dev/null &)"

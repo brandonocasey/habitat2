@@ -1,0 +1,108 @@
+# ------------------------------------------------------------------------------
+# a modified version of the extract plugin from oh-my-zsh
+#          FILE:  extract.plugin.zsh
+#   DESCRIPTION:  oh-my-zsh plugin file.
+#        AUTHOR:  Sorin Ionescu (sorin.ionescu@gmail.com)
+#       VERSION:  1.0.1
+#           URL: https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/extract/extract.plugin.zsh
+# ------------------------------------------------------------------------------
+# TODO: verify that -d, --directory works for each type
+
+extract() {
+  local remove="0"
+  local extract_dir="./"
+
+  if [ $# = 0 ]; then
+    echo "Usage: extract [-option] [file ...]"
+    echo
+    echo Options:
+    echo "    -r, --remove       Remove archive, defaults to false"
+    echo "    -d, --directory    directory to extract to, defaults to './'"
+    echo
+  fi
+
+  # remove invalid args and options
+  # so only files are left in $@
+  local argc="${#:0}"
+  while [ $argc -gt 0 ]; do
+    local argv="$1"; shift
+
+    if [ "$argv" = "-r" ] || [ "$argv" = "--remove" ]; then
+      remove="1"
+    elif [ "$argv" = "-d" ] || [ "$argv" = "--directory" ]; then
+      if [ -z "$1" ]; then
+        echo "-d, --directory requires a valid directory" 1>&2
+        return 1
+      fi
+      extract_dir="$1"; shift
+    elif [ ! -f "$argv" ]; then
+      echo "extract: '$argv' is not a valid file" 1>&2
+      return 1
+    else
+      set -- "$@" "$argv"
+    fi
+    argc=$((argc-1))
+  done
+
+  extract_deb() {
+    local file="$1"; shift
+    local name="$(basename "$file")"
+    name="${name%.*}"
+    local dir="$extract_dir/$name"
+
+    mkdir -p "$dir/{control,data}"
+    (cd "$dir" && ar vx "$file" > /dev/null) || return 1
+    (cd control && tar xzvf ../control.tar.gz) || return 1
+    (cd ../data && tar xzvf ../data.tar.gz) || return 1
+    (cd .. && rm *.tar.gz debian-binary) || return 1
+  }
+
+  tar_() {
+    tar "$@" -C "$extract_dir"
+    return $?
+  }
+  7z_() {
+    7x "$@" -o"$extract_dir" || 7za "$@" -o"$extract_dir"
+    return $?
+  }
+
+  while [ $# -gt 0 ]; do
+    local file="$(cd $(dirname "$1") && pwd -P)/$(basename "$1")"; shift
+
+    case "$file" in
+      (*.tar.gz|*.tgz) tar_ zxvf "$file" --directory ;;
+      (*.tar.bz2|*.tbz|*.tbz2) tar_ xvjf "$file";;
+      (*.tar.xz|*.txz) tar_ --xz xvf "$file" || xzcat "$file" | tar_ xvf - ;;
+      (*.tar.zma|*.tlz) tar_ --lzma xvf "$file" || lzcat "$file" | tar_ xvf - ;;
+      (*.tar) tar_ xvf "$file" ;;
+      (*.gz) gunzip "$file" || pigz -d "$file" ;;
+      (*.bz2) bunzip2 "$file" ;;
+      (*.xz) unxz "$file" ;;
+      (*.lzma) unlzma "$file" ;;
+      (*.Z) uncompress "$file" ;;
+      (*.zip|*.war|*.jar|*.sublime-package|*.ipsw|*.xpi|*.apk) unzip "$file" -d "$extract_dir" ;;
+      (*.rar) unrar x -ad "$file" -o "$extract_dir" ;;
+      (*.7z) 7z_ x "$file" || unar "$file" ;;
+      (*.iso) 7z_ x "$file" ;;
+      (*.deb) extract_deb "$file" ;;
+      (*)
+        echo "extract: '$file' cannot be extracted" 1>&2
+        continue
+      ;;
+    esac
+    if [ "$?" != "0" ]; then
+      echo "extract: failed to extract '$file'" 1>&2
+      continue
+    fi
+
+    if [ "$remove" = "1" ]; then
+      rm "$file"
+    fi
+
+    shift
+  done
+  unset -f extract_deb
+  unset -f tar_
+}
+
+extract "$@"

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+current_plugin_dir="$1"; shift
+dotfiles_dir="$1"; shift
+if [ ! -d "$dotfiles_dir" ]; then
+	exit 1
+fi
+for file in $(find "$dotfiles_dir" -name '*.shell'); do
+	echo ". '$file'"
+done
+

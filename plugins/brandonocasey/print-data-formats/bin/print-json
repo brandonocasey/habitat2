@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+print_json() {
+	if [ "$#" -ne "1" ]; then
+		echo 'Usage:'
+		echo "  print_json 'json' "
+		echo
+		echo 'Example:'
+		echo " print_json '{\"foo\": \"lorem\", \"bar\": \"ipsum\"}' "
+		echo
+		return 1
+	fi
+
+	echo "$1" | python -m json.tool
+}
+
+print_json "$@"

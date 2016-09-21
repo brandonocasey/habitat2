@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+print_xml() {
+	if [ "$#" -ne "1" ]; then
+		echo 'Usage:'
+		echo "  print_json 'xml' "
+		echo
+		echo 'Example:'
+		echo " print_json '<root><foo a=\"b\">lorem</foo><bar value=\"ipsum\" /></root>' "
+		echo
+		return 1
+	fi
+
+	# Remove invalid characters between tags
+	echo "$1" | sed -e 's/>#[0-9]*</></g' | xmllint --format -
+}
+
+print_xml "$@"

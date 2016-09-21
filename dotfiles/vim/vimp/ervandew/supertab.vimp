@@ -1,0 +1,6 @@
+" Better tab completion
+
+" Match from the top
+let g:SuperTabDefaultCompletionType = "<c-n>"
+
+
