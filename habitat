@@ -12,7 +12,7 @@ habitat_help() {
 
 habitat_main() {
   local habitat_rebuild_time="1440"
-  local habitat_dir="$HOME/BrandonProjects/habitat2"
+  local habitat_dir="$HABITAT_DIR"
   local habitat_symlink="$habitat_dir/.habitat"
   local debug=1
 
@@ -69,5 +69,11 @@ habitat_clean() {
   unset -f habitat_clean
 }
 
-habitat_main "$@"
-alias habitat=". $HOME/BrandonProjects/habitat2/habitat"
+if [ -z "$HABITAT_DIR" ] || [ ! -d "$HABITAT_DIR" ]; then
+  echo "HABITAT_DIR must be set and exist before sourcing habitat" 2>&1
+else
+  habitat_main "$@"
+  alias habitat=". $HABITAT_DIR/habitat"
+fi
+
+
