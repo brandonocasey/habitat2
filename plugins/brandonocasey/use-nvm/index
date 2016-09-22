@@ -1,39 +1,76 @@
 #!/usr/bin/env bash
 
+NVM_DIR="$HOME/.nvm"
+
+install_nvm() {
+	if [ -s "$NVM_DIR/nvm.sh" ]; then
+		return
+	fi
+
+	read -p "Install nvm (y/n)?" 2>&1 choice
+	case "$choice" in
+		y|Y ) ;;
+		n|N ) return ;;
+		* ) echo "invalid" 2>&1 ;;
+	esac
+
+	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
+}
+
+install_nvm
+
 cat <<\EOF
 export NVM_DIR="$HOME/.nvm"
-
-if [ ! -s "$NVM_DIR/nvm.sh" ]; then
-	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
-fi
-
-# this is to get around loading nvm every shell load
-# which causes half a second of latency for every terminal
+# wrap around nvm so that we only source it when we need it
 nvm() {
 	unset -f nvm
 
-	[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-	nvm "$@"
+	if [ -s "$NVM_DIR/nvm.sh" ]; then
+		export NVM_DIR="$NVM_DIR"
+		. "$NVM_DIR/nvm.sh"
+	else
+		echo "nvm is not installed!" 2>&1
+		return
+	fi
+	nvm "\$@"
 }
 
-NVM_DEFAULT_ALIAS="$NVM_DIR/alias/default"
+# use the default nvm if nvm is installed
+# that way the user won't have to set anything in their
+# .bash_profile
+use_default_nvm() {
+	local nvm_alias_default="$NVM_DIR/alias/default"
+	local nvm_default=$(cat "$nvm_alias_default" 2>/dev/null)
 
-if [ -z "$NVM_DEFAULT_ALIAS" ]; then
-	echo "Please use 'nvm alias default <version>' so we can set that up for you!" 2>&1
-else
-	NVM_DEFAULT="$(cat "$NVM_DEFAULT_ALIAS")"
-	NVM_DEFAULT_PATH="$NVM_DIR/versions/node/$NVM_DEFAULT/bin/"
-
-	if [ ! -d "$NVM_DEFAULT_PATH" ]; then
-		nvm install "$NVM_DEFAULT"
+	# NVM not installed
+	if [ -z "$NVM_DIR" ] || [ ! -d "$NVM_DIR" ]; then
+		return
 	fi
 
-	if [ -z "$(echo "$PATH" | grep "$NVM_DEFAULT_PATH")" ]; then
-		PATH="$NVM_DEFAULT_PATH:$PATH"
+	# no default set
+	if [ -f "$nvm_alias_default" ] || [ -z "$nvm_default" ]; then
+		echo "Please use 'nvm alias default <version>' so we can set set the default version" 2>&1
+		echo "in your path and save you time every terminal login!" 2>&1
+		return
 	fi
-	unset NVM_DEFAULT
-	unset NVM_DEFAULT_PATH
-fi
 
-unset NVM_DEFAULT_ALIAS
+	local nvm_default_path="$NVM_DIR/versions/node/$default/bin/"
+
+	# default not installed
+	if [ ! -d "$nvm_default_path" ]; then
+		echo "nvm default $nvm_default is not installed, going to install and use" 2>&1
+		nvm install "$nvm_default"
+		nvm use "$nvm_default"
+	fi
+
+	# default bin dir is already in the path
+	if [ -n "$(echo "$PATH" | grep "$nvm_default_path")" ]; then
+		return
+	fi
+
+	export PATH="$nvm_default_path:$PATH"
+}
+
+use_default_nvm
+unset -f use_default_nvm
 EOF
