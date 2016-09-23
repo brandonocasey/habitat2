@@ -33,6 +33,31 @@ build_plugins() {
   done
 }
 
+git_check() {
+  if [ ! -d "$HABITAT_DIR/.git" ]; then
+    return
+  fi
+
+  (cd "$HABITAT_DIR" && git remote update 2>&1 >/dev/null)
+  local UPSTREAM="${1:-@{u}}"
+  local LOCAL="$(cd "$HABITAT_DIR" && git rev-parse @)"
+  local REMOTE="$(cd "$HABITAT_DIR" && git rev-parse "$UPSTREAM")"
+  local BASE="$(cd "$HABITAT_DIR" && git merge-base @ "$UPSTREAM")"
+
+  if [ "$LOCAL" = "$REMOTE" ] && [ "$HABITAT_DEBUG" = 0 ]; then
+    echo "settings are up to date on git"
+  elif [ "$LOCAL" = "$BASE" ]; then
+    # pull needed
+    (cd "$HABITAT_DIR" && git pull -q 2>&1 >/dev/null)
+  elif [ "$REMOTE" = "$BASE" ]; then
+    # push needed
+    echo "You need to push your new habitat settings"
+  else
+    # fix needed
+    echo "Your habitat git repo has diverged from master!"
+  fi
+}
+
 build() {
   local build_dir="$1"; shift
   mkdir -p "$build_dir"
@@ -47,8 +72,8 @@ build() {
   local new_dir="$build_dir/new-build-$RANDOM"
   local old_dir="$(readlink "$syml")"
 
-  # pull new changes
-  [ -d "$HABITAT_DIR/.git" ] && cd "$HABITAT_DIR" && git pull -q 2>&1 >/dev/null
+  # pull new changes, warn about push
+  git_check
 
   mkdir -p "$new_dir"
   build_plugins "$new_dir"
@@ -59,6 +84,11 @@ build() {
   # syml -> new_dir
   ln -sfn "$new_dir" "$syml"
   [ -d "$old_dir" ] && rm -rf "$old_dir"
+
+  # update other terminals
+  # TODO: make this work with other terminals
+  pkill -SIGUSR1 -U "$USER" -- '-bash'
+
 
   # remove lock so other environments can build
   rm -f "$build_dir/lock"
