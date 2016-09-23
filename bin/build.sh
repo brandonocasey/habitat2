@@ -22,12 +22,13 @@ build_plugins() {
       [ ! -x "$plugin_dir/index" ] && echo "no executable index for $author/$plugin" 2>&1 && continue
 
       local cmd="$plugin_dir/index"
+      local dist_file="$dist/${author}-${plugin}.sh"
       if [ "$HABITAT_DEBUG" = 0 ]; then
-        time "$cmd" "$plugin_dir" "$HABITAT_DIR/dotfiles" > "$dist/${author}-${plugin}.sh"
+        time "$cmd" "$plugin_dir" "$HABITAT_DIR/dotfiles" >> "$dist_file"
         echo "Done Building $author/$plugin"
         continue
       fi
-      "$cmd" "$plugin_dir" "$HABITAT_DIR/dotfiles" > "$dist/${author}-${plugin}.sh"
+      "$cmd" "$plugin_dir" "$HABITAT_DIR/dotfiles" >> "$dist_file"
     done
   done
 }
@@ -41,8 +42,7 @@ build() {
   # start lock so other environments cannot build
   touch "$build_dir/lock"
 
-  local syml="$(find "$build_dir" -type l)"
-  [ -z "$syml" ] && syml="$build_dir/syml"
+  local syml="$build_dir/syml"
 
   local new_dir="$build_dir/new-build-$RANDOM"
   local old_dir="$(readlink "$syml")"

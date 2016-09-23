@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+newline="
+"
+
 habitat_help() {
   echo
   echo "  Usage: . habitat [options]"
@@ -14,7 +17,7 @@ habitat_help() {
 
 habitat_main() {
   local build_dir="$HABITAT_DIR/.build"
-  local syml="$(find "$build_dir" -type l)"
+  [ ! -d "$build_dir" ] && mkdir -p "$build_dir"
   local debug=1
   local time=1440
   local run=0
@@ -50,27 +53,19 @@ habitat_main() {
   }
 
   habitat_run() {
-    if [ "$run" = 1 ]; then
-      return
-    fi
+    [ "$run" = 1 ] && return
 
     local old_ifs="$IFS"
-    IFS="
-  "
-    for file in $(find "$HABITAT_DIR/lib" -name '*.sh' && find -L "$syml" -name '*.sh'); do
-      if [ "$debug" = 0 ]; then
-        time . "$file"
-        echo "Done Running $file"
-      else
-        . "$file"
-      fi
+    IFS="$newline"
+    for file in $(find "$HABITAT_DIR/lib" -name '*.sh' && find -L "$build_dir/syml" -name '*.sh'); do
+      [ "$debug" = 0 ] && time . "$file" && echo "Ran $(basename "$file")" && continue
+      . "$file"
     done
     IFS="$old_ifs"
   }
 
-  if [ -z "$(find "$syml" -type l -mmin "-${time}" 2>/dev/null)" ]; then
-    habitat_build
-  fi
+  # if its time to rebuild
+  [ -z "$(find "$build_dir/syml" -type l -mmin "-${time}" 2>/dev/null)" ] && habitat_build
 
   habitat_run
   habitat_clean
@@ -82,13 +77,19 @@ habitat_clean() {
   unset -f habitat_help
   unset -f habitat_main
   unset -f habitat_clean
+  unset newline
 }
+$(return >/dev/null 2>&1)
+
+if [ "$?" != "0" ]; then
+  echo "Script must be sourced, not run"
+  exit 1
+fi
 
 if [ -z "$HABITAT_DIR" ] || [ ! -d "$HABITAT_DIR" ]; then
   echo "HABITAT_DIR must be set and exist before sourcing habitat" 2>&1
-else
-  habitat_main "$@"
-  alias habitat=". $HABITAT_DIR/habitat"
+  return 1
 fi
 
-
+habitat_main "$@"
+alias habitat=". $HABITAT_DIR/habitat"
