@@ -1,8 +1,11 @@
+#!/usr/bin/env bash
 #==============================================================
 # => Bash History
 #
 # Make bash history more inuitive, and overall easier to use
 #==============================================================
+
+cat <<\EOF
 
 # I Want my history to last forever and sync wether or not I log out
 # http://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
@@ -13,6 +16,29 @@ export HISTCONTROL=ignoredups:erasedups
 # append history entries right away
 shopt -s histappend
 export HISTTIMEFORMAT="%m/%d/%y %T " # Save history timestamps
+
 if [ -z "$(echo "$PROMPT_COMMAND" | grep "history -a; history -c; history -r;")" ]; then
   export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 fi
+# when we get a sigusr2, reload the history file
+trap "history -n;" SIGUSR2
+
+hist_cmd=""
+# append currently un-appended line to file (aka last line that was entered)
+hist_cmd+="history -a;"
+
+# clear our list of entered lines
+hist_cmd+="history -c;"
+
+# reload history file
+hist_cmd+="history -r;"
+
+# send sigusr2 to other terms
+hist_cmd+="pkill -SIGUSR2 -U '$USER' -- '-bash';"
+
+# if this command is not already in the prompt add it
+if [ -z "$(echo "$PROMPT_COMMAND" | grep "$hist_cmd")" ]; then
+  export PROMPT_COMMAND="$hist_cmd $PROMPT_COMMAND"
+fi
+unset hist_cmd
+EOF

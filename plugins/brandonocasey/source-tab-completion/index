@@ -9,7 +9,7 @@ bash_completion_two="/share/bash-completion/bash_completion"
 # TODO: for some reason running this makes the second line $ dissappear
 if type -t npm 2>&1 >/dev/null; then
 	echo 'if [ -z "$NPM_COMPLETION_DONE" ]; then'
-		#npm completion
+		npm completion
 		echo 'NPM_COMPLETION_DONE=1'
 	echo 'fi'
 fi

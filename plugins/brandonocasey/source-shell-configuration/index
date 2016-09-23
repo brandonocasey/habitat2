@@ -6,6 +6,6 @@ if [ ! -d "$dotfiles_dir" ]; then
 	exit 1
 fi
 for file in $(find "$dotfiles_dir" -name '*.shell'); do
-	echo ". '$file'"
+	echo "[ -f '$file' ] && . '$file'"
 done
 
