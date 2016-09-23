@@ -13,4 +13,6 @@ export HISTCONTROL=ignoredups:erasedups
 # append history entries right away
 shopt -s histappend
 export HISTTIMEFORMAT="%m/%d/%y %T " # Save history timestamps
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+if [ -z "$(echo "$PROMPT_COMMAND" | grep "history -a; history -c; history -r;")" ]; then
+  export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+fi

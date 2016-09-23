@@ -4,42 +4,68 @@ habitat_help() {
   echo
   echo "  Usage: . habitat [options]"
   echo
-  echo "  -d, --debug   print debug statements"
-  echo "  -f, --force   force habitat to rebuild now rather than once a day"
-  echo "  -h, --help    show this help"
+  echo "  -d, --debug        print debug statements"
+  echo "  -f, --force        force habitat to rebuild now rather than once a day"
+  echo "  -t, --time <mins>  time between rebuilds in minutes, defaults is 1440 (1 day)"
+  echo "  -n, --no-run       don't run habitat"
+  echo "  -s, --sync         do a synchronous build"
+  echo "  -h, --help         show this help"
   echo
 }
 
 habitat_main() {
-  local habitat_rebuild_time="1440"
-  local habitat_dir="$HABITAT_DIR"
-  local habitat_symlink="$habitat_dir/.habitat"
+  local build_dir="$HABITAT_DIR/.build"
+  local syml="$(find "$build_dir" -type l)"
   local debug=1
+  local time=1440
+  local run=0
+  local sync=1
+  local build=0
 
   while [ $# -gt 0 ]; do
     local argv="$1"; shift
 
     case "$argv" in
-      -d|--debug) debug=0;;
+      -d|--debug) debug=0 ;;
       -h|--help) habitat_help && habitat_clean && return ;;
-      -f|--force-build) habitat_rebuild_time=0 ;;
+      -t|--time) time="$1"; shift ;;
+      -f|--force) time=0 ;;
+      -n|--no-run) run=1 ;;
+      -n|--no-build) build=1 ;;
+      -s|--sync) sync=0 ;;
+      *)
     esac
   done
 
-  habitat_run() {
-    if [ -f "$habitat_dir/.build_lock" ]; then
+  if [ -z "echo "$time" | grep "[0-9]+")" ]; then
+    echo "Must pass a number with --time" 2>&1
+    habitat_clean
+    return
+  fi
+
+  habitat_build() {
+    [ "$build" = "1" ] && return
+    local cmd="$HABITAT_DIR/bin/build.sh $build_dir"
+
+    if [ ! -L "$syml" ] || [ "$sync" = "0" ]; then
+      echo "Doing synchronously build of your habitat"
+      echo "This happens on the first build or with --sync"
+      $cmd
       return
     fi
-    touch "$habitat_dir/.build_lock"
-    "$habitat_dir/bin/run.sh" "$habitat_dir" "$habitat_symlink"
-    rm -f "$habitat_dir/.build_lock"
+    echo "Building your habitat in the background..."
+    ($cmd & 1>/dev/null 2>/dev/null)
   }
 
-  if [ -L "$habitat_symlink" ]; then
-      local old_ifs="$IFS"
-      IFS="
-"
-    for file in $(find "$habitat_dir/lib" -name '*.sh' && find -L "$habitat_symlink" -name '*.sh'); do
+  habitat_run() {
+    if [ "$run" = 1 ]; then
+      return
+    fi
+
+    local old_ifs="$IFS"
+    IFS="
+  "
+    for file in $(find "$HABITAT_DIR/lib" -name '*.sh' && find -L "$syml" -name '*.sh'); do
       if [ "$debug" = 0 ]; then
         time . "$file"
         echo "$file"
@@ -48,21 +74,18 @@ habitat_main() {
       fi
     done
     IFS="$old_ifs"
-  else
-    echo "Doing first run synchronously to build files"
-    echo "subsequent builds will be asynchronous"
-    habitat_run
-    return
+  }
+
+  if [ -z "$(find "$syml" -type l -mmin "-${time}" 2>/dev/null)" ]; then
+    habitat_build "$synchronous"
   fi
 
-  # add something to block two terminals from building here
-  if [ -z "$(find "$habitat_symlink" -type l -mmin "-${habitat_rebuild_time}" 2>/dev/null)" ]; then
-    (habitat_run & 1>/dev/null 2>/dev/null)
-  fi
+  habitat_run
   habitat_clean
 }
 
 habitat_clean() {
+  unset -f habitat_build
   unset -f habitat_run
   unset -f habitat_help
   unset -f habitat_main
@@ -74,6 +97,10 @@ if [ -z "$HABITAT_DIR" ] || [ ! -d "$HABITAT_DIR" ]; then
 else
   habitat_main "$@"
   alias habitat=". $HABITAT_DIR/habitat"
+
+  if [ -z "$(echo "$PROMPT_COMMAND" | grep "$HABITAT_DIR")" ]; then
+    PROMPT_COMMAND=". '$HABITAT_DIR/habitat' --no-build; $PROMPT_COMMAND"
+  fi
 fi
 
 
