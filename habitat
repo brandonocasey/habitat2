@@ -61,6 +61,9 @@ habitat_main() {
       [ "$debug" = 0 ] && time . "$file" && echo "Ran $(basename "$file")" && continue
       . "$file"
     done
+    if [ -L "$build_dir/syml" ]; then
+      export HABITAT_BUILD="$(readlink "$build_dir/syml")"
+    fi
     IFS="$old_ifs"
   }
 
@@ -91,9 +94,10 @@ if [ -z "$HABITAT_DIR" ] || [ ! -d "$HABITAT_DIR" ]; then
   return 1
 fi
 
+export HABITAT_DIR="$HABITAT_DIR"
 habitat_main "$@"
 alias habitat=". $HABITAT_DIR/habitat"
 
 # SIGUSR1 is used to update every terminal when
 # any terminal does a rebuild
-trap ". '$HABITAT_DIR/habitat' --no-build" SIGUSR1
+trap ". '$HABITAT_DIR/habitat' --no-build;" SIGUSR1

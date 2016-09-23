@@ -1,6 +1,6 @@
 # TODO:
-* Is there any way to make it faster so that we can run in PROMPT_COMMAND?
-* deal with any performance issues
+* share history without forcing another PROMPT_COMMAND
+* path_push + path_unshift + path_remove
 * go through vim config
 	* why doesn't auto read work
 	* why doesn't DetectSyntax work on write or change?
