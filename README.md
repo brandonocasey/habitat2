@@ -19,3 +19,4 @@
 	* https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins/tmux
 	* https://github.com/alebcay/awesome-shell
 * update habitat to support bpkg
+* move everything into a src directory

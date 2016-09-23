@@ -44,7 +44,7 @@ if has('nvim') == '1'
   let VIM_CONFIG_DIR=expand(XDG_CONFIG_HOME . '/nvim')
   let VIM_CONFIG_FILE=expand(XDG_CONFIG_HOME . '/nvim/init.vim')
   let VIM_DATA_DIR=expand(XDG_DATA_HOME . '/nvim/shada/main.shada')
-  let VIM_PLUGIN_EXTENSION='nvimp'
+  let VIM_PLUGIN_EXTENSION='{nvimp,' . VIM_PLUGIN_EXTENSION . '}'
 endif
 
 let VIM_BUNDLE_DIR=VIM_CONFIG_DIR . '/plugins'
