@@ -21,7 +21,13 @@ build_plugins() {
       # we have a plugin with no index
       [ ! -x "$plugin_dir/index" ]&& continue
 
-      "$plugin_dir/index" "$plugin_dir" "$HABITAT_DIR/dotfiles" > "$dist/${author}-${plugin}.sh"
+      local cmd="$plugin_dir/index"
+      if [ "$HABITAT_DEBUG" = 0 ]; then
+        time "$cmd" "$plugin_dir" "$HABITAT_DIR/dotfiles" > "$dist/${author}-${plugin}.sh"
+        echo "Done Building $author/$plugin"
+        continue
+      fi
+      "$cmd" "$plugin_dir" "$HABITAT_DIR/dotfiles" > "$dist/${author}-${plugin}.sh"
     done
   done
 }
@@ -42,7 +48,7 @@ build() {
   local old_dir="$(readlink "$syml")"
 
   # pull new changes
-  output="$( [ -d "$HABITAT_DIR/.git" ] && cd "$HABITAT_DIR" && git pull -q 2>&1 >/dev/null)"
+  [ -d "$HABITAT_DIR/.git" ] && cd "$HABITAT_DIR" && git pull -q 2>&1 >/dev/null
 
   mkdir -p "$new_dir"
   build_plugins "$new_dir"

@@ -15,19 +15,18 @@ path_add "/sbin"
 path_add "$dotfiles_dir/bin"
 path_add "./vendor/bin"
 path_add "./bin"
+path_add "./node_modules/.bin"
+path_add "../node_modules/.bin"
+path_add "../../node_modules/.bin"
+path_add "../../../node_modules/.bin"
 
 EOF
 
 if type -t npm 2>&1 >/dev/null; then
 cat <<EOF
 	path_add "$(npm bin --global)"
-	path_add "./node_modules/.bin"
-	path_add "../node_modules/.bin"
-	path_add "../../node_modules/.bin"
-	path_add "../../../node_modules/.bin"
 EOF
 fi
-
 
 if type -t brew 2>&1 >/dev/null; then
 cat <<EOF

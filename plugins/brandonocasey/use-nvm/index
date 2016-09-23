@@ -12,9 +12,9 @@ nvm() {
 	if [ ! -d "$NVM_DIR" ]; then
 		read -p "Install nvm (y/n)?" choice
 		case "$choice" in
-			y|Y ) echo "Installing";;
-			n|N ) echo "Bye Bye" && return ;;
-			* ) echo "invalid" ;;
+			y|Y) echo "Installing";;
+			n|N) echo "Bye Bye" && return ;;
+			*) echo "invalid" ;;
 		esac
 
 		curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
@@ -44,13 +44,13 @@ use_default_nvm() {
 	fi
 
 	# no default set
-	if [ -f "$nvm_alias_default" ] || [ -z "$nvm_default" ]; then
+	if [ ! -f "$nvm_alias_default" ] || [ -z "$nvm_default" ]; then
 		echo "Please use 'nvm alias default <version>' so we can set set the default version" 2>&1
 		echo "in your path and save you time every terminal login!" 2>&1
 		return
 	fi
 
-	local nvm_default_path="$NVM_DIR/versions/node/$default/bin/"
+	local nvm_default_path="$NVM_DIR/versions/node/$nvm_default/bin/"
 
 	# default not installed
 	if [ ! -d "$nvm_default_path" ]; then
@@ -60,11 +60,10 @@ use_default_nvm() {
 	fi
 
 	# default bin dir is already in the path
-	if [ -n "$(echo "$PATH" | grep "$nvm_default_path")" ]; then
-		return
+	if [ -z "$(echo "$PATH" | grep "$nvm_default_path")" ]; then
+		export PATH="$nvm_default_path:$PATH"
 	fi
 
-	export PATH="$nvm_default_path:$PATH"
 }
 
 use_default_nvm
