@@ -1,5 +1,6 @@
 path_add() {
-  local binary="$(echo "$1" | sed -e 's~/$~~')"
+  # remove trailing slashes
+  local binary="${1%%+(/)}"
 
   if [ -n "$(echo "$PATH" | grep -E "(^|:)$binary(:|$)")" ]; then
     return
