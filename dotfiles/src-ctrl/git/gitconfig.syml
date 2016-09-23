@@ -26,13 +26,12 @@
     status = auto
     branch = auto
     ui = true
-[include]
-    path = .gituser
-    path = .gitpush
 [user]
-	name = brandonocasey
-	email = brandonocasey@gmail.com
+		name = brandonocasey
+		email = brandonocasey@gmail.com
 [push]
-	default = simple
+		default = simple
 [credential]
-	helper = osxkeychain
+		helper = osxkeychain
+		helper = /usr/share/doc/git/contrib/credential/gnome-keyring/git-credential-gnome-keyring
+		helper = wincred
