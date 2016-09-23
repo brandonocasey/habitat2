@@ -1,5 +1,4 @@
 # TODO:
-* share history without forcing another PROMPT_COMMAND
 * path_push + path_unshift + path_remove
 * go through vim config
 	* why doesn't auto read work
@@ -18,4 +17,5 @@
 	* https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/vundle/vundle.plugin.zsh
 	* https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/tmuxinator/_tmuxinator
 	* https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins/tmux
+	* https://github.com/alebcay/awesome-shell
 * update habitat to support bpkg
