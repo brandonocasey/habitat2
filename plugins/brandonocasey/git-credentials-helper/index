@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+
+current_plugin_dir="$1"; shift
+dotfiles_dir="$1"; shift
+os=""
+case "$OSTYPE" in
+  darwin*) os="osx" ;;
+	msys*|cygwin*) os="windows" ;;
+  *) os="linux" ;;
+esac
+if [ -n "$os" ]; then
+	ln -snf "$current_plugin_dir/$os.gitconfig" "$HOME/.git-credentials-helper"
+fi

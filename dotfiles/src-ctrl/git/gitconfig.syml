@@ -27,11 +27,9 @@
     branch = auto
     ui = true
 [user]
-		name = brandonocasey
-		email = brandonocasey@gmail.com
+    name = brandonocasey
+    email = brandonocasey@gmail.com
 [push]
-		default = simple
-[credential]
-		helper = osxkeychain
-		helper = /usr/share/doc/git/contrib/credential/gnome-keyring/git-credential-gnome-keyring
-		helper = wincred
+    default = simple
+[include]
+    path = .git-credentials-helper

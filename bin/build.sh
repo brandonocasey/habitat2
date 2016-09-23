@@ -19,7 +19,7 @@ build_plugins() {
       [ "$plugin" = "*"  ] && break
 
       # we have a plugin with no index
-      [ ! -x "$plugin_dir/index" ]&& continue
+      [ ! -x "$plugin_dir/index" ] && echo "no executable index for $author/$plugin" 2>&1 && continue
 
       local cmd="$plugin_dir/index"
       if [ "$HABITAT_DEBUG" = 0 ]; then
