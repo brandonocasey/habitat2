@@ -6,13 +6,6 @@ dotfiles_dir="$1"; shift
 bash_completion="/etc/bash_completion"
 bash_completion_two="/share/bash-completion/bash_completion"
 
-# TODO: for some reason running this makes the second line $ dissappear
-if type -t npm 2>&1 >/dev/null; then
-	echo 'if [ -z "$NPM_COMPLETION_DONE" ]; then'
-		npm completion
-		echo 'NPM_COMPLETION_DONE=1'
-	echo 'fi'
-fi
 
 if [ -f "$bash_completion_two" ]; then
   file="$bash_completion_two"
@@ -25,5 +18,15 @@ elif type -t brew 2>&1 >/dev/null && [ -f "$(brew --prefix)$bash_completion" ]; 
 fi
 
 if [ -n "$file" ]; then
-	cat "$file"
+echo 'exec 3>&1 1>/dev/null'
+echo 'exec 4>&2 2>/dev/null'
+cat "$file"
+echo 'exec 1>&3 3>&-'
+echo 'exec 2>&4 4>&-'
+
 fi
+
+if type -t npm 2>&1 >/dev/null; then
+	npm completion
+fi
+
