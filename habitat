@@ -48,7 +48,7 @@ habitat_main() {
 
     echo "Building your habitat!"
     export HABITAT_DEBUG="$debug"
-    "$HABITAT_DIR/bin/build.sh" "$build_dir"
+    "$HABITAT_DIR/bin/build.sh" "$build_dir" "$$"
     unset HABITAT_DEBUG
   }
 
@@ -94,10 +94,12 @@ if [ -z "$HABITAT_DIR" ] || [ ! -d "$HABITAT_DIR" ]; then
   return 1
 fi
 
-export HABITAT_DIR="$HABITAT_DIR"
-habitat_main "$@"
-alias habitat=". $HABITAT_DIR/habitat"
-
 # SIGUSR1 is used to update every terminal when
 # any terminal does a rebuild
-trap ". '$HABITAT_DIR/habitat' --no-build'" SIGUSR1
+trap ". '$HABITAT_DIR/habitat' --no-build" SIGUSR1
+alias habitat=". $HABITAT_DIR/habitat"
+export HABITAT_DIR="$HABITAT_DIR"
+
+habitat_main "$@"
+
+

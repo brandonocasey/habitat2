@@ -1,10 +1,12 @@
 send_signal() {
   local SIGNAL="$(echo "$1" | sed 's~SIG~~')"; shift
+  local ignore="$1"; shift
   local old_ifs="$IFS"
-  local our_pid="$BASHPID"
   local shell_name
   local pid
-  [ -z "$our_pid" ] && our_pid="$$"
+  [ -z "$ignore" ] && ignore="$BASHPID"
+  [ -z "$ignore" ] && ignore="$$"
+
 
   if [ -n "$BASH" ]; then
     shell_name='bash'
@@ -19,8 +21,8 @@ send_signal() {
   fi
 
   IFS=$'\n'
-  for  pid in $(pgrep -U "$USER" -- "$shell_name" | grep -v "$our_pid"); do
-    kill -$SIGNAL -- "$pid"
+  for  pid in $(pgrep -U "$USER" -- "$shell_name" | grep -v "$ignore"); do
+    kill -$SIGNAL -- "$pid" 2>/dev/null 1>/dev/null
   done
   IFS="$old_ifs"
 }

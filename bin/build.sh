@@ -60,6 +60,7 @@ git_check() {
 
 build() {
   local build_dir="$1"; shift
+  local pid="$1"
   mkdir -p "$build_dir"
 
   [ -f "$build_dir/lock" ] && return
@@ -68,7 +69,6 @@ build() {
   touch "$build_dir/lock"
 
   local syml="$build_dir/syml"
-
   local new_dir="$build_dir/new-build-$RANDOM"
   local old_dir="$(readlink "$syml")"
 
@@ -87,7 +87,7 @@ build() {
 
   # update other terminals
   . "$HABITAT_DIR/lib/send_signal.sh"
-  send_signal "SIGUSR1"
+  send_signal "SIGUSR1" "$pid"
 
   # remove lock so other environments can build
   rm -f "$build_dir/lock"
