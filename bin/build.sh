@@ -86,9 +86,8 @@ build() {
   [ -d "$old_dir" ] && rm -rf "$old_dir"
 
   # update other terminals
-  # TODO: make this work with other terminals
-  pkill -SIGUSR1 -U "$USER" -- '-bash'
-
+  . "$HABITAT_DIR/lib/send_signal.sh"
+  send_signal "SIGUSR1"
 
   # remove lock so other environments can build
   rm -f "$build_dir/lock"

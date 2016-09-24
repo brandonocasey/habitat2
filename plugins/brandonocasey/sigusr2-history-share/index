@@ -34,7 +34,7 @@ hist_cmd+="history -c;"
 hist_cmd+="history -r;"
 
 # send sigusr2 to other terms
-hist_cmd+="pkill -SIGUSR2 -U '$USER' -- '-bash';"
+hist_cmd+="send_signal 'SIGUSR2';"
 
 # if this command is not already in the prompt add it
 if [ -z "$(echo "$PROMPT_COMMAND" | grep "$hist_cmd")" ]; then
