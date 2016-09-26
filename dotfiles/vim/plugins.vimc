@@ -1,0 +1,75 @@
+if !empty(glob(VIM_BUNDLE_DIR . '/*'))
+	" delimitMate
+	" Auto complete (, ", ' with their partner and put you in the center of
+	" them to type
+
+	" Smart indenting for delimate
+	" let g:delimitMate_expand_cr = 2
+	let g:delimitMate_expand_space = 1
+
+	" vim-templates
+	" When opening a new file with a code extension it will be started for you
+	let g:templates_no_autocmd = 1
+
+	" vim-sleuth
+	" Force Correct Indentation, and auto switch when needed
+	let g:SleuthDefaultWidth = 2
+
+	" super-tab
+	" Better tab completion
+	" Match from the top
+	let g:SuperTabDefaultCompletionType = "<c-n>"
+
+	" vim-colorshemes
+	:silent! colorscheme molokai
+	" Make find/replace/confirm more readable"
+	hi Search cterm=NONE ctermfg=grey ctermbg=blue
+
+	" rainbow_parenstheses
+	au VimEnter * RainbowParenthesesToggle
+	au VimEnter * RainbowParenthesesLoadRound
+	au VimEnter * RainbowParenthesesLoadSquare
+	au VimEnter * RainbowParenthesesLoadBraces
+	au VimEnter * RainbowParenthesesLoadChevrons
+
+	" vim-multiple-cursors
+	" hit control-n to add another cursor on a similar line
+	let g:multi_cursor_normal_maps = {'d':1, 'y':1, 'p':1}
+
+	" vim-indent-guidelines
+	" TODO: Reload if indent changes
+	" No I dont want crazy default indent guide colors
+	let g:indent_guides_auto_colors = 0
+
+	" We always want indent guides
+	let g:indent_guides_enable_on_vim_startup=1
+
+	" Indent guidelines color
+	autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black ctermbg=233
+	autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=234
+
+	" nerd-tree
+	" Better directory tree when viming a dir
+	" Nerdtree show me hidden stuff
+	let NERDTreeShowHidden=1
+
+	" syntastic
+	" Syntax checking
+	set statusline+=%#warningmsg#
+	set statusline+=%{SyntasticStatuslineFlag()}
+	set statusline+=%*
+
+	let g:syntastic_always_populate_loc_list = 1
+	let g:syntastic_auto_loc_list = 1
+	let g:syntastic_check_on_open = 1
+	let g:syntastic_check_on_wq = 0
+
+	" gundo
+	nnoremap <F5> :GundoToggle<CR>
+
+	" vim-airline
+	set laststatus=2
+
+	" vim-airline-themes
+	let g:airline_theme='molokai'
+endif

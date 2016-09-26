@@ -1,4 +1,0 @@
-let vim_neomake_readme=VIM_BUNDLE_DIR . '/neomake/README.md'
-if filereadable(vim_neomake_readme)
-	autocmd! BufWritePost * Neomake
-endif

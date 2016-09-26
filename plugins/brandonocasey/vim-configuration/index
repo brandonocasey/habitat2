@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+current_plugin_dir="$1"; shift
+dotfiles_dir="$1"; shift
+
+VIM_DIR="$HOME/.vim"
+VIM_CONFIG="$HOME/.vimrc"
+
+NVIM_DIR="$HOME/.config/nvim"
+NVIM_CONFIG="$NVIM_DIR/init.vim"
+
+mkdir -p "$VIM_DIR"
+mkdir -p "$NVIM_DIR"
+
+ln -snf "$VIM_DIR" "$NVIM_DIR"
+ln -snf "$current_plugin_dir/index.vim" "$VIM_CONFIG"
+ln -snf "$VIM_CONFIG" "$NVIM_CONFIG"
+
+# upgrade vim plug & clean/install/update plugins
+(vim +PlugUpgrade +PlugClean! +PlugInstall! +PlugUpdate! +qall! 2>&1 >/dev/null &)
+
+if type -t nvim 2>&1 >/dev/null; then
+	:
+	# does not currently work due to
+	# https://github.com/junegunn/vim-plug/issues/104
+	# (nvim $args)
+fi

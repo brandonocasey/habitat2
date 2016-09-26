@@ -1,4 +1,0 @@
-" Better directory tree when viming a dir
-
-" Nerdtree show me hidden stuff
-let NERDTreeShowHidden=1

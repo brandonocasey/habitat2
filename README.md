@@ -1,6 +1,7 @@
 # TODO:
 * path_push + path_unshift + path_remove
 * vim
+	* why the f can't I do a PlugInstall in the background?
 	* cant go to start of whitespace line
 	* xx rather than dd for cut
 	* why doesn't DetectSyntax work on write or change?

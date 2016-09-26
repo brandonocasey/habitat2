@@ -1,3 +1,0 @@
-:silent! colorscheme molokai
-" Make find/replace/confirm more readable"
-hi Search cterm=NONE ctermfg=grey ctermbg=blue
