@@ -33,8 +33,7 @@ vmap <Tab> >><esc>
 
 
 " Smoother scrolling with control-f etc each line takes 20 mili seconds
-let vim_smooth_scroll=expand('~/.vim/bundle/vim-smooth-scroll/README.md')
-if filereadable(vim_smooth_scroll)
+if filereadable(expand(VIM_BUNDLE_DIR . "/vim-smooth-scroll/README.md"))
     noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 20, 2)<CR>
     noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 20, 2)<CR>
     noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 20, 4)<CR>
@@ -80,7 +79,17 @@ map <leader>s? z=
 
 " Map the home key to go to the beginning of a line, and
 " if pressed again it will go to the start of the line
-noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
+function! SmartHome()
+  let first_nonblank = match(getline('.'), '\S') + 1
+  if first_nonblank == 0
+    return col('.') + 1 >= col('$') ? '0' : '^'
+  endif
+  if col('.') == first_nonblank
+    return '0'  " if at first nonblank, go to start line
+  endif
+  return &wrap && wincol() > 1 ? 'g^' : '^'
+endfunction
+noremap <expr> <silent> <Home> SmartHome()
 imap <silent> <Home> <C-O><Home>
 
 " turn on mouse support

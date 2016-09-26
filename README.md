@@ -1,7 +1,8 @@
 # TODO:
 * path_push + path_unshift + path_remove
-* go through vim config
-	* why doesn't auto read work
+* vim
+	* cant go to start of whitespace line
+	* xx rather than dd for cut
 	* why doesn't DetectSyntax work on write or change?
 	* NERDTree folder sidebar
 	* switch between windows & splits

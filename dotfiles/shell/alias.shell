@@ -36,6 +36,7 @@ else
 
     # Show me all files, including .dotfiles, and all info about them
     alias la='ls -lhaG'
+    alias maclock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
 fi
 
 # Automatically make directories recursivly
@@ -74,7 +75,6 @@ alias deps_update="composer update;npm update;bower update"
 
 alias reverse="perl -e 'print reverse <>'"
 alias npmre="rm -rf ./node_modules && npm i"
-alias maclock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
 
 man() {
     vim -c "if exists(':Man') | q! | else | cq! | endif"
@@ -102,5 +102,4 @@ tail() {
         "$(which tail)" -f "$@"
     fi
 }
-
 

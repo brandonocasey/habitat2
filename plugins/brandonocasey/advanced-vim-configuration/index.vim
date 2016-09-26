@@ -49,6 +49,16 @@ endif
 
 let VIM_BUNDLE_DIR=VIM_CONFIG_DIR . '/plugins'
 
+let OS="linux"
+if has("unix")
+  let s:uname = system("uname -s")
+  if s:uname == "Darwin"
+    let OS="osx"
+  endif
+else
+  let OS="windows"
+endif
+
 " Plugins
 " TODO: use git over curl as we are forced to have it
 let vim_plug_file=VIM_CONFIG_DIR . "/autoload/plug.vim"

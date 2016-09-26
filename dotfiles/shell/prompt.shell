@@ -86,7 +86,6 @@ else
     COLOR_FIVE=$BROWN
 fi
 
-
 get_git_branch() {
   # On branches, this will return the branch name
   # On non-branches, (no branch)

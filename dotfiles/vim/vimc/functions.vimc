@@ -2,7 +2,6 @@
 " => Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
 function! FixSpace(width)
 	" Backup the current position
 	let p = getpos(".")

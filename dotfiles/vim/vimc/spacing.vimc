@@ -17,7 +17,11 @@ set autoindent
 set smarttab
 
 " Use systems copy paste function with yank and paste
-set clipboard=unnamed
+if OS == "linux"
+	set clipboard=unnamedplus
+else
+	set clipboard=unnamed
+endif
 
 " Vim Clipboard to 1000kb and 10000 line limit
 set viminfo='20,<10000,s1000,h
@@ -25,7 +29,6 @@ set viminfo='20,<10000,s1000,h
 " Automatic Paste mode when pasting to terminal with smart indent
 let &t_SI .= "\<Esc>[?2004h"
 let &t_EI .= "\<Esc>[?2004l"
-
 
 function! XTermPasteBegin()
   set pastetoggle=<Esc>[201~
