@@ -30,7 +30,7 @@ habitat_main() {
       -d|--debug) debug=0 ;;
       -h|--help) habitat_help && habitat_clean && return ;;
       -t|--time) time="$1"; shift ;;
-      -f|--force) time=0 ;;
+      -f|--force) time=0  && rm -f "$build_dir/lock";;
       -n|--no-run) run=1 ;;
       -n|--no-build) build=1 ;;
       *)

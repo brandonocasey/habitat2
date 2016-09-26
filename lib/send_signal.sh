@@ -22,7 +22,7 @@ send_signal() {
 
   IFS=$'\n'
   for  pid in $(pgrep -U "$USER" -- "$shell_name" | grep -v "$ignore"); do
-    kill -$SIGNAL -- "$pid" 2>/dev/null 1>/dev/null
+    (kill -$SIGNAL -- "$pid" 2>/dev/null 1>/dev/null &)
   done
   IFS="$old_ifs"
 }
