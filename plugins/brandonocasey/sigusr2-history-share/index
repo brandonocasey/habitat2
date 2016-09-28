@@ -22,18 +22,16 @@ hist_cmd=""
 hist_cmd+="history -a;"
 
 # clear our list of entered lines
-hist_cmd+="history -c;"
+# hist_cmd+="history -c;"
 
 # reload history file
-hist_cmd+="history -r;"
+# hist_cmd+="history -r;"
 
-# when we get a sigusr2, reload the history file
-trap "$hist_cmd" SIGUSR2
-
-# if this command is not already in the prompt add it
 if [ -z "$(echo "$PROMPT_COMMAND" | grep "$hist_cmd")" ]; then
-	# add hist_cmd and send sigusr2 to other terms
-  export PROMPT_COMMAND="$hist_cmd send_signal 'SIGUSR2'; $PROMPT_COMMAND"
+	# add hist_cmd
+  export PROMPT_COMMAND="$hist_cmd $PROMPT_COMMAND"
 fi
 unset hist_cmd
+
+alias histr="history -c; history -r;"
 EOF
