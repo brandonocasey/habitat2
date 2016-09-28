@@ -9,7 +9,7 @@ habitat_help() {
   echo
   echo "  -d, --debug        print debug statements"
   echo "  -f, --force        force habitat to rebuild now rather than once a day"
-  echo "  -t, --time <mins>  time between rebuilds in minutes, defaults is 1440 (1 day)"
+  echo "  -t, --time <mins>  time between rebuilds in minutes, defaults is 600 (10 hours)"
   echo "  -n, --no-run       don't run habitat"
   echo "  -h, --help         show this help"
   echo
@@ -19,7 +19,7 @@ habitat_main() {
   local build_dir="$HABITAT_DIR/.build"
   [ ! -d "$build_dir" ] && mkdir -p "$build_dir"
   local debug=1
-  local time=1440
+  local rebuild_time=600
   local run=0
   local build=0
 
@@ -29,15 +29,15 @@ habitat_main() {
     case "$argv" in
       -d|--debug) debug=0 ;;
       -h|--help) habitat_help && habitat_clean && return ;;
-      -t|--time) time="$1"; shift ;;
-      -f|--force) time=0  && rm -f "$build_dir/lock";;
+      -t|--time) rebuild_time="$1"; shift ;;
+      -f|--force) rebuild_time=0  && rm -f "$build_dir/lock";;
       -n|--no-run) run=1 ;;
       -n|--no-build) build=1 ;;
       *)
     esac
   done
 
-  if [ -z "echo "$time" | grep "[0-9]+")" ]; then
+  if [ -z "echo "$rebuild_time" | grep "[0-9]+")" ]; then
     echo "Must pass a number with --time" 2>&1
     habitat_clean
     return
@@ -68,7 +68,7 @@ habitat_main() {
   }
 
   # if its time to rebuild
-  [ -z "$(find "$build_dir/syml" -type l -mmin "-${time}" 2>/dev/null)" ] && habitat_build
+  [ -z "$(find "$build_dir/syml" -type l -mmin "-${rebuild_time}" 2>/dev/null)" ] && habitat_build
 
   habitat_run
   habitat_clean
