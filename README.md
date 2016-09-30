@@ -22,3 +22,5 @@
 	* https://github.com/alebcay/awesome-shell
 * update habitat to support bpkg
 * move everything into a src directory
+* rebuild on PROMPT_COMMAND when needed
+* remove shitty history code
