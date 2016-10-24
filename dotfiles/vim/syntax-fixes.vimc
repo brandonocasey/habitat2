@@ -57,7 +57,7 @@ if has("autocmd")
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
     " Color Log Files if you can
     autocmd BufNewFile,BufReadPost *messages* :set filetype=messages
-    autocmd BufNewFile,BufReadPost *log* :set filetype=messages
+    autocmd BufNewFile,BufReadPost *.log :set filetype=messages
 
     " Treat text files like every other file when copy pasting into them
     autocmd BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmargin=0
