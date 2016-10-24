@@ -85,10 +85,6 @@ build() {
   ln -sfn "$new_dir" "$syml"
   [ -d "$old_dir" ] && rm -rf "$old_dir"
 
-  # update other terminals
-  . "$HABITAT_DIR/lib/send_signal.sh"
-  send_signal "SIGUSR1" "$pid"
-
   # remove lock so other environments can build
   rm -f "$build_dir/lock"
 }

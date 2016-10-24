@@ -96,7 +96,6 @@ fi
 
 # SIGUSR1 is used to update every terminal when
 # any terminal does a rebuild
-trap ". '$HABITAT_DIR/habitat' --no-build" SIGUSR1
 alias habitat=". $HABITAT_DIR/habitat"
 export HABITAT_DIR="$HABITAT_DIR"
 
