@@ -50,12 +50,6 @@ alias gim='vim'
 alias vi='vim'
 alias grep='grep --color="always"'
 
-# easily move up one directory
-alias ..='cd ..'
-
-# easily move up two directories
-alias ....='cd ../..'
-
 # easy mysql connection just tack on a -h
 alias sql='mysql -umysql -pmysql'
 
