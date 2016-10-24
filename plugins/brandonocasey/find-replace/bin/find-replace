@@ -28,7 +28,7 @@ find_replace() {
     ORIG_GLOBIGNORE=$GLOBIGNORE
     GLOBIGNORE=*.*
 
-    files="$(grep -lR "$find" "$dir")"
+    files="$(grep -lR "$find" "$dir" --exclude-dir 'node_modules' --exclude-dir '.git')"
     if [ -z "$files" ]; then
         echo "Found no files with the term $find"
     fi
