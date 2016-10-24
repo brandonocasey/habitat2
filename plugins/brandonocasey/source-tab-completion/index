@@ -33,6 +33,14 @@ if type -t npm 2>&1 >/dev/null; then
 	npm completion
 fi
 
+if type -t yo 2>&1 >/dev/null; then
+	nl = $'\n'
+	y="$(yo completion <<< "$nl")"
+
+	echo "$y" | sed '~? Where.*~~'
+fi
+
+
 if [ -f "$brew_prefix/Library/Contributions/brew_bash_completion.sh" ]; then
 	cat "$brew_prefix/Library/Contributions/brew_bash_completion.sh"
 fi
