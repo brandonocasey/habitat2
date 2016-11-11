@@ -27,3 +27,4 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/bats.vim'
 Plug 'vim-utils/vim-man'
+Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': 'yes \| ./install --all'}

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+
+# Setup fzf
+# ---------
+echo "path_add '$HOME/.fzf/bin'"
+echo "man_path_add '$HOME/.fzf/man'"
+[[ $- == *i* ]] && echo " . '$HOME/.fzf/shell/completion.bash' 2>/dev/null"
+echo "source '$HOME/.fzf/shell/key-bindings.bash' 2>/dev/null"
