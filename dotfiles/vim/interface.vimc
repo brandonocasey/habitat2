@@ -73,10 +73,10 @@ set incsearch " ...dynamically as they are typed.
 set lazyredraw
 
 " No annoying sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent

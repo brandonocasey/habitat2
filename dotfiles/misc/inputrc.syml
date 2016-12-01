@@ -22,10 +22,19 @@ set input-meta on
 set output-meta on
 set convert-meta off
 
-
 # If there are more than 200 possible completions for a word, ask to show them all
 set completion-query-items 200
 
+# Stop with the stupid error bells
+set bell-style none
+
+# Don't echo ^C etc (new in bash 4.1)
+# Note this only works for the command line itself,
+# not if already running a command.
+set echo-control-characters off
+
+# Enable coloring for tab completions with bash >= 4.3
+set colored-stats on
 
 # Show extra file information when completing, like `ls -F` does
 set visible-stats on
