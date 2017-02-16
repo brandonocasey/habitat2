@@ -9,7 +9,7 @@ habitat_help() {
   echo
   echo "  -d, --debug        print debug statements"
   echo "  -f, --force        force habitat to rebuild now rather than once a day"
-  echo "  -t, --time <mins>  time between rebuilds in minutes, defaults is 600 (10 hours)"
+  echo "  -t, --time <mins>  time between rebuilds in minutes, defaults is 10080 (7 days)"
   echo "  -n, --no-run       don't run habitat"
   echo "  -h, --help         show this help"
   echo
@@ -19,7 +19,7 @@ habitat_main() {
   local build_dir="$HABITAT_DIR/.build"
   [ ! -d "$build_dir" ] && mkdir -p "$build_dir"
   local debug=1
-  local rebuild_time=600
+  local rebuild_time=10080
   local run=0
   local build=0
 
