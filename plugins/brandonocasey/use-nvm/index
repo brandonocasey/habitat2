@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-NVM_DIR="$HOME/.nvm"
-
-
 cat <<\EOF
 export NVM_DIR="$HOME/.nvm"
 
@@ -10,14 +7,14 @@ export NVM_DIR="$HOME/.nvm"
 nvm() {
 
 	if [ ! -d "$NVM_DIR" ]; then
-		read -p "Install nvm (y/n)?" choice
+		read -rp "Install nvm (y/n)?" choice
 		case "$choice" in
 			y|Y) echo "Installing";;
 			n|N) echo "Bye Bye" && return ;;
 			*) echo "invalid" ;;
 		esac
 
-		curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
+		curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 	fi
 
 	if [ -s "$NVM_DIR/nvm.sh" ]; then
@@ -26,44 +23,37 @@ nvm() {
 		. "$NVM_DIR/nvm.sh"
 		nvm "$@"
 	else
-		echo "nvm is not installed!" 2>&1
+		echo "nvm is not installed!"
 		return
 	fi
 }
+
 
 # use the default nvm if nvm is installed
 # that way the user won't have to set anything in their
 # .bash_profile
 use_default_nvm() {
-	local nvm_alias_default="$NVM_DIR/alias/default"
-	local nvm_default=$(cat "$nvm_alias_default" 2>/dev/null)
-
 	# NVM not installed
 	if [ -z "$NVM_DIR" ] || [ ! -d "$NVM_DIR" ]; then
 		return
 	fi
 
+	local nvm_alias_default="$NVM_DIR/alias/default"
+	local nvm_default="$(cat "$nvm_alias_default")"
+
 	# no default set
 	if [ ! -f "$nvm_alias_default" ] || [ -z "$nvm_default" ]; then
-		echo "Please use 'nvm alias default <version>' so we can set set the default version" 2>&1
-		echo "in your path and save you time every terminal login!" 2>&1
+		echo "Please use 'nvm alias default <version>' and install that version so that it can be used on login"
 		return
 	fi
 
-	local nvm_default_path="$NVM_DIR/versions/node/$nvm_default/bin/"
-
-	# default not installed
-	if [ ! -d "$nvm_default_path" ]; then
-		echo "nvm default $nvm_default is not installed, going to install and use" 2>&1
-		nvm install "$nvm_default"
-		nvm use "$nvm_default"
+	if ! nvm which "$nvm_default" >/dev/null 2>&1; then
+		echo "Please install your default using: nvm install '$nvm_default' && nvm use '$nvm_default'"
+		echo "After intial install this will be done automatically"
+		return
 	fi
 
-	# default bin dir is already in the path
-	if [ -z "$(echo "$PATH" | grep "$nvm_default_path")" ]; then
-		export PATH="$nvm_default_path:$PATH"
-	fi
-
+	nvm use "$nvm_default" >/dev/null 2>&1
 }
 
 use_default_nvm
