@@ -1,30 +1,74 @@
-Plug 'Raimondi/delimitMate'
-Plug 'aperezdc/vim-template'
+" We created our own fork of tpope/vim-sleuth
+" Do to some difficulties getting a pr merged way back
+" basically we wanted to default to 4 tab spaces instead of 8
 Plug 'brandonocasey/vim-sleuth'
+
+" Auto close pairs
 Plug 'Raimondi/delimitMate'
-Plug 'aperezdc/vim-template'
-Plug 'brandonocasey/vim-sleuth'
-Plug 'cespare/vim-toml'
+
+" Allows us to use tab for completion rather than ctrl+n
 Plug 'ervandew/supertab'
+
+" Colors
 Plug 'flazz/vim-colorschemes'
+
+" Line up parts of code using Tabularize
 Plug 'godlygeek/tabular'
-Plug 'kchmck/vim-coffee-script'
-Plug 'kien/rainbow_parentheses.vim'
-Plug 'kristijanhusak/vim-multiple-cursors'
-Plug 'mustache/vim-mustache-handlebars'
+
+" Multiple cursorsr
+Plug 'terryma/vim-multiple-cursors'
+
+" Gives us indent guides
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'rust-lang/rust.vim'
-Plug 'scrooloose/nerdcommenter'
+
+" better navigation when using vim on a folder
 Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
-Plug 'sheerun/vim-polyglot'
-Plug 'shougo/unite.vim'
-Plug 'sjl/gundo.vim'
+
+" TODO: https://github.com/yuttie/comfortable-motion.vim vs smooth-scroll
 Plug 'terryma/vim-smooth-scroll'
+
+" Language support!
+Plug 'sheerun/vim-polyglot'
+
+" TODO: find out if we need this
 Plug 'tpope/vim-fugitive'
+
+" Make code pasting aware of the indent it should paste in
+" so we no longer have to fix that non-sense
+Plug 'sickill/vim-pasta'
+
+" Allows us to change the surrounding parts of a string from " to '
 Plug 'tpope/vim-surround'
+
+" Nice bottom bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
-Plug 'vim-scripts/bats.vim'
+
+" open man pages in vim
 Plug 'vim-utils/vim-man'
-Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': 'yes \| ./install --all'}
+
+" allows us to use '.' to repeat some plugin actions
+Plug 'tpope/vim-repeat'
+
+" Allows us to view the vim undotree
+" So that we can go back to previous or future states
+" of the code
+Plug 'mbbill/undotree'
+
+" look into another file easier
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+" TODO: setup eslint profile
+Plug 'w0rp/ale'
+
+" allows us to see trailing whitespace and tabs etc
+Plug 'ntpeters/vim-better-whitespace'
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif

@@ -43,11 +43,13 @@ fi
 alias mkdir='mkdir -p'
 
 # Vim misspellings nuff' said
-alias cim='vim'
-alias bim='vim'
-alias fim='vim'
-alias gim='vim'
-alias vi='vim'
+alias vim='nvim'
+alias cim='nvim'
+alias bim='nvim'
+alias fim='nvim'
+alias gim='nvim'
+alias vi='nvim'
+
 alias grep='grep --color="always"'
 
 # easy mysql connection just tack on a -h
@@ -69,6 +71,17 @@ alias deps_update="composer update;npm update;bower update"
 
 alias reverse="perl -e 'print reverse <>'"
 alias npmre="rm -rf ./node_modules && npm i"
+
+
+cdir() {
+    mkdir "$@"
+    cd "$@"
+}
+
+npminit() {
+    cdir "$@"
+    npm init --yes
+}
 
 man() {
     vim -c "if exists(':Man') | q! | else | cq! | endif"

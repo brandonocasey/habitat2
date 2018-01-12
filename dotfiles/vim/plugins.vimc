@@ -25,13 +25,6 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
 	" Make find/replace/confirm more readable"
 	hi Search cterm=NONE ctermfg=grey ctermbg=blue
 
-	" rainbow_parenstheses
-	au VimEnter * RainbowParenthesesToggle
-	au VimEnter * RainbowParenthesesLoadRound
-	au VimEnter * RainbowParenthesesLoadSquare
-	au VimEnter * RainbowParenthesesLoadBraces
-	au VimEnter * RainbowParenthesesLoadChevrons
-
 	" vim-multiple-cursors
 	" hit control-n to add another cursor on a similar line
 	let g:multi_cursor_normal_maps = {'d':1, 'y':1, 'p':1}
@@ -53,23 +46,48 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
 	" Nerdtree show me hidden stuff
 	let NERDTreeShowHidden=1
 
-	" syntastic
-	" Syntax checking
-	set statusline+=%#warningmsg#
-	set statusline+=%{SyntasticStatuslineFlag()}
-	set statusline+=%*
 
-	let g:syntastic_always_populate_loc_list = 1
-	let g:syntastic_auto_loc_list = 1
-	let g:syntastic_check_on_open = 1
-	let g:syntastic_check_on_wq = 0
-
-	" gundo
-	nnoremap <F5> :GundoToggle<CR>
+	let g:deoplete#enable_at_startup = 1
 
 	" vim-airline
 	set laststatus=2
 
 	" vim-airline-themes
 	let g:airline_theme='molokai'
+
+	" configure fzf to use the best binary available
+	" stolen from https://www.reddit.com/r/vim/comments/54tbjb/supercharge_vim_with_fzf_and_ripgrep/d859vga/
+	if executable('rg')
+			set grepprg=rg\ --vimgrep
+			set grepformat=%f:%l:%c:%m
+	elseif executable('sift')
+			set grepprg=sift\ -nMs\ --no-color\ --binary-skip\ --column\ --no-group\ --git\ --follow
+			set grepformat=%f:%l:%c:%m
+	elseif executable('ag')
+			set grepprg=ag\ --vimgrep\ --ignore=\"**.min.js\"
+			set grepformat=%f:%l:%c:%m,%f:%l:%m
+	elseif executable('ack')
+			set grepprg=ack\ --nogroup\ --nocolor\ --ignore-case\ --column
+			set grepformat=%f:%l:%c:%m,%f:%l:%m
+	endif
+
+	" Put this in vimrc or a plugin file of your own.
+	" After this is configured, :ALEFix will try and fix your JS code with ESLint.
+	let g:ale_fixers = {
+	\   'javascript': ['eslint'],
+	\}
+
+	let g:ale_linters = {
+	\   'javascript': ['eslint'],
+	\}
+
+	let g:ale_javascript_eslint_options = '--config "eslint-config-videojs" --rule "{max-len: 0}"'
+	let g:ale_javascript_eslint_executable = 'eslint_d'
+	let g:ale_javascript_eslint_use_global = 1
+
+	" Set this setting in vimrc if you want to fix files automatically on save.
+	" This is off by default.
+	" Currently Broken
+	" "let g:ale_fix_on_save = 1
+
 endif

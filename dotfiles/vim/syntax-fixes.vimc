@@ -19,7 +19,8 @@ function! SetSyntax(binaryName)
 	elseif a:binaryName == "bats"
 			let g:is_bash=1
 			let binarySyntax="sh"
-			silent call SyntasticToggleMode()
+	elseif a:binaryName == "html"
+			let binarySyntax="html"
 	endif
     execute "set filetype=" . binarySyntax
 endfunction
@@ -36,7 +37,7 @@ function! DetectSyntax()
     endif
     let binary = ""
 		let line = getline(nextnonblank(1))
-		let searches = ['\v^\s*#!.*\/bin\/(env\s+)?(\w+)', '<!DOCTYPE \(\w\+\)>']
+		let searches = ['\v^\s*#!.*\/bin\/(env\s+)?(\w+)']
 		let i = 0
 		while empty(binary) && i < len(searches)
 			let match = matchlist(line, searches[i])
@@ -70,6 +71,7 @@ if has("autocmd")
 
     " cursorline/cursor column slow down ruby :(
     autocmd BufNewFile,BufRead *.vimc,*.vimp,*.nvimc,*.nvimp set syntax=vim
+    autocmd BufNewFile,BufRead *.html call SetSyntax('html')
     autocmd BufNewFile,BufRead *.rb set syntax=ruby nocursorline nocursorcolumn
     autocmd BufNewFile,BufRead *.coffee set syntax=coffee nocursorline nocursorcolumn
     autocmd BufNewFile,BufRead *.shell,*.sh,*.bats,*.bash call SetSyntax('bash')

@@ -20,6 +20,7 @@
     co = checkout
     up = pull
     ci = commit
+		fix = commit --amend -a -C HEAD
     info = config --get remote.origin.url
 [color]
     diff = auto

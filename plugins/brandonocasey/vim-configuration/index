@@ -16,12 +16,8 @@ ln -snf "$VIM_DIR" "$NVIM_DIR"
 ln -snf "$current_plugin_dir/index.vim" "$VIM_CONFIG"
 ln -snf "$VIM_CONFIG" "$NVIM_CONFIG"
 
+(vim -c PlugUpgrade  -c PlugClean!  -c PlugInstall!  -c PlugUpdate! -c qall! 2>/dev/null 1>/dev/null &)
 # upgrade vim plug & clean/install/update plugins
-(vim +PlugUpgrade +PlugClean! +PlugInstall! +PlugUpdate! +qall! 2>&1 >/dev/null &)
-
 if type -t nvim 2>&1 >/dev/null; then
-	:
-	# does not currently work due to
-	# https://github.com/junegunn/vim-plug/issues/104
-	# (nvim $args)
+	(nvim --headless -c PlugUpgrade  -c PlugClean!  -c PlugInstall!  -c PlugUpdate! -c qall! 2>/dev/null 1>/dev/null &)
 fi

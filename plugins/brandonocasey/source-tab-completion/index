@@ -8,8 +8,9 @@ bash_completion_two="/share/bash-completion/bash_completion"
 brew_prefix=""
 
 if type -t brew 2>&1 >/dev/null; then
-	brew_prefix="$(brew --prefix)"
+  brew_prefix="$(brew --prefix)"
 fi
+
 
 if [ -f "$bash_completion_two" ]; then
   file="$bash_completion_two"
@@ -22,15 +23,15 @@ elif [ -f "${brew_prefix}${bash_completion}" ]; then
 fi
 
 if [ -n "$file" ]; then
-	echo 'exec 3>&1 1>/dev/null'
-	echo 'exec 4>&2 2>/dev/null'
-	cat "$file"
-	echo 'exec 1>&3 3>&-'
-	echo 'exec 2>&4 4>&-'
+  echo 'exec 3>&1 1>/dev/null'
+  echo 'exec 4>&2 2>/dev/null'
+  cat "$file"
+  echo 'exec 1>&3 3>&-'
+  echo 'exec 2>&4 4>&-'
 fi
 
 if type -t npm 2>&1 >/dev/null; then
-	npm completion
+  npm completion
 fi
 
 if type -t yo 2>&1 >/dev/null; then
@@ -60,8 +61,11 @@ fi
 EOF
 fi
 
-
 if [ -f "$brew_prefix/Library/Contributions/brew_bash_completion.sh" ]; then
-	cat "$brew_prefix/Library/Contributions/brew_bash_completion.sh"
+  cat "$brew_prefix/Library/Contributions/brew_bash_completion.sh"
+fi
+
+if type -t nvm 2>&1 >/dev/null; then
+  cat "$NVM_DIR/bash_completion"
 fi
 

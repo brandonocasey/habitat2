@@ -37,7 +37,7 @@ habitat_main() {
     esac
   done
 
-  if [ -z "echo "$rebuild_time" | grep "[0-9]+")" ]; then
+  if echo "$rebuild_time" | grep -q "[0-9]+"; then
     echo "Must pass a number with --time" 2>&1
     habitat_clean
     return
@@ -58,7 +58,7 @@ habitat_main() {
     local old_ifs="$IFS"
     IFS="$newline"
     for file in $(find "$HABITAT_DIR/lib" -name '*.sh' && find -L "$build_dir/syml" -name '*.sh'); do
-      [ "$debug" = 0 ] && time . "$file" && echo "Ran $(basename "$file")" && continue
+      [ "$debug" = 0 ] && time . "$file" && echo "^^ Time to run $(basename "$file")" && continue
       . "$file"
     done
     if [ -L "$build_dir/syml" ]; then
@@ -68,9 +68,19 @@ habitat_main() {
   }
 
   # if its time to rebuild
-  [ -z "$(find "$build_dir/syml" -type l -mmin "-${rebuild_time}" 2>/dev/null)" ] && habitat_build
+  if [ -z "$(find "$build_dir/syml" -type l -mmin "-${rebuild_time}" 2>/dev/null)" ]; then
+    if [ "$debug" = 0 ]; then
+      echo "----Build Start---" && time habitat_build && echo "^^ Total Build Time" && echo "----Build End----" && echo
+    else
+      habitat_build
+    fi
+  fi
 
-  habitat_run
+  if [ "$debug" = 0 ]; then
+    echo "----Run Start----" && time habitat_run && echo "^^ Total Run Time" && echo "----Run End----" && echo
+   else
+    habitat_run
+   fi
   habitat_clean
 }
 

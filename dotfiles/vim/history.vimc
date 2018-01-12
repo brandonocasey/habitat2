@@ -41,9 +41,11 @@ set backupskip=/tmp*,/private/tmp/*
 
 " Persistent undo if available
 if has('persistent_undo')
-   silent !mkdir -p ~/.vim/undodir
-   set undofile
-   set undodir=/home/bcasey/.vim/undodir
+	let UNDO_DIR=expand('~/.vim/undodir')
+
+	silent !mkdir -p $UNDO_DIR
+  set undofile
+  let &undodir = UNDO_DIR
 endif
 
 " When editing a file, always jump to the last known cursor position.
