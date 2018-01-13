@@ -1,6 +1,8 @@
 path_add() {
   # remove trailing slashes
-  local binary="${1%%+(/)}"
+  local binary="${1%%+(/)}"; shift
+  local unshift="$1"; shift
+
 
   if [ "$(echo "$PATH" | grep -q "(^|:)$binary(:|$)")" ]; then
     return
@@ -9,7 +11,12 @@ path_add() {
   if [ -z "$PATH" ]; then
     PATH="$binary"
   else
-    PATH+=":$binary"
+    # by default we push to the end
+    if [ -z "$unshift" ]; then
+      PATH+=":$binary"
+    else
+      PATH="$binary:$PATH"
+    fi
   fi
 }
 

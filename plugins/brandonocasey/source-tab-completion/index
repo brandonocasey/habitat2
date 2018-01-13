@@ -65,7 +65,7 @@ if [ -f "$brew_prefix/Library/Contributions/brew_bash_completion.sh" ]; then
   cat "$brew_prefix/Library/Contributions/brew_bash_completion.sh"
 fi
 
-if type -t nvm 2>&1 >/dev/null; then
+if [ -d "$NVM_DIR" ]; then
   cat "$NVM_DIR/bash_completion"
 fi
 
