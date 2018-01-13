@@ -9,5 +9,5 @@ if ! type -t "dircolors" 2>&1 >/dev/null; then
     # Colors on Mac
     export LSCOLORS=GxFxCxDxBxegedabagaced
 else
-    eval $(dircolors -b $HOME/.dircolors)
+  eval $(dircolors -b $HOME/.dircolors)
 fi

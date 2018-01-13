@@ -1,8 +1,10 @@
+#!/usr/bin/env bash
+
+cat <<\EOF
 path_add() {
   # remove trailing slashes
   local binary="${1%%+(/)}"; shift
   local unshift="$1"; shift
-
 
   if [ "$(echo "$PATH" | grep -q "(^|:)$binary(:|$)")" ]; then
     return
@@ -19,5 +21,4 @@ path_add() {
     fi
   fi
 }
-
-
+EOF

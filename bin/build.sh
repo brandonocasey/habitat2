@@ -75,15 +75,21 @@ build() {
   # pull new changes, warn about push
   git_check
 
-  mkdir -p "$new_dir"
-  build_plugins "$new_dir"
+  mkdir -p "$new_dir/"{lib,plugins}
+  for file in "$HABITAT_DIR/lib/"*; do
+    f="$(basename "$file")"
+    [ ! -x "$file" ] && echo "$file not executable" 2>&1 && continue
+
+    "$file" >> "$new_dir/lib/$f"
+  done
+  build_plugins "$new_dir/plugins"
 
   # replace
   # syml -> old_dir
   # with
   # syml -> new_dir
   ln -sfn "$new_dir" "$syml"
-  [ -d "$old_dir" ] && rm -rf "$old_dir"
+  [ -d "$old_dir" ] && rm -rf "$old_dir" || echo 'wtf?'
 
   # remove lock so other environments can build
   rm -f "$build_dir/lock"

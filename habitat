@@ -57,8 +57,13 @@ habitat_main() {
 
     local old_ifs="$IFS"
     IFS="$newline"
-    for file in $(find "$HABITAT_DIR/lib" -name '*.sh' && find -L "$build_dir/syml" -name '*.sh'); do
-      [ "$debug" = 0 ] && time . "$file" && echo "^^ Time to run $(basename "$file")" && continue
+    for file in $(find -L "$build_dir/syml/lib" -name '*.sh'); do
+      [ "$debug" = 0 ] && time . "$file" && echo "^^ Time to run lib $(basename "$file")" && continue
+      . "$file"
+    done
+
+    for file in $(find -L "$build_dir/syml/plugins" -name '*.sh'); do
+      [ "$debug" = 0 ] && time . "$file" && echo "^^ Time to run plugin $(basename "$file")" && continue
       . "$file"
     done
     if [ -L "$build_dir/syml" ]; then
