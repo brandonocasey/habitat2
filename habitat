@@ -31,8 +31,8 @@ habitat_main() {
       -h|--help) habitat_help && habitat_clean && return ;;
       -t|--time) rebuild_time="$1"; shift ;;
       -f|--force) rebuild_time=0  && rm -f "$build_dir/lock";;
-      -n|--no-run) run=1 ;;
-      -n|--no-build) build=1 ;;
+      -nr|--no-run) run=1 ;;
+      -nb|--no-build) build=1 ;;
       *)
     esac
   done
