@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# https://sites.google.com/a/kossboss.com/main/linux---bytes-to-human-readable-command
+bytes_to_human() {
+  # Convert input parameter (number of bytes)
+  # to Human Readable form
+  #
+  SLIST="bytes,KB,MB,GB,TB,PB,EB,ZB,YB"
+
+  POWER=1
+  VAL=$( echo "scale=2; $1 / 1" | bc)
+  VINT=$( echo "$VAL" / 1024 | bc )
+  while [ "$VINT" -gt 0 ]; do
+    POWER=$((POWER+1))
+    VAL="$( echo "scale=2; $VAL / 1024" | bc)"
+    VINT=$( echo "$VAL" / 1024 | bc )
+  done
+
+  echo "$VAL$( echo $SLIST | cut -f$POWER -d, )"
+}
+
+# if this is not an interactive shell read from pipe
+if ! tty >/dev/null; then
+  while read -r line; do
+    bytes_to_human "$line"
+  done;
+fi
+
+while [ "$#" -gt 0 ]; do
+  bytes_to_human "$1"; shift
+done
+
+exit 0

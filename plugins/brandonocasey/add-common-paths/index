@@ -19,6 +19,7 @@ path_add "./node_modules/.bin"
 path_add "../node_modules/.bin"
 path_add "../../node_modules/.bin"
 path_add "../../../node_modules/.bin"
+path_add "$HOME/.cargo/bin"
 EOF
 
 if type -t npm 2>&1 >/dev/null; then

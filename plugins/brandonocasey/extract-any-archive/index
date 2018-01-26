@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-current_plugin_dir="$1"; shift
-dotfiles_dir="$1"; shift
-
-echo "path_add '$current_plugin_dir/bin'"
