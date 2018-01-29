@@ -29,7 +29,7 @@ habitat_main() {
     case "$argv" in
       -d|--debug) debug=0 ;;
       -h|--help) habitat_help && habitat_clean && return ;;
-      -t|--time) rebuild_time="$1"; shift ;;
+      -t|--time) [ -n "$1" ] && rebuild_time="$1" && shift || rebuild_time='invalid';;
       -f|--force) rebuild_time=0  && rm -f "$build_dir/lock";;
       -nr|--no-run) run=1 ;;
       -nb|--no-build) build=1 ;;
@@ -37,10 +37,10 @@ habitat_main() {
     esac
   done
 
-  if echo "$rebuild_time" | grep -q "[0-9]+"; then
+  if ! echo "$rebuild_time" | grep -Eq "[0-9]+"; then
     echo "Must pass a number with --time" 2>&1
     habitat_clean
-    return
+    return 1
   fi
 
   habitat_build() {
@@ -115,5 +115,3 @@ alias habitat=". $HABITAT_DIR/habitat"
 export HABITAT_DIR="$HABITAT_DIR"
 
 habitat_main "$@"
-
-
