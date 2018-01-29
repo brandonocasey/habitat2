@@ -31,9 +31,9 @@ get_git_branch() {
 
 get_smiley() {
   if [ $? = 0 ]; then
-      echo "${LIGHT_BLUE}:)${RESET}"
+    echo "${LIGHT_BLUE}(^_^)${RESET}"
   else
-    echo "${RED}:(${RESET}"
+    echo "${RED}(x_x)${RESET}"
   fi
 }
 
