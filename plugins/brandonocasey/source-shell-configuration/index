@@ -5,7 +5,9 @@ dotfiles_dir="$1"; shift
 if [ ! -d "$dotfiles_dir" ]; then
 	exit 1
 fi
-for file in $(find "$dotfiles_dir" -name '*.shell'); do
-	echo "[ -f '$file' ] && . '$file'"
-done
 
+cat <<EOF
+while read -r file; do
+	. "\$file"
+done <<< "\$(find -L "$dotfiles_dir" -name '*.shell')"
+EOF
