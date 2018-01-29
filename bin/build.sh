@@ -63,7 +63,7 @@ build() {
   local pid="$1"
   mkdir -p "$build_dir"
 
-  [ -f "$build_dir/lock" ] && return
+  [ -f "$build_dir/lock" ] && echo "habitat build is locked" && return
 
   # start lock so other environments cannot build
   touch "$build_dir/lock"
