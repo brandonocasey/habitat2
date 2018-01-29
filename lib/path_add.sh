@@ -3,22 +3,25 @@
 cat <<\EOF
 path_add() {
   # remove trailing slashes
-  local binary="${1%%+(/)}"; shift
+  local dir="${1%%+(/)}"; shift
   local unshift="$1"; shift
 
-  if echo "$PATH" | grep -Eq "(^|:)$binary(:|$)"; then
+  # no path exists, just add the binary path
+  if [ -z "$PATH" ]; then
+    PATH="$dir"
     return
   fi
 
-  if [ -z "$PATH" ]; then
-    PATH="$binary"
+  # already in path
+  if echo "$PATH" | tr -s ':' '\n' | grep -xq "$dir"; then
+    return
+  fi
+
+  # by default we push to the end
+  if [ -z "$unshift" ]; then
+    PATH="$PATH:$dir"
   else
-    # by default we push to the end
-    if [ -z "$unshift" ]; then
-      PATH+=":$binary"
-    else
-      PATH="$binary:$PATH"
-    fi
+    PATH="$dir:$PATH"
   fi
 }
 EOF
