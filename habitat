@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-newline="
-"
-
 habitat_help() {
   echo
   echo "  Usage: . habitat [options]"
@@ -18,7 +15,6 @@ habitat_help() {
 habitat_main() {
   local build_dir="$HABITAT_DIR/.build"
   [ ! -d "$build_dir" ] && mkdir -p "$build_dir"
-  local debug=1
   local rebuild_time=10080
   local run=0
   local build=0
@@ -27,7 +23,7 @@ habitat_main() {
     local argv="$1"; shift
 
     case "$argv" in
-      -d|--debug) debug=0 ;;
+      -d|--debug) HABITAT_DEBUG=0 ;;
       -h|--help) habitat_help && habitat_clean && return ;;
       -t|--time) [ -n "$1" ] && rebuild_time="$1" && shift || rebuild_time='invalid';;
       -f|--force) rebuild_time=0  && rm -f "$build_dir/lock";;
@@ -36,6 +32,10 @@ habitat_main() {
       *)
     esac
   done
+
+  if [ -z "$HABITAT_DEBUG" ]; then
+    export HABITAT_DEBUG=1
+  fi
 
   if ! echo "$rebuild_time" | grep -Eq "[0-9]+"; then
     echo "Must pass a number with --time" 2>&1
@@ -47,45 +47,39 @@ habitat_main() {
     [ "$build" = "1" ] && return
 
     echo "Building your habitat!"
-    export HABITAT_DEBUG="$debug"
     "$HABITAT_DIR/bin/build.sh" "$build_dir" "$$"
-    unset HABITAT_DEBUG
   }
 
   habitat_run() {
     [ "$run" = 1 ] && return
 
-    local old_ifs="$IFS"
-    IFS="$newline"
-    for file in $(find -L "$build_dir/syml/lib" -name '*.sh'); do
-      [ "$debug" = 0 ] && time . "$file" && echo "^^ Time to run lib $(basename "$file")" && continue
+    while read -r file; do
+      [ "$HABITAT_DEBUG" = "0" ] && time . "$file" && echo "^^ Time to run lib $(basename "$file")" && continue
       . "$file"
-    done
+    done <<< "$(find -L "$build_dir/syml/lib" -name '*.sh')"
 
-    for file in $(find -L "$build_dir/syml/plugins" -name '*.sh'); do
-      [ "$debug" = 0 ] && time . "$file" && echo "^^ Time to run plugin $(basename "$file")" && continue
+    while read -r file; do
+      [ "$HABITAT_DEBUG" = 0 ] && time . "$file" && echo "^^ Time to run plugin $(basename "$file")" && continue
       . "$file"
-    done
-    if [ -L "$build_dir/syml" ]; then
-      export HABITAT_BUILD="$(readlink "$build_dir/syml")"
-    fi
-    IFS="$old_ifs"
+    done <<< "$(find -L "$build_dir/syml/plugins" -name '*.sh')"
   }
 
   # if its time to rebuild
   if [ -z "$(find "$build_dir/syml" -type l -mmin "-${rebuild_time}" 2>/dev/null)" ]; then
-    if [ "$debug" = 0 ]; then
+    if [ "$HABITAT_DEBUG" = 0 ]; then
       echo "----Build Start---" && time habitat_build && echo "^^ Total Build Time" && echo "----Build End----" && echo
     else
       habitat_build
     fi
   fi
 
-  if [ "$debug" = 0 ]; then
+  if [ "$HABITAT_DEBUG" = 0 ]; then
     echo "----Run Start----" && time habitat_run && echo "^^ Total Run Time" && echo "----Run End----" && echo
-   else
+  else
     habitat_run
-   fi
+  fi
+
+
   habitat_clean
 }
 
@@ -95,8 +89,12 @@ habitat_clean() {
   unset -f habitat_help
   unset -f habitat_main
   unset -f habitat_clean
-  unset newline
+  unset -f habitat_log
+  unset -f habitat_time
+  unset HABITAT_DEBUG
 }
+
+# used to determine if this script is sourced or run as a binary
 $(return >/dev/null 2>&1)
 
 if [ "$?" != "0" ]; then
