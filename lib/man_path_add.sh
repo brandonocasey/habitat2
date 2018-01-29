@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cat <<\EOF
-path_add() {
+man_path_add() {
   # remove trailing slashes
   local dir="${1%%+(/)}"; shift
   local unshift="$1"; shift
