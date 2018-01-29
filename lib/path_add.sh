@@ -6,7 +6,7 @@ path_add() {
   local binary="${1%%+(/)}"; shift
   local unshift="$1"; shift
 
-  if [ "$(echo "$PATH" | grep -q "(^|:)$binary(:|$)")" ]; then
+  if echo "$PATH" | grep -Eq "(^|:)$binary(:|$)"; then
     return
   fi
 

@@ -6,7 +6,8 @@ man_path_add() {
   local binary="${1%%+(/)}";shift
   local unshift="$1"; shift
 
-  if [ -n "$(echo "$MANPATH" | grep -E "(^|:)$binary(:|$)")" ]; then
+
+  if echo "$MANPATH" | grep -Eq "(^|:)$binary(:|$)"; then
     return
   fi
 
