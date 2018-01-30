@@ -13,7 +13,7 @@ path_add() {
   fi
 
   # already in path
-  if echo "$PATH" | tr -s ':' '\n' | grep -xq "$dir"; then
+  if echo "$PATH" | tr -s ':' '\n' | grep -q "$dir"; then
     return
   fi
 

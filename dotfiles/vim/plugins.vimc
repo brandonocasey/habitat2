@@ -21,7 +21,7 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
 	let g:SuperTabDefaultCompletionType = "<c-n>"
 
 	" vim-colorshemes
-	:silent! colorscheme molokai
+	:silent! colorscheme molokai_dark
 	" Make find/replace/confirm more readable"
 	hi Search cterm=NONE ctermfg=grey ctermbg=blue
 

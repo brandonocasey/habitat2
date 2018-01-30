@@ -13,7 +13,7 @@ man_path_add() {
   fi
 
   # already in path
-  if echo "$MANPATH" | tr -s ':' '\n' | grep -xq "$dir"; then
+  if echo "$MANPATH" | tr -s ':' '\n' | grep -q "$dir"; then
     return
   fi
 
