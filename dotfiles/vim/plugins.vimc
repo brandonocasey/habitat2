@@ -85,6 +85,8 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
 	let g:ale_javascript_eslint_executable = 'eslint_d'
 	let g:ale_javascript_eslint_use_global = 1
 
+	let g:ale_sh_shellcheck_options = '-e SC1090'
+
 	" Set this setting in vimrc if you want to fix files automatically on save.
 	" This is off by default.
 	" Currently Broken
