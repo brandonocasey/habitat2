@@ -1,15 +1,5 @@
 #!/usr/bin/env bash
 
-# Define Colors: Stolen From https://github.com/mathiasbynens/dotfiles/blob/master/.bash_prompt
-if [ -z "$COLORTERM" ]; then
-  COLORTERM=""
-fi
-if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
-  echo "export TERM='gnome-256color'"
-elif infocmp xterm-256color >/dev/null 2>&1; then
-  echo "export TERM='xterm-256color'"
-fi
-
 if tput setaf 1>/dev/null 2>/dev/null; then
   tput sgr0 1>/dev/null 2>/dev/null
   if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
