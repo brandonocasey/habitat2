@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 habitat_help() {
   echo
   echo "  Usage: . habitat [options]"
@@ -95,8 +93,10 @@ habitat_clean() {
 }
 
 # used to determine if this script is sourced or run as a binary
+# shellcheck disable=SC2091
 $(return >/dev/null 2>&1)
 
+# shellcheck disable=SC2181
 if [ "$?" != "0" ]; then
   echo "Script must be sourced, not run"
   exit 1
@@ -107,9 +107,7 @@ if [ -z "$HABITAT_DIR" ] || [ ! -d "$HABITAT_DIR" ]; then
   return 1
 fi
 
-# SIGUSR1 is used to update every terminal when
-# any terminal does a rebuild
-alias habitat=". $HABITAT_DIR/habitat"
 export HABITAT_DIR="$HABITAT_DIR"
+alias habitat='. "$HABITAT_DIR/habitat.sh"'
 
 habitat_main "$@"
