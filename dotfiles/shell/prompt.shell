@@ -6,22 +6,22 @@
 #==============================================================
 
 # Fancy Shell
-if [ $(id -u) -ne 0 ]; then
-    COLOR_TWO=$LIGHT_BLUE
-    COLOR_THREE=$GREY
-    COLOR_FOUR=$CYAN
-    COLOR_FIVE=$LIGHT_BLUE
+if [ "$(id -u)" -ne 0 ]; then
+  COLOR_TWO=$LIGHT_BLUE
+  COLOR_THREE=$GREY
+  COLOR_FOUR=$CYAN
+  COLOR_FIVE=$LIGHT_BLUE
 else
-    COLOR_TWO=$RED
-    COLOR_THREE=$ORANGE
-    COLOR_FOUR=$YELLOW
-    COLOR_FIVE=$BROWN
+  COLOR_TWO=$RED
+  COLOR_THREE=$ORANGE
+  COLOR_FOUR=$YELLOW
+  COLOR_FIVE=$BROWN
 fi
 
 get_git_branch() {
   # On branches, this will return the branch name
   # On non-branches, (no branch)
-  ref="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+  ref="$(git symbolic-ref HEAD 2> /dev/null | sed -e 's~refs/heads/~~')"
   if [ -n "$ref" ]; then
     printf "%s" " [$ref]"
   fi
