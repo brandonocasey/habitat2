@@ -7,7 +7,7 @@ if [ ! -d "$dotfiles_dir" ]; then
 fi
 
 cat <<EOF
-while read -r file; do
-	. "\$file"
-done <<< "\$(find -L "$dotfiles_dir" -name '*.shell')"
+for file in "$dotfiles_dir"{,*/,*/*/,*/*/*/}*.shell; do
+	[ -f "\$file" ] && . "\$file"
+done
 EOF

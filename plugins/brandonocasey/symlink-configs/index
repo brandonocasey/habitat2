@@ -7,8 +7,14 @@ if [ ! -d "$dotfiles_dir" ]; then
 fi
 
 cat <<EOF
-while read -r target; do
+
+for target in "$dotfiles_dir"{,*/,*/*/,*/*/*/}*.syml; do
+  [ ! -e "\$target" ] && continue
+
 	link_name="\$HOME/.\$(basename "\${target%.*}")"
-	(ln -snf "\$target" "\$link_name" &)
-done <<< "\$(find "$dotfiles_dir" -name '*.syml' -not -type l)"
+
+	[ "$(readlink "$link_name")" = "$target" ] && continue
+	ln -snf "\$target" "\$link_name" </dev/null &>/dev/null &
+	disown
+done
 EOF
