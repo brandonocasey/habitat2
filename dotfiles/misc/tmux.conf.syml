@@ -3,7 +3,7 @@ set -g base-index 1
 
 # Automatically set window title
 set-window-option -g automatic-rename on
-set-option -g set-titles on
+set-option -g set-titles on
 
 set -g status-keys vi
 set -g history-limit 100000
@@ -16,5 +16,5 @@ set -s escape-time 0
 
 # add another prefix of tick
 set-option -g prefix2 `
-set -g default-terminal tmux-256color
+set -g default-terminal screen-256color
 
