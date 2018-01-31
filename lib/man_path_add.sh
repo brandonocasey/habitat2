@@ -13,9 +13,14 @@ man_path_add() {
   fi
 
   # already in path
-  if echo "$MANPATH" | tr -s ':' '\n' | grep -q "$dir"; then
-    return
-  fi
+  local old_ifs="$IFS"
+  IFS=:
+
+  for p in $MANPATH; do
+    [ "$p" = "$dir" ] && IFS="$old_ifs" && return
+  done
+
+  IFS="$old_ifs"
 
   # by default we push to the end
   if [ -z "$unshift" ]; then
