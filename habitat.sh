@@ -20,6 +20,7 @@ habitat_exec() {
   fi
   local retval;
 
+  local old_TIMEFORMAT="$TIMEFORMAT"
   TIMEFORMAT="%Rs"; time "$@"
   retval="$?"
   # 6 spaces so that we are after the time output then
@@ -27,6 +28,7 @@ habitat_exec() {
   local back=$'      \e[1A'
   echo "$back: $(echo "$@" | sed "s~$HABITAT_DIR/~~g")" 1>&2
 
+  TIMEFORMAT="$old_TIMEFORMAT"
   return "$retval"
 }
 
