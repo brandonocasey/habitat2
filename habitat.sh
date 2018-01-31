@@ -2,13 +2,32 @@ habitat_help() {
   echo
   echo "  Usage: . habitat [options]"
   echo
-  echo "  -d, --debug        print debug statements"
-  echo "  -f, --force        force habitat to rebuild now rather than once a day"
-  echo "  -fb, --force-build alias for force"
-  echo "  -t, --time <mins>  time between rebuilds in minutes, defaults is 10080 (7 days)"
-  echo "  -n, --no-run       don't run habitat"
-  echo "  -h, --help         show this help"
+  echo "  -d, --debug          print debug statements"
+  echo "  -c, --check          check for git changes before run/build, off by default"
+  echo "  -f, --force          force a rebuild right now"
+  echo "  -fb, --force-build   alias for force"
+  echo "  -t, --time <mins>    time between rebuilds in minutes, defaults is 20160 (14 days)"
+  echo "  -nr, --no-run        don't run"
+  echo "  -nb, --no-build      don't build"
+  echo "  -h, --help           show this help"
   echo
+}
+
+habitat_exec() {
+  if [ "$HABITAT_DEBUG" = "0" ]; then
+    "$@"
+    return "$?"
+  fi
+  local retval;
+
+  TIMEFORMAT="%Rs"; time "$@"
+  retval="$?"
+  # 6 spaces so that we are after the time output then
+  # go up one line, so we can print on the same line as the time output
+  local back=$'      \e[1A'
+  echo "$back: $(echo "$@" | sed "s~$HABITAT_DIR/~~g")" 1>&2
+
+  return "$retval"
 }
 
 habitat_git_check() {
@@ -51,9 +70,6 @@ habitat_build() {
   # start lock so other environments cannot build
   touch "$lock_file"
 
-  # pull new changes, warn about push
-  habitat_git_check ""
-
   mkdir -p "$new_dir/"{lib,plugins}
   while read -r file; do
     newfile="$file"
@@ -61,13 +77,7 @@ habitat_build() {
     if echo "$file" | grep -q "^plugins"; then
       newfile="$(echo "$dir" | sed 's~/~-~g' | sed 's~plugins-~plugins/~').sh"
     fi
-    if [ "$HABITAT_DEBUG" = 1 ]; then
-      time "$HABITAT_DIR/$file" "$HABITAT_DIR/$dir" "$HABITAT_DIR/dotfiles" >> "$new_dir/$newfile"
-      echo "Done Building $file"
-      continue;
-    fi
-
-    "$HABITAT_DIR/$file" "$HABITAT_DIR/$dir" "$HABITAT_DIR/dotfiles" >> "$new_dir/$newfile"
+    habitat_exec "$HABITAT_DIR/$file" "$HABITAT_DIR/$dir" "$HABITAT_DIR/dotfiles" >> "$new_dir/$newfile"
   done <<< "$(find "$HABITAT_DIR/"{lib,plugins} -type f -perm +111 | sed "s~$HABITAT_DIR/~~")"
 
 
@@ -87,61 +97,57 @@ habitat_run() {
   local build_dir="$1"; shift
 
   while read -r file; do
-    [ "$HABITAT_DEBUG" = "1" ] && time . "$file" && echo "^^ Time to run $(echo "$file" | sed "s~^$build_dir/syml/~~")" && continue
-    . "$file"
+    habitat_exec . "$file"
   done <<< "$(find -L "$build_dir/syml/lib" "$build_dir/syml/plugins" -name '*.sh')"
 }
 
 habitat_main() {
   local build_dir="$HABITAT_DIR/.build"
   [ ! -d "$build_dir" ] && mkdir -p "$build_dir"
-  local rebuild_time=10080
+  local rebuild_time=20160
   local run=1
   local build=1
+  local check=0
+  export HABITAT_DEBUG=0
 
   while [ $# -gt 0 ]; do
     local argv="$1"; shift
 
     case "$argv" in
       -d|--debug) export HABITAT_DEBUG=1 ;;
-      -h|--help) habitat_help && habitat_clean && return ;;
+      -h|--help) habitat_help && return ;;
       -t|--time) [ -n "$1" ] && rebuild_time="$1" && shift || rebuild_time='invalid';;
       -f|--force|-fb|--force-build) rebuild_time=0 ;;
+      -c|--check) check=1 ;;
       -nr|--no-run) run=0 ;;
       -nb|--no-build) build=0 ;;
-      *) echo "invalid option $argv" 1>&2 &&  habitat_clean && return 1;;
+      *) echo "invalid option $argv" 1>&2 && return 1;;
     esac
   done
 
-  if [ -z "$HABITAT_DEBUG" ]; then
-    export HABITAT_DEBUG=0
-  fi
-
   if ! echo "$rebuild_time" | grep -Eq "[0-9]+"; then
     echo "Must pass a number with --time" 2>&1
-    habitat_clean
     return 1
   fi
 
-  # if its time to rebuild
-  if [ "$build" = 1 ] && [ -z "$(find "$build_dir/syml" -type l -mmin "-${rebuild_time}" 2>/dev/null)" ]; then
-    if [ "$HABITAT_DEBUG" = 1 ]; then
-      echo "----Build Start---" && time habitat_build "$build_dir" && echo "^^ Total Build Time" && echo "----Build End----" && echo
-    else
-      habitat_build "$build_dir"
-    fi
+  if [ "$check" = 1 ]; then
+    habitat_git_check
   fi
 
-  if [ "$run" = 1 ]; then
-    if [ "$HABITAT_DEBUG" = 1 ]; then
-      echo "----Run Start----" && time habitat_run "$build_dir" && echo "^^ Total Run Time" && echo "----Run End----" && echo
-    else
-      habitat_run "$build_dir"
+  habitat_total() {
+    # if its time to rebuild
+    if [ "$build" = 1 ] && [ -z "$(find "$build_dir/syml" -type l -mmin "-${rebuild_time}" 2>/dev/null)" ]; then
+      habitat_exec habitat_build "$build_dir"
     fi
-  fi
 
-  habitat_clean
+    if [ "$run" = 1 ]; then
+      habitat_exec habitat_run "$build_dir"
+    fi
+  }
+
+  habitat_exec habitat_total
 }
+
 
 habitat_clean() {
   unset -f habitat_build
@@ -149,9 +155,9 @@ habitat_clean() {
   unset -f habitat_help
   unset -f habitat_main
   unset -f habitat_clean
-  unset -f habitat_log
-  unset -f habitat_time
   unset -f habitat_git_check
+  unset -f habitat_exec
+  unset -f habitat_total
   unset HABITAT_DEBUG
 }
 
@@ -174,3 +180,6 @@ export HABITAT_DIR="$HABITAT_DIR"
 alias habitat='. "$HABITAT_DIR/habitat.sh"'
 
 habitat_main "$@"
+retval="$?"
+habitat_clean
+return "$retval"
