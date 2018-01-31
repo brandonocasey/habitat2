@@ -13,6 +13,7 @@ path_add "/bin"
 path_add "/usr/sbin"
 path_add "/sbin"
 path_add "$dotfiles_dir/bin"
+path_add "$HOME/bin"
 path_add "./vendor/bin"
 path_add "./bin"
 path_add "./node_modules/.bin"
@@ -20,15 +21,14 @@ path_add "../node_modules/.bin"
 path_add "../../node_modules/.bin"
 path_add "../../../node_modules/.bin"
 path_add "$HOME/.cargo/bin"
+
+man_path_add "/usr/share/man"
+man_path_add "/usr/local/share/man"
+man_path_add "$HOME/man"
+man_path_add "$dotfiles_dir/man"
 EOF
 
-if type -t npm 2>&1 >/dev/null; then
-cat <<EOF
-path_add "$(npm bin --global)"
-EOF
-fi
-
-if type -t brew 2>&1 >/dev/null; then
+if type -t brew >/dev/null 2>&1; then
 cat <<EOF
 path_add "$(brew --prefix)/bin"
 EOF
