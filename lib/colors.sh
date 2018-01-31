@@ -18,6 +18,7 @@ if tput setaf 1>/dev/null 2>/dev/null; then
     BROWN=$(tput setaf 130)
     CYAN=$(tput setaf 39)
   else
+    echo "Warning: Your terminal does not have 256 colors support!" 1>&2
     RED=$(tput setaf 1)
     ORANGE=""
     YELLOW=$(tput setaf 3)
@@ -37,6 +38,7 @@ if tput setaf 1>/dev/null 2>/dev/null; then
   RESET=$(tput sgr0)
   DIM=$(tput dim)
 else
+  echo "Warning: Your terminal does not have 256 colors support!" 1>&2
   RED='\e[0;31m'
   ORANGE='\033[1;33m'
   YELLOW='\e[0;33m'
