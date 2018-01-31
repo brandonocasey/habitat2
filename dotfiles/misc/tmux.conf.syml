@@ -1,4 +1,20 @@
-#set -g default-terminal "screen-256-color"
-set -g history-limit 10000
-set -g mouse on
+# 0 is too far from ` ;)
+set -g base-index 1
+
+# Automatically set window title
+set-window-option -g automatic-rename on
+set-option -g set-titles on
+
+set -g status-keys vi
+set -g history-limit 100000
+
+setw -g mode-keys vi
+setw -g mouse on
+setw -g monitor-activity on
+
 set -s escape-time 0
+
+# add another prefix of tick
+set-option -g prefix2 `
+set -g default-terminal tmux-256color
+
