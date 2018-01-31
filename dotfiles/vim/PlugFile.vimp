@@ -45,7 +45,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 
 " open man pages in vim
-Plug 'vim-utils/vim-man'
+Plug 'nhooyr/neoman.vim'
 
 " allows us to use '.' to repeat some plugin actions
 Plug 'tpope/vim-repeat'

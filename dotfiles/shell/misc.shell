@@ -7,3 +7,7 @@ export FCEDIT='vim'
 export EDITOR='vim'
 export SVN_EDITOR='vim'
 export GIT_EDITOR='vim'
+
+if type -t nvim >/dev/null 2>&1 && nvim --headless -c "if exists(':Nman') | q! | else | cq! | endif"; then
+  export MANPAGER="nvim -c 'set ft=neoman' -"
+fi
