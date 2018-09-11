@@ -108,3 +108,11 @@ tcpx() {
 
   rsync --remove-source-files -aPz "$pcap" "$dest"
 }
+
+npml() {
+  while [ "$#" -gt 0 ]; do
+    [ -d "$1" ] && rm -rf "$1/node_modules" && npm link "$1" && echo "linked $1" || echo "could not link $1"
+    shift;
+  done
+}
+

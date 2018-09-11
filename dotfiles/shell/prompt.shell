@@ -6,16 +6,20 @@
 #==============================================================
 
 # Fancy Shell
+
+# if not root
 if [ "$(id -u)" -ne 0 ]; then
   COLOR_TWO=$LIGHT_BLUE
   COLOR_THREE=$GREY
   COLOR_FOUR=$CYAN
   COLOR_FIVE=$LIGHT_BLUE
+  UID_CHAR=">"
 else
   COLOR_TWO=$RED
   COLOR_THREE=$ORANGE
   COLOR_FOUR=$YELLOW
   COLOR_FIVE=$BROWN
+  UID_CHAR="$"
 fi
 
 get_git_branch() {
@@ -29,9 +33,9 @@ get_git_branch() {
 
 get_smiley() {
   if [ $? = 0 ]; then
-    printf "%s" "${LIGHT_BLUE}(^_^)${RESET}"
+    printf "%s" "${GREEN}✔${RESET}"
   else
-    printf "%s" "${RED}(x_x)${RESET}"
+    printf "%s" "${RED}✘${RESET}"
   fi
 }
 
@@ -55,6 +59,6 @@ PS1+="\[\$(get_git_branch)\]" # current git branch or n/a
 PS1+="\[${RESET}\]"           # Reset Color
 PS1+="\n"                     # New Line
 PS1+="\[${COLOR_FIVE}\]"      # Color five
-PS1+="\$"                     # dollar character
+PS1+="${UID_CHAR}"                     # > character
 PS1+="\[${RESET}\]"           # Reset color
 PS1+=" "                      # space

@@ -18,7 +18,7 @@
     protocol = https
 [alias]
     co = checkout
-    up = pull
+    up = !git fetch && git pull
     ci = commit
 		fix = commit --amend -a -C HEAD
     info = config --get remote.origin.url

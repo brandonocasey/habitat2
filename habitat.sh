@@ -178,7 +178,6 @@ if [ -z "$HABITAT_DIR" ] || [ ! -d "$HABITAT_DIR" ]; then
   return 1
 fi
 
-export HABITAT_DIR="$HABITAT_DIR"
 alias habitat='. "$HABITAT_DIR/habitat.sh"'
 
 habitat_main "$@"

@@ -13,7 +13,7 @@ for target in "$dotfiles_dir"{,*/,*/*/,*/*/*/}*.syml; do
 
 	link_name="\$HOME/.\$(basename "\${target%.*}")"
 
-	[ "$(readlink "$link_name")" = "$target" ] && continue
+	[ "\$(readlink "\$link_name")" = "\$target" ] && continue
 	ln -snf "\$target" "\$link_name" </dev/null &>/dev/null &
 	disown
 done
