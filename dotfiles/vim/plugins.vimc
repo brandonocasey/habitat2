@@ -15,11 +15,6 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
 	" Force Correct Indentation, and auto switch when needed
 	let g:SleuthDefaultWidth = 2
 
-	" super-tab
-	" Better tab completion
-	" Match from the top
-	let g:SuperTabDefaultCompletionType = "<c-n>"
-
 	" vim-colorshemes
 	:silent! colorscheme molokai_dark
 	" Make find/replace/confirm more readable"
@@ -46,6 +41,37 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
 	" Nerdtree show me hidden stuff
 	let NERDTreeShowHidden=1
 
+	inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+	inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+	inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+
+	" let g:asyncomplete_auto_popup = 0
+	let g:asyncomplete_remove_duplicates = 1
+	if executable('javascript-typescript-stdio')
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'javascript-typescript-stdio',
+      \ 'cmd': { server_info->['javascript-typescript-stdio']},
+      \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx']
+      \ })
+		autocmd FileType typescript javascript javascript.jsx setlocal omnifunc=lsp#complete
+	endif
+	if executable('css-languageserver')
+		au User lsp_setup call lsp#register_server({
+		\ 'name': 'css-languageserver',
+		\ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']},
+		\ 'whitelist': ['css', 'less', 'sass'],
+		\ })
+	endif
+
+	function s:csharpcompletor(opt, ctx)
+		call OmniSharp#Complete
+	endfunction
+
+	call asyncomplete#register_source({
+		\ 'name': 'cs',
+		\ 'whitelist': ['cs'],
+		\ 'completor': function('s:csharpcompletor'),
+		\ })
 
 	let g:deoplete#enable_at_startup = 1
 
@@ -81,9 +107,8 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
 	\   'javascript': ['eslint'],
 	\}
 
-	let g:ale_javascript_eslint_options = '--config "eslint-config-videojs" --rule "{max-len: 0}"'
 	let g:ale_javascript_eslint_executable = 'eslint_d'
-	let g:ale_javascript_eslint_use_global = 1
+	 let g:ale_javascript_eslint_use_global = 1
 
 	let g:ale_sh_shellcheck_options = '-e SC1090'
 

@@ -6,9 +6,6 @@ Plug 'brandonocasey/vim-sleuth'
 " Auto close pairs
 Plug 'Raimondi/delimitMate'
 
-" Allows us to use tab for completion rather than ctrl+n
-Plug 'ervandew/supertab'
-
 " Colors
 Plug 'flazz/vim-colorschemes'
 
@@ -65,6 +62,16 @@ Plug 'w0rp/ale'
 " allows us to see trailing whitespace and tabs etc
 Plug 'ntpeters/vim-better-whitespace'
 
+" Language server support, aka more syntax
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+
+" Plug 'OmniSharp/omnisharp-vim'
+Plug 'tpope/vim-dispatch'
+
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -72,3 +79,5 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+
+
