@@ -11,3 +11,5 @@ export GIT_EDITOR='vim'
 if type -t nvim >/dev/null 2>&1; then
   export MANPAGER="nvim -c 'set ft=neoman' -"
 fi
+
+export RIPGREP_CONFIG_PATH="$HOME/.rgrc"

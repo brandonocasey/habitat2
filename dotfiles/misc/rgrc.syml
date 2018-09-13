@@ -1,0 +1,3 @@
+--glob=!**/*.min.js
+--glob=!**/package-lock.json
+--glob=!**/_package-lock.json
