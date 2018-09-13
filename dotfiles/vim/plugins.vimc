@@ -101,14 +101,18 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
 	" After this is configured, :ALEFix will try and fix your JS code with ESLint.
 	let g:ale_fixers = {
 	\   'javascript': ['eslint'],
+	\   'json': ['fixjson'],
 	\}
 
 	let g:ale_linters = {
 	\   'javascript': ['eslint'],
+	\   'json': ['fixjson'],
 	\}
 
 	let g:ale_javascript_eslint_executable = 'eslint_d'
-	 let g:ale_javascript_eslint_use_global = 1
+	let g:ale_javascript_eslint_use_global = 1
+	" let g:ale_fix_on_save = 1
+	let g:ale_completion_enabled = 1
 
 	let g:ale_sh_shellcheck_options = '-e SC1090'
 
