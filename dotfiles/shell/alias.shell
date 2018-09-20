@@ -39,6 +39,8 @@ else
     alias maclock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
 fi
 
+alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
+
 # Automatically make directories recursivly
 alias mkdir='mkdir -p'
 
