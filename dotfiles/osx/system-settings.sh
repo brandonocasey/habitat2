@@ -64,3 +64,35 @@ defaults write com.apple.dock no-bouncing -bool TRUE
 # Faster key repeat
 defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
 defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)<Paste>
+
+# disable mouse acceleration
+defaults write .GlobalPreferences com.apple.mouse.scaling -1
+
+# autohide dock
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -float 0
+
+killall Dock
+
+cd /Library/Fonts
+
+curl -O https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Regular.ttf
+curl -O https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Bold.ttf
+
+cd -
+
+echo "1. Now change mouse/trackpad settings"
+echo "  a. Mouse"
+echo "    i. Point & Click: Secondary Click Only + fastest mouse speed"
+echo "    ii. More Gestures: All checked"
+echo "  b. Trackpad"
+echo "    i. Point & Click: All but look up and data detectors"
+echo "2. Change caps lock -> escape"
+echo "3. Add a hot corner to sleep the display"
+echo "4. Night shift and 1 min Do not Disturb"
+echo "5. Setup touch id"
+echo "6. Show battery percentage in bar"
+echo "7. Install vanilla set it up, and have it start on login"
+echo "8. Setup iterm, inconsolata 18pt"
+echo "9. Add sound icon to menu bar"
