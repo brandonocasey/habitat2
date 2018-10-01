@@ -80,6 +80,10 @@ cd /Library/Fonts
 curl -O https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Regular.ttf
 curl -O https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Bold.ttf
 
+# copy over home/end/pg up and down fix
+mkdir ~/Library/KeyBindings/
+cp ./DefaultKeyBinding.dict ~/Library/Keybindings
+
 cd -
 
 echo "1. Now change mouse/trackpad settings"
@@ -94,5 +98,6 @@ echo "4. Night shift and 1 min Do not Disturb"
 echo "5. Setup touch id"
 echo "6. Show battery percentage in bar"
 echo "7. Install vanilla set it up, and have it start on login"
-echo "8. Setup iterm, inconsolata 18pt"
+echo "8. Setup iterm, inconsolata 18pt, unlimited scrollback"
 echo "9. Add sound icon to menu bar"
+echo "10. Edit sublime settings: https://coderwall.com/p/upolqw/fix-sublime-text-home-and-end-key-usage-on-mac-osx"
