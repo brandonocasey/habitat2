@@ -18,6 +18,7 @@ brew 'jq'
 brew 'wget'
 brew 'ffmpeg'
 brew 'nvm'
+brew 'shellsheck'
 
 # Install Apps
 cask 'android-file-transfer'
