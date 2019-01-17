@@ -1,8 +1,6 @@
 # TODO:
 * time should be able to be an env var too, just like debug
-* does the standard lib have what we need?
 * path_push + path_unshift + path_remove
-* https://news.ycombinator.com/item?id=18898523
 * vim
 	* why the f can't I do a PlugInstall in the background?
 	* cant go to start of whitespace line
@@ -24,6 +22,4 @@
 	* https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins/tmux
 	* https://github.com/alebcay/awesome-shell
 * update habitat to support bpkg
-* move everything into a src directory
-* rebuild on PROMPT_COMMAND when needed
-* remove shitty history code
+* re-run on PROMPT_COMMAND when needed?

@@ -26,7 +26,7 @@ habitat_exec() {
   # 6 spaces so that we are after the time output then
   # go up one line, so we can print on the same line as the time output
   local back=$'      \e[1A'
-  echo "$back: ${*//$HABITAT_DIR\/.build\/syml\//}" 1>&2
+  echo "$back: ${*//$HABITAT_DIR\//}" 1>&2
 
   TIMEFORMAT="$old_TIMEFORMAT"
   return "$retval"

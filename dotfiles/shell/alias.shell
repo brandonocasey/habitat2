@@ -71,48 +71,56 @@ alias public_ip="curl icanhazip.com"
 alias deps_install="composer install;npm install;bower install"
 alias deps_update="composer update;npm update;bower update"
 
+# reverse a string
 alias reverse="perl -e 'print reverse <>'"
+
+# go to root git directory
+alias cdgit='cd $(git rev-parse --show-toplevel)'
+
+# node module bs
 alias npmre="rm -rf ./node_modules && npm i"
 alias npmrere="rm -f ./package-lock.json && npmre"
 alias npmfix="sed -i -e 's~http:\/\/~https:\/\/~g' package-lock.json && rm -f package-lock.json-e"
 alias npmrerefix="npmrere && npmfix"
 alias npmregen="rm -f ./package-lock.json && npm i --package-lock-only && npmfix"
 
+# keep env when going sudo
+alias sudo='sudo --preserve-env'
 
-cdir() {
+
+mkdircd() {
     mkdir "$@"
     cd "$@"
 }
 
 npminit() {
-    cdir "$@"
+    mkdircd "$@"
     npm init --yes
 }
 
 man() {
-    vim -c "if exists(':Man') | q! | else | cq! | endif"
-    if [ "$?" -eq 0 ]; then
+    if vim -c "if exists(':Man') | q! | else | cq! | endif"; then
         vim -c "Man $1 $2" -c 'silent only'
     else
-        "$(which man)" "$@"
+        "$(command -v man)" "$@"
     fi
 }
 
 # use rlwrap if we have it
 telnet() {
-    if command -v rlwrap 2>&1 1>/dev/null; then
+    if command -v rlwrap 1>/dev/null 2>&1; then
         rlwrap telnet "$@"
     else
-        "$(which telnet)" "$@"
+        "$(command -v telnet)" "$@"
     fi
 }
 
 # use multitail if we have it
 tail() {
-    if command -v multitail 2>&1 1>/dev/null; then
+    if command -v multitail 1>/dev/null 2>&1; then
         multitail "$@"
     else
-        "$(which tail)" -f "$@"
+        "$(command -v tail)" -f "$@"
     fi
 }
 
