@@ -132,11 +132,11 @@ habitat_main() {
     return 1
   fi
 
-  if [ "$check" = 1 ]; then
-    habitat_git_check
-  fi
-
   habitat_total() {
+    if [ "$check" = 1 ]; then
+      habitat_exec habitat_git_check
+    fi
+
     # if its time to rebuild
     if [ "$build" = 1 ] && [ -z "$(find "$build_dir/syml" -type l -mmin "-${rebuild_time}" 2>/dev/null)" ]; then
       habitat_exec habitat_build "$build_dir"
