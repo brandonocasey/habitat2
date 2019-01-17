@@ -67,6 +67,7 @@ defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)<Paste>
 
 # disable mouse acceleration
 defaults write .GlobalPreferences com.apple.mouse.scaling -1
+defaults write .GlobalPreferences com.apple.scrollwheel.scaling -1
 
 # autohide dock
 defaults write com.apple.dock autohide -bool true
@@ -101,3 +102,4 @@ echo "7. Install vanilla set it up, and have it start on login"
 echo "8. Setup iterm, inconsolata 18pt, unlimited scrollback"
 echo "9. Add sound icon to menu bar"
 echo "10. Edit sublime settings: https://coderwall.com/p/upolqw/fix-sublime-text-home-and-end-key-usage-on-mac-osx"
+echo "11. System -> General -> Always show scroll bar"
