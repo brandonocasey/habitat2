@@ -7,14 +7,14 @@ if [ ! -d "$dotfiles_dir" ]; then
 fi
 
 cat <<EOF
-
 for target in "$dotfiles_dir"{,*/,*/*/,*/*/*/}*.syml; do
-  [ ! -e "\$target" ] && continue
+	link_name="\${target##*/}"
+	link_name="\${link_name%.syml}"
+	link_name="\$HOME/.\${link_name}"
 
-	link_name="\$HOME/.\$(basename "\${target%.*}")"
-
-	[ "\$(readlink "\$link_name")" = "\$target" ] && continue
-	ln -snf "\$target" "\$link_name" </dev/null &>/dev/null &
-	disown
+	ln -snf "\$target" "\$link_name" &>/dev/null
+	unset link_name
 done
+
+unset target
 EOF
