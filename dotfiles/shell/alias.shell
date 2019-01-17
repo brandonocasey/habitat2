@@ -72,8 +72,11 @@ alias deps_install="composer install;npm install;bower install"
 alias deps_update="composer update;npm update;bower update"
 
 alias reverse="perl -e 'print reverse <>'"
-alias npmre="rm -rf ./node_modules && mkdir ./node_modules && npm i"
+alias npmre="rm -rf ./node_modules && npm i"
 alias npmrere="rm -f ./package-lock.json && npmre"
+alias npmfix="sed -i -e 's~http:\/\/~https:\/\/~g' package-lock.json && rm -f package-lock.json-e"
+alias npmrerefix="npmrere && npmfix"
+alias npmregen="rm -f ./package-lock.json && npm i --package-lock-only && npmfix"
 
 
 cdir() {
