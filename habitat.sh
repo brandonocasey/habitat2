@@ -37,17 +37,16 @@ habitat_git_check() {
     return
   fi
 
-  (cd "$HABITAT_DIR" && git remote update >/dev/null 2>&1)
-  local UPSTREAM="${1:-@{u}}"
-  local LOCAL="$(cd "$HABITAT_DIR" && git rev-parse @)"
-  local REMOTE="$(cd "$HABITAT_DIR" && git rev-parse "$UPSTREAM")"
-  local BASE="$(cd "$HABITAT_DIR" && git merge-base @ "$UPSTREAM")"
+  git -C "$HABITAT_DIR" remote update >/dev/null 2>&1
+  local LOCAL="$(git -C "$HABITAT_DIR" rev-parse @)"
+  local REMOTE="$(git -C "$HABITAT_DIR" rev-parse @{u})"
+  local BASE="$(git -C "$HABITAT_DIR" merge-base @ @{u})"
 
   if [ "$LOCAL" = "$REMOTE" ] && [ "$HABITAT_DEBUG" = 1 ]; then
     echo "settings are up to date on git"
   elif [ "$LOCAL" = "$BASE" ]; then
     # pull needed
-    (cd "$HABITAT_DIR" && git pull -q  >/dev/null 2>&1)
+    git pull -C "$HABITAT_DIR" -q  >/dev/null 2>&1
   elif [ "$REMOTE" = "$BASE" ]; then
     # push needed
     echo "You need to push your new habitat settings"
