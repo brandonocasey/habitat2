@@ -31,5 +31,6 @@ EOF
 if type -t brew >/dev/null 2>&1; then
 cat <<EOF
 path_add "$(brew --prefix)/bin"
+path_add "$(brew --prefix)/sbin"
 EOF
 fi
