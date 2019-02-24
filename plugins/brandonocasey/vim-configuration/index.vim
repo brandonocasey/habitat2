@@ -1,11 +1,5 @@
 function! VimFind(path, extension)
-  let files = system("find '" . expand(a:path) . "' -not -type l -name '*." . a:extension . "'")
-  if empty(files)
-    let files=[]
-  else
-    let files=split(files, '\n')
-  endif
-  return files
+  return split(system("find '" . expand(a:path) . "' -not -type l -name '*." . a:extension . "'"), '\n')
 endfunction
 
 function! SourceFiles(path, extension)
