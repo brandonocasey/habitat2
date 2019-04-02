@@ -1,32 +1,22 @@
-#!/usr/bin/env bash
-#==============================================================
-# => Bash History
-#
-# Make bash history more inuitive, and overall easier to use
-#==============================================================
-
-cat <<\EOF
-
 # I Want my history to last forever and sync wether or not I log out
 # http://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
-export HISTSIZE=1000000000
-export HISTFILESIZE=$HISTSIZE
+export HISTFILESIZE=
+export HISTSIZE=
 export HISTCONTROL=ignorespace:erasedups
 export HISTTIMEFORMAT="%m/%d/%y %T " # Save history timestamps
 
+shopt -s histappend
+
 _bash_history_sync() {
   builtin history -a         #1 appends command to histfile
-  HISTFILESIZE=$HISTSIZE     #2 sets max size
-  builtin history -c         #3 clears current session history
-  builtin history -r         #4 reads the updated histfile and makes that the current history
 }
-
 history() {                  #5 overrides build in history to sync it before display
   _bash_history_sync
   builtin history "$@"
 }
-
 if [ -z "$(echo "$PROMPT_COMMAND" | grep "_bash_history_sync")" ]; then
   export PROMPT_COMMAND="_bash_history_sync $PROMPT_COMMAND"
 fi
-EOF
+
+# always append on exit
+trap _bash_history_sync EXIT

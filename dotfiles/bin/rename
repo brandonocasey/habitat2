@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+rename() {
+  for i in *$1 $1*; do
+    ! [ -f "$i" ] && continue
+    mv -v "$i" "${i/$1/$2}"
+  done
+}
+
+while [ "$#" -gt 1 ]; do
+  rename "$1" "$2"; shift
+done

@@ -2,14 +2,23 @@
 (shopt -u mailwarn)
 unset MAILCHECK
 
+editor='nano';
 # Set default command editor to vim
-export FCEDIT='vim'
-export EDITOR='vim'
-export SVN_EDITOR='vim'
-export GIT_EDITOR='vim'
-
 if type -t nvim >/dev/null 2>&1; then
   export MANPAGER="nvim -c 'set ft=neoman' -"
+  editor='nvim'
+elif type -t vim >/dev/null 2>&1; then
+  editor='vim'
+elif type -t vi >/dev/null 2>&1; then
+  editor='vi'
 fi
+
+export FCEDIT=$editor
+export EDITOR=$editor
+export VISUAL=$editor
+export SVN_EDITOR=$editor
+export GIT_EDITOR=$editor
+
+unset editor
 
 export RIPGREP_CONFIG_PATH="$HOME/.rgrc"

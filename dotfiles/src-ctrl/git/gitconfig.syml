@@ -1,5 +1,4 @@
 [core]
-    editor = vim
     whitespace = trailing-space,space-before-tab
     excludesfile = .gitignore
 [merge]
@@ -35,3 +34,5 @@
     default = simple
 [include]
     path = .git-credentials-helper
+[fetch]
+	prune = true
