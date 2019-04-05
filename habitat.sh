@@ -79,7 +79,7 @@ habitat_build() {
       newfile="$(echo "$dir" | sed 's~/~-~g' | sed 's~plugins-~plugins/~').sh"
     fi
     habitat_exec "$HABITAT_DIR/$file" "$HABITAT_DIR/$dir" "$HABITAT_DIR/dotfiles" >> "$new_dir/$newfile"
-  done <<< "$(find "$HABITAT_DIR/"{lib,plugins} -type f -perm +111 | sed "s~$HABITAT_DIR/~~")"
+  done <<< "$(find "$HABITAT_DIR/"{lib,plugins} -type f -perm -a=x | sed "s~$HABITAT_DIR/~~")"
 
 
   # replace
