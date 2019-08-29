@@ -1,3 +1,6 @@
 --glob=!**/*.min.js
+--glob=!**/dist
+--glob=!**/test/dist
 --glob=!**/package-lock.json
 --glob=!**/_package-lock.json
+--glob=!**/node_modules

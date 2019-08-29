@@ -27,8 +27,7 @@ Plug 'terryma/vim-smooth-scroll'
 " Language support!
 Plug 'sheerun/vim-polyglot'
 
-" TODO: find out if we need this
-Plug 'tpope/vim-fugitive'
+Plug 'jreybert/vimagit'
 
 " Make code pasting aware of the indent it should paste in
 " so we no longer have to fix that non-sense
@@ -54,20 +53,17 @@ Plug 'mbbill/undotree'
 
 " look into another file easier
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 
-" TODO: setup eslint profile
 Plug 'w0rp/ale'
 
 " allows us to see trailing whitespace and tabs etc
 Plug 'ntpeters/vim-better-whitespace'
 
 " Language server support, aka more syntax
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 
 " Plug 'OmniSharp/omnisharp-vim'
 Plug 'tpope/vim-dispatch'
