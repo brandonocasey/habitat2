@@ -8,6 +8,6 @@ fi
 
 cat <<EOF
 for file in "$dotfiles_dir"{,*/,*/*/,*/*/*/}*.shell; do
-	[ -f "\$file" ] && . "\$file"
+	[ -f "\$file" ] && . "\$file" 2>&1 >/dev/null
 done
 EOF
