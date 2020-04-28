@@ -27,6 +27,7 @@ Plug 'terryma/vim-smooth-scroll'
 " Language support!
 Plug 'sheerun/vim-polyglot'
 
+" Better git
 Plug 'jreybert/vimagit'
 
 " Make code pasting aware of the indent it should paste in

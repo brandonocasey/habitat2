@@ -21,6 +21,7 @@ path_add "../node_modules/.bin"
 path_add "../../node_modules/.bin"
 path_add "../../../node_modules/.bin"
 path_add "$HOME/.cargo/bin"
+path_add "/usr/local/sbin"
 
 man_path_add "/usr/share/man"
 man_path_add "/usr/local/share/man"
