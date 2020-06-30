@@ -6,9 +6,14 @@ dotfiles_dir="$1"; shift
 os=""
 case "$OSTYPE" in
   darwin*) os="osx" ;;
-	msys*|cygwin*) os="windows" ;;
+  msys*|cygwin*) os="windows" ;;
   *) os="linux" ;;
 esac
+
 if [ -n "$os" ]; then
-	ln -snf "$current_plugin_dir/$os.gitconfig" "$HOME/.git-credentials-helper"
+  if [ "$os" = 'linux' ] && [ -x "/usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret" ]; then
+    ln -snf "$current_plugin_dir/${os}-new.gitconfig" "$HOME/.git-credentials-helper"
+  else
+    ln -snf "$current_plugin_dir/$os.gitconfig" "$HOME/.git-credentials-helper"
+  fi
 fi

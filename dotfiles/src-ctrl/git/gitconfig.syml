@@ -1,5 +1,4 @@
 [core]
-    editor = vim
     whitespace = trailing-space,space-before-tab
     excludesfile = .gitignore
 [merge]
@@ -20,10 +19,11 @@
     co = checkout
     up = !git fetch && git pull
     ci = commit
-		fix = commit --amend -a -C HEAD
+    fix = commit --amend -a -C HEAD
     info = config --get remote.origin.url
     pushf = push --force-with-lease
-[color]
+    repick = "!f() { [ -z \"$1\" ] && return 1 || b=$RANDOM; git checkout -b $b && git branch -D '@{-1}' && git checkout \"$1\" && git checkout -b '@{-2}' && git cherry-pick $b && git branch -D $b; }; f"
+    cherrybase = repick
     diff = auto
     status = auto
     branch = auto
@@ -35,3 +35,5 @@
     default = simple
 [include]
     path = .git-credentials-helper
+[fetch]
+  prune = true

@@ -62,3 +62,6 @@ PS1+="\[${COLOR_FIVE}\]"      # Color five
 PS1+="${UID_CHAR}"                     # > character
 PS1+="\[${RESET}\]"           # Reset color
 PS1+=" "                      # space
+
+# disable cursor blink
+printf '\033[?12l'
