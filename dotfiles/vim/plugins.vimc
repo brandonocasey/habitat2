@@ -87,19 +87,19 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
 	\   'json': ['fixjson'],
 	\}
 
-  " See ../misc/eslintrc.syml for eslint config
 	let g:ale_javascript_eslint_executable = 'eslint_d'
-	let g:ale_javascript_eslint_use_global = 1
-	" let g:ale_fix_on_save = 1
+	let g:ale_fix_on_save = 0
 	let g:ale_completion_enabled = 1
+	let currentNode = readfile($HOME . '/.nvm/alias/default')[0]
 
+  let g:ale_javascript_eslint_options = '--config ' . $HOME . '/.nvm/versions/node/v' . currentNode . '/lib/node_modules/eslint-config-videojs/index.js'
 	let g:ale_sh_shellcheck_options = '-e SC1090'
 
-	let g:ale_maximum_file_size = 10000
+	" let g:ale_maximum_file_size = 10000
 
 	" Set this setting in vimrc if you want to fix files automatically on save.
 	" This is off by default.
 	" Currently Broken
-	" "let g:ale_fix_on_save = 1
+	" let g:ale_fix_on_save = 1
 
 endif

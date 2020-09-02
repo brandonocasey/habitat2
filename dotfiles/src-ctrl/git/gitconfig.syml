@@ -37,3 +37,5 @@
     path = .git-credentials-helper
 [fetch]
   prune = true
+[pull]
+  rebase = true

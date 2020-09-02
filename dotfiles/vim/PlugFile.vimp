@@ -55,7 +55,7 @@ Plug 'mbbill/undotree'
 " look into another file easier
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 
 " allows us to see trailing whitespace and tabs etc
 Plug 'ntpeters/vim-better-whitespace'
