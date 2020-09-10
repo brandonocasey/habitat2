@@ -118,7 +118,7 @@ habitat_main() {
       -d|--debug) export HABITAT_DEBUG=1 ;;
       -h|--help) habitat_help && return ;;
       -t|--time) [ -n "$1" ] && rebuild_time="$1" && shift || rebuild_time='invalid';;
-      -f|--force|-fb|--force-build) rebuild_time=0 ;;
+      -f|--force|-fb|--force-build) rebuild_time=0 && rm -f "$build_dir/lock";;
       -c|--check) check=1 ;;
       -nr|--no-run) run=0 ;;
       -nb|--no-build) build=0 ;;
