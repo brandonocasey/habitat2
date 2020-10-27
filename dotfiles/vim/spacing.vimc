@@ -8,7 +8,7 @@ set shiftwidth=2
 set softtabstop=2
 
 " Expand tabs to spaces
-"set expandtab
+set expandtab
 
 " Auto indent in a smart way so that copy paste is not broken
 set autoindent
