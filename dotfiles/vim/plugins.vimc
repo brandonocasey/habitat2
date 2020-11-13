@@ -47,7 +47,7 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
 
   if executable('javascript-typescript-stdio')
     let g:LanguageClient_serverCommands = {
-      \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+      \ 'javascript': [trim(system('which javascript-typescript-stdio'))],
       \ }
   endif
 
