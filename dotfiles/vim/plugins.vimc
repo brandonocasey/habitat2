@@ -1,105 +1,105 @@
 if !empty(glob(VIM_BUNDLE_DIR . '/*'))
-	" delimitMate
-	" Auto complete (, ", ' with their partner and put you in the center of
-	" them to type
+  " delimitMate
+  " Auto complete (, ", ' with their partner and put you in the center of
+  " them to type
 
-	" Smart indenting for delimate
-	" let g:delimitMate_expand_cr = 2
-	let g:delimitMate_expand_space = 1
+  " Smart indenting for delimate
+  " let g:delimitMate_expand_cr = 2
+  let g:delimitMate_expand_space = 1
 
-	" vim-templates
-	" When opening a new file with a code extension it will be started for you
-	let g:templates_no_autocmd = 1
+  " vim-templates
+  " When opening a new file with a code extension it will be started for you
+  let g:templates_no_autocmd = 1
 
-	" vim-sleuth
-	" Force Correct Indentation, and auto switch when needed
-	let g:SleuthDefaultWidth = 2
+  " vim-sleuth
+  " Force Correct Indentation, and auto switch when needed
+  let g:SleuthDefaultWidth = 2
 
-	" vim-colorshemes
-	:silent! colorscheme molokai_dark
-	" Make find/replace/confirm more readable"
-	hi Search cterm=NONE ctermfg=grey ctermbg=blue
+  " vim-colorshemes
+  :silent! colorscheme molokai_dark
+  " Make find/replace/confirm more readable"
+  hi Search cterm=NONE ctermfg=grey ctermbg=blue
 
-	" vim-multiple-cursors
-	" hit control-n to add another cursor on a similar line
-	let g:multi_cursor_normal_maps = {'d':1, 'y':1, 'p':1}
+  " vim-multiple-cursors
+  " hit control-n to add another cursor on a similar line
+  let g:multi_cursor_normal_maps = {'d':1, 'y':1, 'p':1}
 
-	" vim-indent-guidelines
-	" TODO: Reload if indent changes
-	" No I dont want crazy default indent guide colors
-	let g:indent_guides_auto_colors = 0
+  " vim-indent-guidelines
+  " TODO: Reload if indent changes
+  " No I dont want crazy default indent guide colors
+  let g:indent_guides_auto_colors = 0
 
-	" We always want indent guides
-	let g:indent_guides_enable_on_vim_startup=1
+  " We always want indent guides
+  let g:indent_guides_enable_on_vim_startup=1
 
-	" Indent guidelines color
-	autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black ctermbg=233
-	autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=234
+  " Indent guidelines color
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black ctermbg=233
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=234
 
-	" nerd-tree
-	" Better directory tree when viming a dir
-	" Nerdtree show me hidden stuff
-	let NERDTreeShowHidden=1
+  " nerd-tree
+  " Better directory tree when viming a dir
+  " Nerdtree show me hidden stuff
+  let NERDTreeShowHidden=1
 
-	inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-	inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-	inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 
-	if executable('javascript-typescript-stdio')
-		let g:LanguageClient_serverCommands = {
-			\ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-			\ }
-	endif
+  if executable('javascript-typescript-stdio')
+    let g:LanguageClient_serverCommands = {
+      \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+      \ }
+  endif
 
-	let g:deoplete#enable_at_startup = 1
+  let g:deoplete#enable_at_startup = 1
 
-	" vim-airline
-	set laststatus=2
+  " vim-airline
+  set laststatus=2
 
-	" vim-airline-themes
-	let g:airline_theme='molokai'
+  " vim-airline-themes
+  let g:airline_theme='molokai'
 
-	" configure fzf to use the best binary available
-	" stolen from https://www.reddit.com/r/vim/comments/54tbjb/supercharge_vim_with_fzf_and_ripgrep/d859vga/
-	if executable('rg')
-			set grepprg=rg\ --vimgrep
-			set grepformat=%f:%l:%c:%m
-	elseif executable('sift')
-			set grepprg=sift\ -nMs\ --no-color\ --binary-skip\ --column\ --no-group\ --git\ --follow
-			set grepformat=%f:%l:%c:%m
-	elseif executable('ag')
-			set grepprg=ag\ --vimgrep\ --ignore=\"**.min.js\"
-			set grepformat=%f:%l:%c:%m,%f:%l:%m
-	elseif executable('ack')
-			set grepprg=ack\ --nogroup\ --nocolor\ --ignore-case\ --column
-			set grepformat=%f:%l:%c:%m,%f:%l:%m
-	endif
+  " configure fzf to use the best binary available
+  " stolen from https://www.reddit.com/r/vim/comments/54tbjb/supercharge_vim_with_fzf_and_ripgrep/d859vga/
+  if executable('rg')
+      set grepprg=rg\ --vimgrep
+      set grepformat=%f:%l:%c:%m
+  elseif executable('sift')
+      set grepprg=sift\ -nMs\ --no-color\ --binary-skip\ --column\ --no-group\ --git\ --follow
+      set grepformat=%f:%l:%c:%m
+  elseif executable('ag')
+      set grepprg=ag\ --vimgrep\ --ignore=\"**.min.js\"
+      set grepformat=%f:%l:%c:%m,%f:%l:%m
+  elseif executable('ack')
+      set grepprg=ack\ --nogroup\ --nocolor\ --ignore-case\ --column
+      set grepformat=%f:%l:%c:%m,%f:%l:%m
+  endif
 
-	" Put this in vimrc or a plugin file of your own.
-	" After this is configured, :ALEFix will try and fix your JS code with ESLint.
-	let g:ale_fixers = {
-	\   'javascript': ['eslint'],
-	\   'json': ['fixjson'],
-	\}
+  " Put this in vimrc or a plugin file of your own.
+  " After this is configured, :ALEFix will try and fix your JS code with ESLint.
+  let g:ale_fixers = {
+  \   'javascript': ['eslint'],
+  \   'json': ['fixjson'],
+  \}
 
-	let g:ale_linters = {
-	\   'javascript': ['eslint'],
-	\   'json': ['fixjson'],
-	\}
+  let g:ale_linters = {
+  \   'javascript': ['eslint'],
+  \   'json': ['fixjson'],
+  \}
 
-	let g:ale_javascript_eslint_executable = 'eslint_d'
-	let g:ale_fix_on_save = 0
-	let g:ale_completion_enabled = 1
-	let currentNode = readfile($HOME . '/.nvm/alias/default')[0]
+  let g:ale_javascript_eslint_executable = 'eslint_d'
+  let g:ale_fix_on_save = 0
+  let g:ale_completion_enabled = 1
+  let npmPrefix = trim(system('npm -g prefix'))
 
-  let g:ale_javascript_eslint_options = '--config ' . $HOME . '/.nvm/versions/node/v' . currentNode . '/lib/node_modules/eslint-config-videojs/index.js'
-	let g:ale_sh_shellcheck_options = '-e SC1090'
+  let g:ale_javascript_eslint_options = '--config ' . npmPrefix . '/lib/node_modules/eslint-config-videojs/index.js'
+  let g:ale_sh_shellcheck_options = '-e SC1090'
 
-	" let g:ale_maximum_file_size = 10000
+  " let g:ale_maximum_file_size = 10000
 
-	" Set this setting in vimrc if you want to fix files automatically on save.
-	" This is off by default.
-	" Currently Broken
-	" let g:ale_fix_on_save = 1
+  " Set this setting in vimrc if you want to fix files automatically on save.
+  " This is off by default.
+  " Currently Broken
+  " let g:ale_fix_on_save = 1
 
 endif
