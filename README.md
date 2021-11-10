@@ -1,3 +1,9 @@
+# Installation
+add the following to .bashrc or .bash_profile:
+```sh
+export HABITAT_DIR="~/habitat2"
+. "$HABITAT_DIR/habitat.sh"
+
 # TODO:
 * time should be able to be an env var too, just like debug
 * path_push + path_unshift + path_remove

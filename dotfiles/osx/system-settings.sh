@@ -83,7 +83,7 @@ curl -O https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-B
 
 # copy over home/end/pg up and down fix
 mkdir ~/Library/KeyBindings/
-cp ./DefaultKeyBinding.dict ~/Library/Keybindings
+cp ./DefaultKeyBinding.dict ~/Library/Keybindings/
 
 cd -
 
@@ -91,6 +91,7 @@ echo "1. Now change mouse/trackpad settings"
 echo "  a. Mouse"
 echo "    i. Point & Click: Secondary Click Only + fastest mouse speed"
 echo "    ii. More Gestures: All checked"
+echo "    iii. Uncheck Scroll direction: Natural"
 echo "  b. Trackpad"
 echo "    i. Point & Click: All but look up and data detectors"
 echo "2. Change caps lock -> escape"
@@ -103,3 +104,6 @@ echo "8. Setup iterm, inconsolata 18pt, unlimited scrollback"
 echo "9. Add sound icon to menu bar"
 echo "10. Edit sublime settings: https://coderwall.com/p/upolqw/fix-sublime-text-home-and-end-key-usage-on-mac-osx"
 echo "11. System -> General -> Always show scroll bar"
+echo "12. Add Path to finder toolbar"
+echo "13. Add Projects/BrandonsProjects/$HOME to Favorites"
+echo "14. Chandle computer name via System Preferences -> Sharing -> Computer Name: "

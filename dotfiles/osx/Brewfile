@@ -1,9 +1,8 @@
 # Install Cask (Homebrew extension)
-tap 'caskroom/cask'
+tap 'homebrew/cask'
 
 # Install Git
 brew 'git'
-brew 'mas'
 
 # Install CLI Apps
 brew 'ripgrep'
@@ -16,13 +15,11 @@ brew 'neovim'
 brew 'tree'
 brew 'jq'
 brew 'wget'
-brew 'ffmpeg'
 brew 'nvm'
-brew 'shellsheck'
+brew 'shellcheck'
 
 # Install Apps
 cask 'android-file-transfer'
-cask 'java'
 cask 'android-studio'
 cask 'docker'
 cask 'firefox'
@@ -30,11 +27,10 @@ cask 'google-chrome'
 cask 'iterm2'
 cask 'sublime-text'
 cask 'vlc'
-cask 'imageoptim'
-cask 'mysqlworkbench'
 cask 'android-file-transfer'
 cask 'keka'
 cask 'spectacle'
+cask 'spotify'
 
 # install from app store
 mas "Xcode", id: 497799835
