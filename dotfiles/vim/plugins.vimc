@@ -90,7 +90,17 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
   let g:ale_javascript_eslint_executable = 'eslint_d'
   let g:ale_fix_on_save = 0
   let g:ale_completion_enabled = 1
-  let npmPrefix = trim(system('npm -g prefix'))
+  let nodeVersion = trim(system('node --version'))
+  let npmPrefixCacheDir = expand($HOME . '/.nvm/npm-prefix-cache')
+  let npmPrefixCache = npmPrefixCacheDir . '/' . nodeVersion . '.txt'
+
+  if filereadable(npmPrefixCache)
+    let npmPrefix = trim(join(readfile(npmPrefixCache)))
+  else
+    let npmPrefix = trim(system('npm -g prefix'))
+    call mkdir(npmPrefixCacheDir, 'p')
+    call writefile(split(npmPrefix, '\n', 1), npmPrefixCache)
+  endif
 
   let g:ale_javascript_eslint_options = '--config ' . npmPrefix . '/lib/node_modules/eslint-config-videojs/index.js'
   let g:ale_sh_shellcheck_options = '-e SC1090'
