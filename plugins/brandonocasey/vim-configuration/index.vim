@@ -1,9 +1,6 @@
-function! VimFind(path, extension)
-  return split(system("find '" . expand(a:path) . "' -not -type l -name '*." . a:extension . "'"), '\n')
-endfunction
 
 function! SourceFiles(path, extension)
-  for file in VimFind(a:path, a:extension)
+  for file in split(glob(a:path . '**/*.' . a:extension))
     exe 'source' file
   endfor
 endfunction
