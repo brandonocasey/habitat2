@@ -17,6 +17,7 @@ brew 'jq'
 brew 'wget'
 brew 'nvm'
 brew 'shellcheck'
+brew 'devutils'
 
 # Install Apps
 cask 'android-file-transfer'
@@ -31,6 +32,9 @@ cask 'android-file-transfer'
 cask 'keka'
 cask 'spectacle'
 cask 'spotify'
+cask 'charles'
+cask 'wireshark'
+cask 'microsoft-edge'
 
 # install from app store
 mas "Xcode", id: 497799835
