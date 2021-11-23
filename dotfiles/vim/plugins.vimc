@@ -105,6 +105,7 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
   let g:ale_javascript_eslint_options = '--config ' . npmPrefix . '/lib/node_modules/eslint-config-videojs/index.js'
   let g:ale_sh_shellcheck_options = '-e SC1090'
 
+
   " let g:ale_maximum_file_size = 10000
 
   " Set this setting in vimrc if you want to fix files automatically on save.

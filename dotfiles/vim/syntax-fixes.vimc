@@ -11,17 +11,17 @@ function! SetSyntax(binaryName)
     " Correct binary names here, and add specific settings here
     if a:binaryName == "node"
         let binarySyntax="javascript"
-	elseif a:binaryName == "babel-node"
-		let binarySyntax="javascript"
-	elseif a:binaryName == "bash"
-			let g:is_bash=1
-			let binarySyntax="sh"
-	elseif a:binaryName == "bats"
-			let g:is_bash=1
-			let binarySyntax="sh"
-	elseif a:binaryName == "html"
-			let binarySyntax="html"
-	endif
+  elseif a:binaryName == "babel-node"
+    let binarySyntax="javascript"
+  elseif a:binaryName == "bash"
+      let g:is_bash=1
+      let binarySyntax="sh"
+  elseif a:binaryName == "bats"
+      let g:is_bash=1
+      let binarySyntax="sh"
+  elseif a:binaryName == "html"
+      let binarySyntax="html"
+  endif
     execute "set filetype=" . binarySyntax
 endfunction
 
@@ -36,26 +36,26 @@ function! DetectSyntax()
         endif
     endif
     let binary = ""
-		let line = getline(nextnonblank(1))
-		let searches = ['\v^\s*#!.*\/bin\/(env\s+)?(\w+)']
-		let i = 0
-		while empty(binary) && i < len(searches)
-			let match = matchlist(line, searches[i])
-			if !empty(match)
-				if match[2] == 'env'
-					let binary = match[3]
-				else
-					let binary = match[2]
-				endif
-			endif
+    let line = getline(nextnonblank(1))
+    let searches = ['\v^\s*#!.*\/bin\/(env\s+)?(\w+)']
+    let i = 0
+    while empty(binary) && i < len(searches)
+      let match = matchlist(line, searches[i])
+      if !empty(match)
+        if match[2] == 'env'
+          let binary = match[3]
+        else
+          let binary = match[2]
+        endif
+      endif
 
-			let i = i + 1
-		endwhile
+      let i = i + 1
+    endwhile
 
-		if empty(binary)
-			return
-		endif
-		call SetSyntax(binary)
+    if empty(binary)
+      return
+    endif
+    call SetSyntax(binary)
 endfunction
 
 if has("autocmd")
@@ -75,4 +75,5 @@ if has("autocmd")
     autocmd BufNewFile,BufRead *.rb set syntax=ruby nocursorline nocursorcolumn
     autocmd BufNewFile,BufRead *.coffee set syntax=coffee nocursorline nocursorcolumn
     autocmd BufNewFile,BufRead *.shell,*.sh,*.bats,*.bash call SetSyntax('bash')
+    autocmd BufNewFile,BufRead *.ts set syntax=typescript re=2
 endif
