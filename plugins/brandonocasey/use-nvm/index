@@ -9,9 +9,9 @@ if [ ! -d "$NVM_DIR" ]; then
 		n|N) echo "Bye Bye" && return ;;
 		*) echo "invalid" ;;
 	esac
-
-	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
 fi
+
+(curl -s -o- https://raw.githubusercontent.com/creationix/nvm/v0.39.1/install.sh | bash 2>/dev/null 1>/dev/null &)
 
 if [ -d "$NVM_DIR" ]; then
 	echo "export NVM_DIR='$NVM_DIR'"

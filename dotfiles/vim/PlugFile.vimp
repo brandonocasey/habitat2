@@ -25,7 +25,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'terryma/vim-smooth-scroll'
 
 " Language support!
-" Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 
 " Better git
 Plug 'jreybert/vimagit'

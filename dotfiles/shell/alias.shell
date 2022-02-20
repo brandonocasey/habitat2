@@ -80,8 +80,7 @@ alias cdgit='cd $(git rev-parse --show-toplevel)'
 # node module bs
 alias npmre="rm -rf ./node_modules && npm i"
 alias npmrere="rm -f ./package-lock.json && npmre"
-alias npmfix="sed -i -e 's~http:\/\/~https:\/\/~g' package-lock.json && rm -f package-lock.json-e"
-alias npmrerefix="npmrere && npmfix"
+alias npmrews="rm -f ./package-lock.json && rm -rf packages/*/node_modules && npmre"
 alias npmregen="rm -f ./package-lock.json && npm i --package-lock-only && npmfix"
 
 # keep env when going sudo

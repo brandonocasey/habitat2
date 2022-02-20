@@ -29,8 +29,8 @@
     branch = auto
     ui = true
 [user]
-    name = brandonocasey
-    email = brandonocasey@gmail.com
+    name = jwbrandon
+    email = bcasey@jwplayer.com
 [push]
     default = simple
 [include]
