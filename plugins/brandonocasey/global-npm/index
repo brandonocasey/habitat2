@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-(npm i -g http-server npm-check-updates typescript-language-server typescript 2>/dev/null 1>/dev/null &)
+(npm i -g http-server npm-check-updates typescript-language-server eslint eslint_d fixjson eslint-config-videojs videojs-standard typescript 2>/dev/null 1>/dev/null &)
