@@ -11,7 +11,13 @@ print_json() {
 		return 1
 	fi
 
-	echo "$1" | python -m json.tool
+	if command -v python; then
+		echo "$1" | python -m json.tool
+	elif command -v python3; then
+		echo "$1" | python3 -m json.tool
+	else
+		echo "python/python3 not installed cannot pretty print json"
+	fi
 }
 
 print_json "$@"
