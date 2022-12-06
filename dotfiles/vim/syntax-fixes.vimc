@@ -75,5 +75,5 @@ if has("autocmd")
     autocmd BufNewFile,BufRead *.rb set syntax=ruby nocursorline nocursorcolumn
     autocmd BufNewFile,BufRead *.coffee set syntax=coffee nocursorline nocursorcolumn
     autocmd BufNewFile,BufRead *.shell,*.sh,*.bats,*.bash call SetSyntax('bash')
-    autocmd BufNewFile,BufRead *.ts set syntax=typescript re=2
+    autocmd BufNewFile,BufRead *.ts set syntax=disabled re=2
 endif

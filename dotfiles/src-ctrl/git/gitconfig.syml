@@ -33,6 +33,7 @@
     email = bcasey@jwplayer.com
 [push]
     default = simple
+    autoSetupRemote = true
 [include]
     path = .git-credentials-helper
 [fetch]

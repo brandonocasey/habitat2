@@ -45,11 +45,17 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 
+
+  let g:LanguageClient_serverCommands = {}
+
   if executable('typescript-language-server')
-    let g:LanguageClient_serverCommands = {
-      \ 'javascript': [trim(system('which typescript-language-server')), '--stdio'],
-      \ }
+    let g:LanguageClient_serverCommands['javascript'] = [trim(system('which typescript-language-server')), '--stdio']
   endif
+
+  if executable('pyls')
+    let g:LanguageClient_serverCommands['python'] = [trim(system('which pyls'))]
+  endif
+
 
   let g:deoplete#enable_at_startup = 1
 
@@ -87,7 +93,6 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
   \   'json': ['fixjson'],
   \}
 
-  let g:ale_javascript_eslint_executable = 'eslint_d'
   let g:ale_fix_on_save = 0
   let g:ale_completion_enabled = 1
   let nodeVersion = trim(system('node --version'))
@@ -102,7 +107,9 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
     call writefile(split(npmPrefix, '\n', 1), npmPrefixCache)
   endif
 
-  let g:ale_javascript_eslint_options = '--config ' . npmPrefix . '/lib/node_modules/eslint-config-videojs/index.js'
+  let g:ale_javascript_eslint_executable = 'jw-eslint'
+  let g:ale_javascript_eslint_use_global = 1
+  " let g:ale_javascript_eslint_options = '--config ' . npmPrefix . '/lib/node_modules/eslint-config-videojs/index.js'
   let g:ale_sh_shellcheck_options = '-e SC1090'
 
 
