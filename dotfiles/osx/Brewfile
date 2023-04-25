@@ -41,6 +41,7 @@ cask 'hex-fiend'
 cask 'vscodium'
 cask 'mouse-fix'
 cask 'postman'
+cask 'openvpn-connect'
 
 # install from app store
 mas "Xcode", id: 497799835
