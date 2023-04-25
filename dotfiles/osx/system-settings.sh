@@ -1,5 +1,5 @@
 # Set dock size
-defaults write com.apple.dock tilesize -int 75; killall Dock
+defaults write com.apple.dock tilesize -int 75
 
 # Disable press and hold
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
@@ -8,6 +8,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 defaults write com.apple.finder AppleShowAllFiles YES
 
 # Show Path bar and status bar in finder
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 defaults write com.apple.finder ShowPathbar -bool true
 defaults write com.apple.finder ShowStatusBar -bool true
 
@@ -74,36 +75,68 @@ defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -float 0
 
+# prevent dsstore
+defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+defaults write com.apple.desktopservices DSDontWriteUSBStores true
+
+# always show scroll bars
+defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+
+# Menu bar: show remaining battery percentage; hide time
+defaults write com.apple.menuextra.battery ShowPercent -string "YES"
+defaults write com.apple.menuextra.battery ShowTime -string "NO"
+# Menu bar: show remaining battery percentage (with Big Sur or Monterey)
+defaults write com.apple.controlcenter.plist BatteryShowPercentage -bool true
+
+# Disable the "Are you sure you want to open this application?" dialog
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+# Expand save panel by default
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode  -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+
+# Disable automatic capitalization as it’s annoying when typing code
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+
+# Disable smart dashes as they’re annoying when typing code
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+
+# Disable automatic period substitution as it’s annoying when typing code
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+
+# Disable smart quotes as they’re annoying when typing code
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+
+# Disable auto-correct
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+# When performing a search, search the current folder by default
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+# Bottom right screen corner -> Start screen saver
+defaults write com.apple.dock wvous-br-corner -int 5
+
+# Do not keep recently used apps
+defaults write com.apple.dock show-recents -bool false
+
+# Enable Safari’s debug menu
+defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+
+# Visualize CPU usage in the Activity Monitor Dock icon
+defaults write com.apple.ActivityMonitor IconType -int 5
+
+# Show all processes in Activity Monitor
+defaults write com.apple.ActivityMonitor ShowCategory -int 0
+
+# Sort Activity Monitor results by CPU usage
+defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
+defaults write com.apple.ActivityMonitor SortDirection -int 0
+
 killall Dock
+killall Finder
 
-cd /Library/Fonts
+curl -O https://github.com/googlefonts/Inconsolata/releases/download/v3.000/Inconsolata-VF.ttf
+open Inconsolata-VF.ttf
 
-curl -O https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Regular.ttf
-curl -O https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Bold.ttf
-
-# copy over home/end/pg up and down fix
 mkdir ~/Library/KeyBindings/
-cp ./DefaultKeyBinding.dict ~/Library/Keybindings/
-
-cd -
-
-echo "1. Now change mouse/trackpad settings"
-echo "  a. Mouse"
-echo "    i. Point & Click: Secondary Click Only + fastest mouse speed"
-echo "    ii. More Gestures: All checked"
-echo "    iii. Uncheck Scroll direction: Natural"
-echo "  b. Trackpad"
-echo "    i. Point & Click: All but look up and data detectors"
-echo "2. Change caps lock -> escape"
-echo "3. Add a hot corner to sleep the display"
-echo "4. Night shift and 1 min Do not Disturb"
-echo "5. Setup touch id"
-echo "6. Show battery percentage in bar"
-echo "7. Install vanilla set it up, and have it start on login"
-echo "8. Setup iterm, inconsolata 18pt, unlimited scrollback"
-echo "9. Add sound icon to menu bar"
-echo "10. Edit sublime settings: https://coderwall.com/p/upolqw/fix-sublime-text-home-and-end-key-usage-on-mac-osx"
-echo "11. System -> General -> Always show scroll bar"
-echo "12. Add Path to finder toolbar"
-echo "13. Add Projects/BrandonsProjects/$HOME to Favorites"
-echo "14. Chandle computer name via System Preferences -> Sharing -> Computer Name: "
+cp ./config/DefaultKeyBinding.dict ~/Library/Keybindings/

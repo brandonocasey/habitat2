@@ -11,7 +11,7 @@ if [ ! -d "$NVM_DIR" ]; then
 	esac
 fi
 
-(curl -s -o- https://raw.githubusercontent.com/creationix/nvm/v0.39.1/install.sh | bash 2>/dev/null 1>/dev/null &)
+(curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash 2>/dev/null 1>/dev/null &)
 
 if [ -d "$NVM_DIR" ]; then
 	echo "export NVM_DIR='$NVM_DIR'"

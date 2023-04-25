@@ -4,6 +4,6 @@ if type -t npm >/dev/null 2>&1; then
   (npm i -g http-server npm-check-updates typescript-language-server eslint eslint_d fixjson eslint-config-videojs videojs-standard typescript 2>/dev/null 1>/dev/null &)
 fi
 
-if type -t pip >/dev/null 2>&1; then
-  (pip install python-language-server 2>/dev/null 1>/dev/null )
+if type -t pip3 >/dev/null 2>&1; then
+  (pip3 install python-language-server neovim 2>/dev/null 1>/dev/null )
 fi

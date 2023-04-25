@@ -8,6 +8,10 @@ fi
 
 cat <<EOF
 for target in "$dotfiles_dir"{,*/,*/*/,*/*/*/}*.syml; do
+  if echo "\$target" | grep -q '\*\.syml'; then
+    continue;
+  fi
+
 	link_name="\${target##*/}"
 	link_name="\${link_name%.syml}"
 	link_name="\$HOME/.\${link_name}"
