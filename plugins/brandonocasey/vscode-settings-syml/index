@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Only add to the path if its not already there
+current_plugin_dir="$1"; shift
+dotfiles_dir="$1"; shift
+
+# path_add comes from habitat lib
+
+cat <<EOF
+settings_file="$dotfiles_dir/vscode/settings.json"
+if [ -f "\$settings_file" ]; then
+  link_name=""
+
+  if uname | grep -q 'Darwin'; then
+    link_name="\$HOME/Library/Application Support/VSCodium/User/settings.json"
+  fi
+
+  if [ -n "\$link_name" ]; then
+    dir="\$(dirname "\${link_name}")"
+    if ! [ -d "\$dir" ]; then
+      mkdir -p "\$dir"
+    fi
+
+    ln -snf "\$settings_file" "\$link_name" &>/dev/null
+  fi
+fi
+EOF
