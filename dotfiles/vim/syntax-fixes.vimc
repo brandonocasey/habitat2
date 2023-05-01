@@ -2,6 +2,11 @@
 " => File Fixes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" fixes https://github.com/neovim/neovim/issues/14433
+" Default to static completion for SQL
+let g:omni_sql_default_compl_type = 'syntax'
+let g:omni_sql_no_default_maps = 1
+
 " Set the syntax given the binary name that executes that file
 function! SetSyntax(binaryName)
     if empty(a:binaryName)
