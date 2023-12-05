@@ -27,7 +27,7 @@ set encoding=utf-8
 set termencoding=utf-8
 
 " More frequent updates for, e.g. signs.
-set updatetime=750
+set updatetime=300
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
@@ -90,12 +90,12 @@ set modelines=0
 
 " Reload instead of scrolling when more than 3 lines to be scrolled
 if has('nvim') != 1
-	set ttyscroll=10
+  set ttyscroll=10
 endif
 
 " Use the new regex engine always
 if v:version > 740
-	set re=1
+  set re=1
 endif
 
 " Dont do syntax highlighting for big lines, makes vim slow, not slow enough
@@ -117,7 +117,7 @@ set ttyfast
 
 " Delete comment character when joining commented lines
 if v:version > 703 || v:version == 703 && has("patch541")
-	set formatoptions+=j
+  set formatoptions+=j
 endif
 
 " stop slowdowns in certain files due to fold method

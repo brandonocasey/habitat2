@@ -2,6 +2,6 @@
 
 if type -t pyenv >/dev/null 2>&1; then
   echo 'export PYENV_ROOT="$HOME/.pyenv"'
-  echo 'path_add "PYENV_ROOT/bin"'
+  echo 'path_add "$PYENV_ROOT/bin"'
   pyenv init -
 fi

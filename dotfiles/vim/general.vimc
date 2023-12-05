@@ -17,9 +17,6 @@ let g:mapleader = ","
 set encoding=utf-8
 set termencoding=utf-8
 
-" More frequent updates for, e.g. signs.
-set updatetime=750
-
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 

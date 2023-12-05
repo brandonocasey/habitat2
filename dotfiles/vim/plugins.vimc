@@ -15,8 +15,6 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
   " Force Correct Indentation, and auto switch when needed
   let g:SleuthDefaultWidth = 2
 
-  " vim-colorshemes
-  :silent! colorscheme molokai_dark
   " Make find/replace/confirm more readable"
   hi Search cterm=NONE ctermfg=grey ctermbg=blue
 
@@ -33,8 +31,14 @@ if !empty(glob(VIM_BUNDLE_DIR . '/*'))
   let g:indent_guides_enable_on_vim_startup=1
 
   " Indent guidelines color
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black ctermbg=233
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=234
+
+  if ! exists('g:vscode')
+    " vim-colorshemes
+    :silent! colorscheme molokai_dark
+
+    autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black ctermbg=233
+    autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=234
+  endif
 
   " nerd-tree
   " Better directory tree when viming a dir
