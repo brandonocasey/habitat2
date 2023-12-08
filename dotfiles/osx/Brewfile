@@ -17,6 +17,9 @@ brew 'jq'
 brew 'wget'
 brew 'nvm'
 brew 'shellcheck'
+brew 'entr'
+brew 'zoxide'
+brew 'tldr'
 
 # Install Apps
 cask 'devutils'
@@ -39,7 +42,7 @@ cask 'zoom'
 cask 'browserstacklocal'
 cask 'hex-fiend'
 cask 'vscodium'
-cask 'mouse-fix'
+cask 'mac-mouse-fix'
 cask 'postman'
 cask 'openvpn-connect'
 

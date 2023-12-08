@@ -4,7 +4,6 @@
     "editor.fontSize": 16,
     "editor.tabSize": 2,
     "git.openRepositoryInParentFolders": "never",
-    "editor.wordWrap": "on",
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
     },
@@ -12,5 +11,7 @@
     "debug.javascript.autoAttachFilter": "onlyWithFlag",
     "files.trimTrailingWhitespace": true,
     "editor.renderWhitespace": "all",
-    "terminal.external.osxExec": "Item.app"
+    "terminal.external.osxExec": "Item.app",
+    "editor.wordWrap": "on",
+    "notebook.navigation.allowNavigateToSurroundingCells": false
 }

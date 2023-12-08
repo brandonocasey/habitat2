@@ -5,5 +5,5 @@ if type -t npm >/dev/null 2>&1; then
 fi
 
 if type -t pip3 >/dev/null 2>&1; then
-  (pip3 install python-language-server neovim 2>/dev/null 1>/dev/null )
+  (pip3 install python-language-server neovim 2>/dev/null 1>/dev/null &)
 fi
