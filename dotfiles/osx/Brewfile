@@ -20,6 +20,7 @@ brew 'shellcheck'
 brew 'entr'
 brew 'zoxide'
 brew 'tldr'
+brew 'deno'
 
 # Install Apps
 cask 'devutils'

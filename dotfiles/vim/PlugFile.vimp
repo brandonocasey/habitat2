@@ -21,14 +21,11 @@ Plug 'nathanaelkane/vim-indent-guides'
 " better navigation when using vim on a folder
 Plug 'scrooloose/nerdtree'
 
-" TODO: https://github.com/yuttie/comfortable-motion.vim vs smooth-scroll
-Plug 'terryma/vim-smooth-scroll'
+" Smooth Scroll
+Plug 'psliwka/vim-smoothie'
 
 " Language support!
 Plug 'sheerun/vim-polyglot'
-
-" Better git
-Plug 'jreybert/vimagit'
 
 " Make code pasting aware of the indent it should paste in
 " so we no longer have to fix that non-sense
@@ -41,9 +38,6 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 
-" open man pages in vim
-Plug 'nhooyr/neoman.vim'
-
 " allows us to use '.' to repeat some plugin actions
 Plug 'tpope/vim-repeat'
 
@@ -54,27 +48,14 @@ Plug 'mbbill/undotree'
 
 " look into another file easier
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 Plug 'dense-analysis/ale'
 
 " allows us to see trailing whitespace and tabs etc
 Plug 'ntpeters/vim-better-whitespace'
 
-" Language server support, aka more syntax
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-
-" Plug 'OmniSharp/omnisharp-vim'
-Plug 'tpope/vim-dispatch'
-
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+"Plug 'Shougo/ddc.vim'
+" Plug 'vim-denops/denops.vim'
 
 

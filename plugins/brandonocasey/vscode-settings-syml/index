@@ -24,4 +24,24 @@ if [ -f "\$settings_file" ]; then
     ln -snf "\$settings_file" "\$link_name" &>/dev/null
   fi
 fi
+
+extensions_file="$dotfiles_dir/vscode/extensions.json"
+
+if [ -f "\$extensions_file" ]; then
+  link_name=""
+
+  if uname | grep -q 'Darwin'; then
+    link_name="\$HOME/.vscode-oss/extensions/extensions.json"
+  fi
+
+  if [ -n "\$link_name" ]; then
+    dir="\$(dirname "\${link_name}")"
+    if ! [ -d "\$dir" ]; then
+      mkdir -p "\$dir"
+    fi
+
+    ln -snf "\$extensions_file" "\$link_name" &>/dev/null
+  fi
+fi
+
 EOF

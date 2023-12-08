@@ -82,3 +82,6 @@ if has("autocmd")
     autocmd BufNewFile,BufRead *.shell,*.sh,*.bats,*.bash call SetSyntax('bash')
     autocmd BufNewFile,BufRead *.ts set syntax=disabled re=2
 endif
+
+" man page support
+" runtime! ftplugin/man.vim
