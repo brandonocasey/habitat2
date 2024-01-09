@@ -54,5 +54,13 @@
             "value": "#42b883"
         }
     ],
-    "codeium.enableCodeLens": false
+    "codeium.enableCodeLens": false,
+    "files.autoSaveDelay": 30000,
+    "terminal.integrated.copyOnSelection": true,
+    "vim.useSystemClipboard": true,
+    "gitlens.views.commitDetails.files.layout": "tree",
+    "vim.targets.smartQuotes.aIncludesSurroundingSpaces": false,
+    "eslint.options": {},
+    "sync.autoUpload": true,
+    "sync.gist": "f9e9f5b114435333c2ec69f20ff117a7"
 }
