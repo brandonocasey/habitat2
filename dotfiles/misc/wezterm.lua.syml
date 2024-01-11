@@ -14,7 +14,7 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
-function get_system_appearance()
+local function get_system_appearance()
   local appearance = 'Dark'
 
   if (wezterm.gui) then
@@ -24,7 +24,7 @@ function get_system_appearance()
 end
 
 
-function color_scheme_for_system_theme()
+local function color_scheme_for_system_theme()
   if get_system_appearance():find 'Dark' then
     return 'OneDark (base16)'
   else
@@ -35,13 +35,13 @@ end
 
 -- This is where you actually apply your config choices
 
-local font_size = 16
+local font_size = 14
 local font = wezterm.font_with_fallback({
   {
     -- Normal text
     --weight = 'Bold',
-    family = 'CommitMono Nerd Font Propo',
-    --family = '0xProto Nerd Font Propo',
+    --family = 'CommitMono Nerd Font Propo',
+    family = '0xProto Nerd Font Propo',
     --family = 'MonaspiceNe Nerd Font',
     --family = 'Inconsolata Nerd Font',
     --harfbuzz_features = { 'calt', 'liga', 'dlig', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08' }
@@ -50,11 +50,8 @@ local font = wezterm.font_with_fallback({
   'JetBrains Mono'
 })
 
-config.font_size = font_size
-config.color_scheme = 'Gruvbox dark, hard (base16)'
 config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 config.use_fancy_tab_bar = true
-
 
 config.font = font
 config.font_size = font_size
@@ -87,10 +84,10 @@ config.inactive_pane_hsb = {
   brightness = 0.7,
 }
 config.window_padding = {
-  left = '0cell',
-  right = '0cell',
-  top = '0cell',
-  bottom = '0cell',
+  left = '0.5cell',
+  right = '0.5cell',
+  top = '0.5cell',
+  bottom = '0.5cell',
 }
 
 -- and finally, return the configuration to wezterm

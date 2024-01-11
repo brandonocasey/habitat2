@@ -12,12 +12,21 @@ NVIM_CONFIG="$NVIM_DIR/init.vim"
 mkdir -p "$VIM_DIR"
 mkdir -p "$NVIM_DIR"
 
-ln -snf "$VIM_DIR" "$NVIM_DIR"
-ln -snf "$current_plugin_dir/index.vim" "$VIM_CONFIG"
-ln -snf "$VIM_CONFIG" "$NVIM_CONFIG"
-
-(vim -c PlugUpgrade  -c PlugClean!  -c PlugInstall!  -c PlugUpdate! -c qall! 2>/dev/null 1>/dev/null &)
-# upgrade vim plug & clean/install/update plugins
-if type -t nvim 2>&1 >/dev/null; then
-	(nvim --headless -c PlugUpgrade  -c PlugClean!  -c PlugInstall!  -c PlugUpdate! -c qall! 2>/dev/null 1>/dev/null &)
+if [ ! -f "$NVIM_DIR/init.lua" ]; then
+  (git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && \
+    rm -rf "$NVIM_CONFIG/lua/custom" && 
+    ln -snf "$dotfiles_dir/nvchad/" "$NVIM_DIR/lua/custom" \
+    2>&1 >/dev/null &)
+else 
+  (rm -rf "$NVIM_CONFIG/lua/custom" && 
+  ln -snf "$dotfiles_dir/nvchad/" "$NVIM_DIR/lua/custom" 2>&1 >/dev/null &)
 fi
+
+#ln -snf "$current_plugin_dir/index.vim" "$VIM_CONFIG"
+#ln -snf "$VIM_CONFIG" "$NVIM_CONFIG"
+
+#(vim -c PlugUpgrade  -c PlugClean!  -c PlugInstall!  -c PlugUpdate! -c qall! 2>/dev/null 1>/dev/null &)
+# upgrade vim plug & clean/install/update plugins
+#if type -t nvim 2>&1 >/dev/null; then
+#	(nvim --headless -c PlugUpgrade  -c PlugClean!  -c PlugInstall!  -c PlugUpdate! -c qall! 2>/dev/null 1>/dev/null &)
+#fi
