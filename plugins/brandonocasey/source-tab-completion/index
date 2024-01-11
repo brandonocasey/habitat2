@@ -4,57 +4,12 @@ current_plugin_dir="$1"; shift
 dotfiles_dir="$1"; shift
 
 bash_completion="/etc/bash_completion"
-brew_bash_completion1=""
-brew_bash_completion2=""
 
 if type -t brew >/dev/null 2>&1; then
   prefix="$(brew --prefix)"
-  brew_bash_completion_one="$prefix/etc/bash_completion"
-  brew_bash_completion_two="$prefix/share/bash-completion/bash_completion"
+  bash_completion="$prefix/etc/profile.d/bash_completion.sh"
 fi
 
 if [ -f "$bash_completion" ]; then
-  cat "$bash_completion"
+  echo ". $bash_completion"
 fi
-
-if [ -f "$brew_bash_completion_one" ]; then
-  cat "$brew_bash_completion_one"
-fi
-
-if [ -f "$brew_bash_completion_two" ]; then
-  cat "$brew_bash_completion_two"
-fi
-
-if type -t yo >/dev/null 2>&1; then
-   cat <<\EOF
-###-begin-yo-completion-###
-if type complete &>/dev/null; then
-  _yo_completion () {
-    local words cword
-    if type _get_comp_words_by_ref &>/dev/null; then
-      _get_comp_words_by_ref -n = -n @ -w words -i cword
-    else
-      cword="$COMP_CWORD"
-      words=("${COMP_WORDS[@]}")
-    fi
-
-    local si="$IFS"
-    IFS=$'\n' COMPREPLY=($(COMP_CWORD="$cword" \
-                           COMP_LINE="$COMP_LINE" \
-                           COMP_POINT="$COMP_POINT" \
-                           yo-complete completion -- "${words[@]}" \
-                           2>/dev/null)) || return $?
-    IFS="$si"
-  }
-  complete -o default -F _yo_completion yo
-fi
-###-end-yo-completion-###
-EOF
-fi
-
-if [ -d "$HOME/.nvm" ]; then
-  cat "$HOME/.nvm/bash_completion"
-elif [ -d "$NVM_DIR" ]; then
-  cat "$NVM_DIR/bash_completion"
-fi
-
