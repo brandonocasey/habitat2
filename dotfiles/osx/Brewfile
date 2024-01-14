@@ -1,29 +1,30 @@
 # Install Cask (Homebrew extension)
-tap 'homebrew/cask'
+# tap 'homebrew/cask'
 
 # Install Git
 brew 'git'
 
 # Install CLI Apps
 brew 'ripgrep'
-brew 'htop'
+brew 'btop'
+brew 'ctop'
 brew 'bash'
 brew 'bash-completion@2'
 brew 'fzf'
 brew 'git-extras'
 brew 'neovim'
-brew 'tree'
 brew 'jq'
 brew 'wget'
-brew 'shellcheck'
 brew 'entr'
 brew 'zoxide'
-brew 'deno'
 brew 'eza'
 brew 'navi'
 brew 'fd'
 brew 'bat'
 brew 'grex'
+brew 's-search'
+brew 'pueue'
+brew 'mackup'
 
 # Install Apps
 cask 'devutils'

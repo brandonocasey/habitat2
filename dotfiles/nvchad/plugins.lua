@@ -32,12 +32,9 @@ local plugins = {
 
   -- Install a plugin
   {
-    'creativenull/efmls-configs-nvim',
-    dependencies = { 'neovim/nvim-lspconfig' },
+    'nvimtools/none-ls.nvim',
     config = function()
-      require 'efmls-configs'.setup({
-
-      })
+      require('null-ls').setup(require('custom.configs.null-ls'))
     end
   },
 

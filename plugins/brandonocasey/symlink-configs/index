@@ -8,7 +8,7 @@ fi
 
 cat <<EOF
 for target in "$dotfiles_dir"{,*/,*/*/,*/*/*/}*.syml; do
-  if [ "\$target" == "$dotfiles_dir*/*.syml" ]; then
+  if [ ! -f "\$target" ]; then
     continue;
   fi
 

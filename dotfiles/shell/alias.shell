@@ -22,7 +22,7 @@ alias df='df -h'
 if command -v eza 1>/dev/null 2>&1; then
     alias ls='eza'
     alias ll='eza -l'
-    alias la='eza -la'
+    alias la='eza -lah --git'
 else
     if ! uname | grep -qi 'Darwin'; then
         # Show me all files and info about them
@@ -43,6 +43,11 @@ else
         alias maclock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
     fi
 fi
+
+if command -v s 1>/dev/null 2>&1; then
+  alias s='s --provider duckduckgo'
+fi
+
 
 alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
 

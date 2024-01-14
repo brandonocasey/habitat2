@@ -2,23 +2,15 @@
 local M = {}
 
 M.general = {
-  n = {
-    [";"] = { ":", "enter command mode", opts = { nowait = true } },
+  -- normal mode
+  n = {},
 
-    --  format with conform
-    ["<leader>fm"] = {
-      function()
-        require("conform").format()
-      end,
-      "formatting",
-    }
+  -- visual mode
+  v = {},
 
-  },
-  v = {
-    [">"] = { ">gv", "indent"},
-  },
+  -- insert mode
+  i = {}
 }
 
 -- more keybinds!
-
 return M

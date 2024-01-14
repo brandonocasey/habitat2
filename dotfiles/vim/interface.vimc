@@ -2,53 +2,6 @@
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" TODO: KEYBIND THIS
-" Show trailing whitespace and all tabs
-"set list listchars=trail:·
-"command ShowTabs :set list listchars=tab:→\ ,trail:·
-
-" Set to auto read when a file is changed from the outside
-" THIS DOES NOT WORK WELL! see watch-for-changes.vimc instead
-set autoread
-
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
-
-" reload vim options when vimrc changes
-augroup myvimrc
-    au!
-    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC |endif
-augroup END
-
-" Default file encoding
-set encoding=utf-8
-set termencoding=utf-8
-
-" More frequent updates for, e.g. signs.
-set updatetime=300
-
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
-
-" dont search all included files for tab completions
-" set complete-=i
-" how to do tab completion
-set complete=.,b,u,]
-
-" Start scrolling when we're 15 lines away from margins
-set scrolloff=15
-
-" Turn on the WiLd menu
-set wildmenu
-
-" Ignore compiled files
-set wildignore=*.o,*~,*.pyc
-
-" Give a list for tab completion
-set wildmode=longest,list:longest
-
 " View line numbers etc in the bottom right
 set ruler
 
