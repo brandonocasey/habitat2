@@ -23,6 +23,9 @@ M.treesitter = {
 
 M.mason = {
   ensure_installed = {
+    -- spelling
+    "typos-lsp",
+
     -- lua stuff
     "lua-language-server",
     "stylua",
@@ -34,19 +37,25 @@ M.mason = {
     "proselint",
     "write-good",
     "grammarly-languageserver",
-    "vale",
-    "vale-ls",
+    "alex",
 
     -- web dev stuff
     "css-lsp",
     "html-lsp",
-    "typescript-language-server",
-    "deno",
-    "prettier",
+    -- handled by typescript-tools.nvim
+    -- "typescript-language-server",
+    -- "stylelint",
+    "stylelint-lsp",
 
-    -- c/cpp stuff
-    "clangd",
-    "clang-format",
+    -- github actions
+    "actionlint",
+
+    -- docker
+    "hadolint",
+
+    -- json
+    "jsonlint",
+    "fixjson",
   },
 }
 

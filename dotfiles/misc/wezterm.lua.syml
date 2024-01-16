@@ -34,7 +34,7 @@ end
 
 -- This is where you actually apply your config choices
 
-local font_size = 14
+local font_size = 15
 local font = wezterm.font_with_fallback({
   {
     -- Normal text
@@ -76,17 +76,17 @@ config.window_frame = {
 
   -- The size of the font in the tab bar.
   -- Default to 10.0 on Windows but 12.0 on other systems
-  font_size = font_size - 4
+  font_size = font_size - 2
 }
 config.inactive_pane_hsb = {
   saturation = 0.9,
   brightness = 0.7,
 }
 config.window_padding = {
-  left = '0.5cell',
-  right = '0.5cell',
-  top = '0.5cell',
-  bottom = '0.5cell',
+  left = '0.25cell',
+  right = '0.25cell',
+  top = '0.25cell',
+  bottom = '0.25cell',
 }
 
 -- and finally, return the configuration to wezterm

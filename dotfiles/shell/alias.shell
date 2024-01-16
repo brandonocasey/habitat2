@@ -3,17 +3,17 @@
 #
 # Shorten commands, add commands you frequently mistype, add
 # helpful little shortcuts for things, and finally add
-# usefull automatic default parameters to commands you use
+# useful automatic default parameters to commands you use
 # already
 #==============================================================
 
-# Ask before over-writting a file
+# Ask before over-writing a file
 alias mv='mv -i'
 
 # Ask before deleting a file, and automatically make it recursive
 alias rm='rm -Ri'
 
-# Ask before over-writting a file and recursively copy by default
+# Ask before over-writing a file and recursively copy by default
 alias cp='cp -iR'
 
 # We want free disc space in human readable output, trust me
@@ -31,7 +31,7 @@ else
         # Show me all files, including .dotfiles, and all info about them
         alias la='ls -lha --color'
 
-        # Show me colors for regualr ls too
+        # Show me colors for regular ls too
         alias ls='ls --color'
     else
         alias ls='ls -G'
@@ -51,7 +51,7 @@ fi
 
 alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
 
-# Automatically make directories recursivly
+# Automatically make directories recursively
 alias mkdir='mkdir -p'
 
 # Vim misspellings nuff' said
@@ -69,17 +69,6 @@ alias sql='mysql -umysql -pmysql'
 
 # easy mysql dump just tack on a -h
 alias sqld='mysqldump -umysql -pmysql --routines --single-transaction'
-
-# share history between terminal sessions
-alias he="history -a" # export history
-alias hi="history -n" # import history
-
-# Get your current public IP
-alias public_ip="curl icanhazip.com"
-
-# Auto install web dependancies
-alias deps_install="composer install;npm install;bower install"
-alias deps_update="composer update;npm update;bower update"
 
 # reverse a string
 alias reverse="perl -e 'print reverse <>'"

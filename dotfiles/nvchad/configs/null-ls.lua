@@ -1,12 +1,32 @@
 local null_ls = require("null-ls")
 
--- TODO: pass config https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTIN_CONFIG.md
-local options = {
+local eslint_d = {
+  extra_args = {
+    '--no-eslintrc',
+    '--no-error-on-unmatched-pattern',
+    '--report-unused-disable-directives',
+    '--config',
+    vim.fn.expand('$HOME/BrandonProjects/js-metarepo/tooling/js-lint/src/js/config.cjs'),
+    '--ext',
+    '.js,.ts,.jsx,.mjs,.cjs,.tsx',
+    '--cache'
+  }
+}
+
+local M = {
+  on_attach = function()
+    vim.api.nvim_create_autocmd("BufWritePost", {
+      callback = function()
+        vim.lsp.buf.format()
+      end,
+    })
+  end,
+
   sources = {
     -- javascript
-    null_ls.builtins.code_actions.eslint_d,
-    null_ls.builtins.diagnostics.eslint_d,
-    null_ls.builtins.formatting.eslint_d,
+    null_ls.builtins.code_actions.eslint_d.with(eslint_d),
+    null_ls.builtins.diagnostics.eslint_d.with(eslint_d),
+    null_ls.builtins.formatting.eslint_d.with(eslint_d),
 
     -- text
     null_ls.builtins.code_actions.ltrs,
@@ -18,19 +38,12 @@ local options = {
     null_ls.builtins.diagnostics.write_good,
     null_ls.builtins.diagnostics.alex,
 
-    null_ls.builtins.diagnostics.codespell,
-    null_ls.builtins.formatting.codespell,
-
-    -- css
-    null_ls.builtins.diagnostics.stylelint,
-    null_ls.builtins.formatting.stylelint,
-
     -- markdown
     -- null_ls.builtins.formatting.remark
 
     -- shell
     null_ls.builtins.code_actions.shellcheck,
-    null_ls.builtins.formatting.shellcheck,
+    null_ls.builtins.diagnostics.shellcheck,
 
     -- github actions
     null_ls.builtins.diagnostics.actionlint,
@@ -42,12 +55,13 @@ local options = {
     null_ls.builtins.diagnostics.jsonlint,
     null_ls.builtins.formatting.fixjson,
 
-    -- html
-    null_ls.builtins.diagnostics.tidy,
-    null_ls.builtins.formatting.tidy,
-
   }
 }
 
-return options
 
+null_ls.setup({
+  on_attach = M.on_attach,
+  sources = M.sources
+})
+
+return M;

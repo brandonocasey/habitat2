@@ -33,6 +33,8 @@ local plugins = {
   -- Install a plugin
   {
     'nvimtools/none-ls.nvim',
+    lazy = false,
+    dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       require('null-ls').setup(require('custom.configs.null-ls'))
     end
@@ -54,6 +56,17 @@ local plugins = {
       require("nvim-surround").setup({
         -- Configuration here
       })
+    end,
+  },
+
+  -- lua version of typescript-language-server
+  {
+    "pmizio/typescript-tools.nvim",
+    lazy = false,
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+    config = function()
+      require "custom.configs.typescript-tools"
     end,
   },
 
