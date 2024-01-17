@@ -4,11 +4,10 @@ ASDF_DIR="$HOME/.asdf"
 URL="https://github.com/asdf-vm/asdf.git"
 
 if [ ! -d "$ASDF_DIR" ]; then
-  (git clone "$URL" "$ASDF_DIR" --branch v0.13.1 && \
-    . "$ASDF_DIR/asdf.sh" \
-    asdf plugin add nodejs \
-    asdf plugin add python \
-    2>&1 >/dev/null &)
+  git clone "$URL" "$ASDF_DIR" --branch v0.13.1
+  . "$ASDF_DIR/asdf.sh"
+  asdf plugin add python
+  asdf plugin add nodejs
 fi
 
 

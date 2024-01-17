@@ -54,6 +54,9 @@ cask 'openvpn-connect'
 cask 'brave-browser'
 cask 'plex'
 cask 'plexamp'
+cask 'imageoptim'
+cask 'calibre'
+cask 'balenaetcher'
 
 # install from app store
 mas "Xcode", id: 497799835
