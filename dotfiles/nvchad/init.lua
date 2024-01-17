@@ -43,9 +43,6 @@ vim.opt.ssop:remove { 'folds' }
 -- Don't save empty/blank windows
 vim.opt.ssop:remove { 'blank' }
 
--- persistent undo
-vim.opt.undodir = vim.fn.stdpath('config') .. '/undo'
-
 -- Drop unused spaces at the end of lines
 vim.opt.shiftround = true
 
@@ -73,7 +70,7 @@ vim.opt.shada = "!,'100,<10000,s1000,h"
 -- show line/column number
 -- vim.opt.ruler = true
 
--- use system cliboard
+-- use system clipboard
 -- vim.opt.clipboard = 'unnamedplus'
 
 
