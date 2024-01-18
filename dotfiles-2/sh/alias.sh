@@ -13,10 +13,15 @@ alias cp='cp -iR'
 alias df='df -h'
 
 if bin_exists "eza"; then
-    alias ls='eza'
-    alias ll='eza -l --git --icons'
-    alias la='eza -lah --git --icons'
-    alias llsize='eza -lah --git --icons --total-size'
+  alias ls='eza'
+  alias ll="eza -l --git --icons --time-style=long-iso"
+  alias la='ll -ah'
+  alias lasize='la --total-size'
+  alias llsize='ll --total-size'
+  alias latree='la --tree'
+  alias lltree='ll --tree'
+  alias lstree='eza --tree'
+  alias tree='lstree'
 else
   if [ "$(uname)" = 'Darwin' ]; then
     # Show me all files and info about them
