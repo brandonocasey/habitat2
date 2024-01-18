@@ -89,5 +89,18 @@ config.window_padding = {
   bottom = '0.25cell',
 }
 
+config.keys = {
+  {
+    key = 'LeftArrow',
+    mods = 'CMD',
+    action = wezterm.action { SendString = "\x1bOH" },
+  },
+  {
+    key = 'RightArrow',
+    mods = 'CMD',
+    action = wezterm.action { SendString = "\x1bOF" },
+  },
+}
+
 -- and finally, return the configuration to wezterm
 return config

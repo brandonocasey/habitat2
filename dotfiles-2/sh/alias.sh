@@ -12,6 +12,9 @@ alias cp='cp -iR'
 # We want free disc space in human readable output, trust me
 alias df='df -h'
 
+# Automatically make directories recursively
+alias mkdir='mkdir -p'
+
 if bin_exists "eza"; then
   alias ls='eza'
   alias ll="eza -l --git --icons --time-style=long-iso"
@@ -47,11 +50,7 @@ if bin_exists s; then
   alias web-search='s --provider duckduckgo'
 fi
 
-
-alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
-
-# Automatically make directories recursively
-alias mkdir='mkdir -p'
+alias brewup='brew update; brew upgrade; brew cleanup; brew doctor'
 
 # Vim misspellings nuff' said
 alias vim='nvim'
@@ -77,8 +76,11 @@ alias cdgitroot='cd "$(git rev-parse --show-toplevel)"'
 
 # node module bs
 alias npmre="rm -rf ./node_modules && npm i"
+alias npmrews="rm -rf packages/**/node_modules && npmre"
+
+# node workspace module bs
 alias npmrere="rm -f ./package-lock.json && npmre"
-alias npmrews="rm -f ./package-lock.json && rm -rf packages/**/node_modules && npmre"
+alias npmrerews="rm -rf packages/**/node_modules && npmre"
 
 # keep env when going sudo
 alias sudo='sudo --preserve-env'
@@ -111,3 +113,62 @@ tail() {
   fi
 }
 
+
+nkill() {
+  if [ "$#" -lt "1" ]; then
+    echo '  Usage:'
+    echo '    nkill <process_name> ...'
+    echo
+    echo '  Example:'
+    echo '    nkill httpd ssh-agent'
+    echo
+    return 1
+  fi
+
+  pgrep -fl "$@"
+  if [ "$?" = "1" ]; then
+    echo 'No processes match'
+    return 1
+  fi
+  echo 'Hit [Enter] to pkill, [Ctrl+C] to abort'
+  read -r && sudo pkill -9 -f "$@"
+}
+
+m_valgrind() {
+  if command -v "valgrind" >/dev/null 2>&1; then
+    echo "valgrind is not installed"
+  fi
+
+  if [ "$#" -ne "2" ]; then
+    echo 'Usage:'
+    echo '  m_valgrind log_output binary'
+    echo
+    echo 'Example:'
+    echo '  m_valgrind /tmp/http_valgrind.log httpd'
+    echo
+    return 1
+  fi
+  sudo valgrind --leak-check=full --show-reachable=yes --log-file="$1" --trace-redir=yes -v "$2"
+}
+
+tcpd() {
+  random="$(shuf -i 1-100 -n 1)"
+  pcap="./${random}.pcap"
+  unset random
+  (tcpdump -q -s 0 -i any -w "$pcap" >/dev/null 2>&1 &)
+
+
+  finish() {
+    pkill -f "$pcap"
+    echo "$pcap"
+    trap - INT
+    trap
+    unset -f finish
+    unset pcap
+  }
+
+  trap "echo && finish && return 0" INT
+  printf 'Hit [Any Key] to kill tcpdump'
+  read -r
+  finish
+}

@@ -63,6 +63,9 @@ local M = {
     null_ls.builtins.diagnostics.jsonlint,
     null_ls.builtins.formatting.fixjson,
 
+    -- remove trailing whitespace automatically
+    null_ls.builtins.formatting.trim_whitespace
+
   }
 }
 
