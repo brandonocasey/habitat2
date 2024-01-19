@@ -1,62 +1,96 @@
-# Install Cask (Homebrew extension)
-# tap 'homebrew/cask'
+
+# /~-~-~ shell stuff ~-~-~\
 
 # Install Git
 brew 'git'
-
-# Install CLI Apps
+# Grep Replacement
 brew 'ripgrep'
+# better top/htop
 brew 'btop'
+# docker container top
 brew 'ctop'
+# update bash
 brew 'bash'
+# bash completions
 brew 'bash-completion@2'
+# fuzzy finder
 brew 'fzf'
+# extra git commands
 brew 'git-extras'
+# the new terminal ide
 brew 'neovim'
+# jq command line parser and utils
 brew 'jq'
+# wget an http requester
 brew 'wget'
+# watch directories for changes and run something
 brew 'entr'
+# cd with fuzzy comppletion
 brew 'zoxide'
+# better ls
 brew 'eza'
+# successor to tldr, a command line example/cheatsheet viewer
 brew 'navi'
+# better find
 brew 'fd'
+# syntax aware cat
 brew 'bat'
+# regex generator
 brew 'grex'
+# do a web search from the command line
 brew 's-search'
+# async jobs on the terminal
 brew 'pueue'
+# shell dependency manager with support for zsh, bash etc
 brew 'sheldon'
+# LS_COLOR creator
+brew 'vivid'
+# dotfiles manager
+brew 'yadm'
 
-# Install Apps
-cask 'devutils'
-cask 'heynote'
-cask 'docker'
+# /~-~-~ Apps ~-~-~\
+
+# Browsers and browser testing
 cask 'firefox'
 cask 'google-chrome'
+cask 'brave-browser'
+cask 'microsoft-edge'
+cask 'browserstacklocal'
+
+# Development
 cask 'wezterm'
 cask 'sublime-text'
-cask 'vlc'
+cask 'vscodium'
+cask 'postman'
+cask 'devutils'
+cask 'hex-fiend'
+cask 'speedcrunch'
+cask 'docker'
+cask 'heynote'
+
+# Utilities
 cask 'keka'
 cask 'rectangle'
-cask 'spotify'
-cask 'charles'
-cask 'wireshark'
-cask 'microsoft-edge'
 cask 'karabiner-elements'
-cask 'speedcrunch'
 cask 'grandperspective'
-cask 'zoom'
-cask 'browserstacklocal'
-cask 'hex-fiend'
-cask 'vscodium'
-cask 'mac-mouse-fix'
-cask 'postman'
 cask 'openvpn-connect'
-cask 'brave-browser'
-cask 'plex'
-cask 'plexamp'
 cask 'imageoptim'
 cask 'calibre'
 cask 'balenaetcher'
+cask 'mac-mouse-fix'
+
+# Network
+cask 'charles'
+cask 'wireshark'
+
+# work
+cask 'zoom'
+
+# Media
+cask 'plex'
+cask 'plexamp'
+cask 'vlc'
+cask 'spotify'
 
 # install from app store
 mas "Xcode", id: 497799835

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+baseBranch='main'
+
+if [ "$1" != "--delete" ]; then
+  echo "doing dry run. Pass --delete to delete local branches"
+fi
+
+git checkout -q "$baseBranch"
+branches="$(git for-each-ref refs/heads/ "--format=%(refname:short)")"
+
+for branch in $branches; do
+  mergeBase="$(git merge-base "$baseBranch" "$branch")"
+
+  if [[ "$(git cherry "$baseBranch" "$(git commit-tree "$(git rev-parse "$branch"\^{tree})" -p "$mergeBase" -m _)")" == "-"* ]]; then
+    echo "$branch"
+    if [ "$1" = "--delete" ]; then
+      git branch -D "$branch"
+    fi
+  fi
+done

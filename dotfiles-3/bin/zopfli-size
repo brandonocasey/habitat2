@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# if this is not an interactive shell read from pipe
+if ! tty >/dev/null; then
+  while read -r line; do
+    echo "$line" | zopfli -c | wc -c | sed 's~ ~~g'
+  done;
+fi
+
+while [ "$#" -gt 0 ]; do
+  zopfli -c "$1" | wc -c | sed 's~ ~~g'
+  shift
+done
+

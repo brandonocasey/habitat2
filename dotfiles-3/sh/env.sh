@@ -19,6 +19,7 @@ export VISUAL_EDITOR=$editor
 export SVN_EDITOR=$editor
 export GIT_EDITOR=$editor
 
+
 # themed ls colors
 if bin_exists vivid; then
   export LS_COLORS="$(vivid generate one-dark)"
@@ -32,5 +33,10 @@ unset editor
 # Don't warn me about mail
 unset MAILCHECK
 
+# finding things
 export GREP_OPTIONS="--color=auto"
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
+
+# 1 Billion lines of history
+export HISTSIZE=10000000
+export HISTFILESIZE=$HISTSIZE

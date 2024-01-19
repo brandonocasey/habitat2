@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# TODO: file exlusion
+
+#
+# find_replace
+#
+# Find and replace recursivly from the current directory
+#
+find_replace() {
+    if [ "$#" -lt "2" ]; then
+        echo '    Usage:'
+        echo '        fr term replacement optional:dir'
+        echo
+        echo '    Example:'
+        echo '        fr cappuchino cappuccino .'
+        echo
+        return 1
+    fi
+
+    find="$1"; shift
+    replace="$1"; shift
+    dir="."
+    if [ -n "$1" ]; then
+        dir="$1"; shift
+    fi
+
+
+    ORIG_GLOBIGNORE=$GLOBIGNORE
+    GLOBIGNORE=*.*
+
+    files="$(grep -lR "$find" "$dir" --exclude-dir 'node_modules' --exclude-dir '.git')"
+    if [ -z "$files" ]; then
+        echo "Found no files with the term $find"
+    fi
+    for file in $(echo "$files"); do
+        if [ -z "$file" ]; then
+            continue
+        fi
+
+        echo "Doing find replace in $file"
+        local contents="$(cat "$file" | sed "s~$find~$replace~g")"
+        if [ -z "$contents" ]; then
+            echo "Failed to do find replace on $file, contents ended up null"
+            continue
+        fi
+        echo "$contents" > "$file"
+    done
+
+    GLOBIGNORE=$ORIG_GLOBIGNORE
+}
+
+find_replace "$@"
