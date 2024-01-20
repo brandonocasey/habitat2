@@ -1,4 +1,5 @@
-habitat_help() {
+# shellcheck shell=sh
+fn_habitat_help() {
   echo
   echo "  Usage: . habitat [options]"
   echo
@@ -13,7 +14,7 @@ habitat_help() {
   echo
 }
 
-habitat_exec() {
+fn_habitat_exec() {
   if [ "$HABITAT_DEBUG" = "0" ]; then
     "$@"
     return "$?"
@@ -25,14 +26,14 @@ habitat_exec() {
   retval="$?"
   # 6 spaces so that we are after the time output then
   # go up one line, so we can print on the same line as the time output
-  local back=$'      \e[1A'
-  echo "$back: ${*//$HABITAT_DIR\//}" 1>&2
+  local back="$(printf '      \e[1A')"
+  echo "$back: $*" | sed "s~$HABITAT_DIR/~~g" 1>&2
 
   TIMEFORMAT="$old_TIMEFORMAT"
   return "$retval"
 }
 
-habitat_git_check() {
+fn_habitat_git_check() {
   if [ ! -d "$HABITAT_DIR/.git" ]; then
     return
   fi
@@ -56,12 +57,16 @@ habitat_git_check() {
   fi
 }
 
-habitat_build() {
+fn_habitat_build() {
   local build_dir="$1"; shift
   local lock_file="$build_dir/lock"
   local syml="$build_dir/syml"
-  local new_dir="$build_dir/new-build-$RANDOM"
+  local new_dir="$build_dir/new-build-a"
   local old_dir="$(readlink "$syml")"
+
+  if [ "$old_dir" = "$new_dir" ]; then
+    new_dir="$build_dir/new-dir-b"
+  fi
 
   echo "Building your habitat!"
   mkdir -p "$build_dir"
@@ -71,15 +76,16 @@ habitat_build() {
   # start lock so other environments cannot build
   touch "$lock_file"
 
-  mkdir -p "$new_dir/"{lib,plugins}
+  mkdir -p "$new_dir/lib"
+  mkdir -p "$new_dir/plugins"
   while read -r file; do
     newfile="$file"
     dir="$(dirname "$file")"
     if echo "$file" | grep -q "^plugins"; then
       newfile="$(echo "$dir" | sed 's~/~-~g' | sed 's~plugins-~plugins/~').sh"
     fi
-    habitat_exec "$HABITAT_DIR/$file" "$HABITAT_DIR/$dir" "$HABITAT_DIR/dotfiles" >> "$new_dir/$newfile"
-  done <<< "$(find "$HABITAT_DIR/"{lib,plugins} -type f -perm -a=x | sed "s~$HABITAT_DIR/~~")"
+    fn_habitat_exec "$HABITAT_DIR/$file" "$HABITAT_DIR/$dir" "$HABITAT_DIR/dotfiles" >> "$new_dir/$newfile"
+  done <<< "$(find "$HABITAT_DIR/lib" "$HABITAT_DIR/plugins" -type f -perm -a=x | sed "s~$HABITAT_DIR/~~")"
 
 
   # replace
@@ -94,15 +100,15 @@ habitat_build() {
 
 }
 
-habitat_run() {
+fn_habitat_run() {
   local build_dir="$1"; shift
 
   while read -r file; do
-    habitat_exec . "$file"
+    fn_habitat_exec . "$file"
   done <<< "$(find -L "$build_dir/syml/lib" "$build_dir/syml/plugins" -name '*.sh')"
 }
 
-habitat_main() {
+fn_habitat_main() {
   local build_dir="$HABITAT_DIR/.build"
   [ ! -d "$build_dir" ] && mkdir -p "$build_dir"
   local rebuild_time=20160
@@ -116,7 +122,7 @@ habitat_main() {
 
     case "$argv" in
       -d|--debug) export HABITAT_DEBUG=1 ;;
-      -h|--help) habitat_help && return ;;
+      -h|--help) fn_habitat_help && return ;;
       -t|--time) [ -n "$1" ] && rebuild_time="$1" && shift || rebuild_time='invalid';;
       -f|--force|-fb|--force-build) rebuild_time=0 && rm -f "$build_dir/lock";;
       -c|--check) check=1 ;;
@@ -131,34 +137,34 @@ habitat_main() {
     return 1
   fi
 
-  habitat_total() {
+  fn_habitat_total() {
     if [ "$check" = 1 ]; then
-      habitat_exec habitat_git_check
+      fn_habitat_exec fn_habitat_git_check
     fi
 
     # if its time to rebuild
     if [ "$build" = 1 ] && [ -z "$(find "$build_dir/syml" -type l -mmin "-${rebuild_time}" 2>/dev/null)" ]; then
-      habitat_exec habitat_build "$build_dir"
+      fn_habitat_exec fn_habitat_build "$build_dir"
     fi
 
     if [ "$run" = 1 ]; then
-      habitat_exec habitat_run "$build_dir"
+      fn_habitat_exec fn_habitat_run "$build_dir"
     fi
   }
 
-  habitat_exec habitat_total
+  fn_habitat_exec fn_habitat_total
 }
 
 
-habitat_clean() {
-  unset -f habitat_build
-  unset -f habitat_run
-  unset -f habitat_help
-  unset -f habitat_main
-  unset -f habitat_clean
-  unset -f habitat_git_check
-  unset -f habitat_exec
-  unset -f habitat_total
+fn_habitat_clean() {
+  unset -f fn_habitat_build
+  unset -f fn_habitat_run
+  unset -f fn_habitat_help
+  unset -f fn_habitat_main
+  unset -f fn_habitat_clean
+  unset -f fn_habitat_git_check
+  unset -f fn_habitat_exec
+  unset -f fn_habitat_total
   unset HABITAT_DEBUG
 }
 
@@ -179,7 +185,7 @@ fi
 
 alias habitat='. "$HABITAT_DIR/habitat.sh"'
 
-habitat_main "$@"
+fn_habitat_main "$@"
 retval="$?"
-habitat_clean
+fn_habitat_clean
 return "$retval"
