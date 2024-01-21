@@ -78,14 +78,20 @@ fn_habitat_build() {
 
   mkdir -p "$new_dir/lib"
   mkdir -p "$new_dir/plugins"
-  while read -r file; do
-    newfile="$file"
-    dir="$(dirname "$file")"
+  local old_IFS="$IFS"
+
+  while IFS= read -r file; do
+    local file="$(echo "$file" | sed "s~$HABITAT_DIR/~~")"
+    local newfile="$file"
+    local dir="$(dirname "$file")"
     if echo "$file" | grep -q "^plugins"; then
       newfile="$(echo "$dir" | sed 's~/~-~g' | sed 's~plugins-~plugins/~').sh"
     fi
     fn_habitat_exec "$HABITAT_DIR/$file" "$HABITAT_DIR/$dir" "$HABITAT_DIR/dotfiles" >> "$new_dir/$newfile"
-  done <<< "$(find "$HABITAT_DIR/lib" "$HABITAT_DIR/plugins" -type f -perm -a=x | sed "s~$HABITAT_DIR/~~")"
+  done < "$(fn_habitat_find "$HABITAT_DIR/lib" "$HABITAT_DIR/plugins" -type f -perm -a=x)"
+  unset file
+
+  IFS="$old_IFS"
 
 
   # replace
@@ -100,12 +106,21 @@ fn_habitat_build() {
 
 }
 
+fn_habitat_find() {
+  local habitat_find_tmp="$(mktemp -t habitat_find_tmp)"
+  find "$@" ! -name "$(printf "*\n*")" > "$habitat_find_tmp"
+
+  echo "$habitat_find_tmp"
+}
+
 fn_habitat_run() {
   local build_dir="$1"; shift
 
-  while read -r file; do
+  while IFS= read -r file; do
     fn_habitat_exec . "$file"
-  done <<< "$(find -L "$build_dir/syml/lib" "$build_dir/syml/plugins" -name '*.sh')"
+  done < "$(fn_habitat_find -L "$build_dir/syml/lib" "$build_dir/syml/plugins" -name '*.sh')"
+  unset file
+  IFS="$old_IFS"
 }
 
 fn_habitat_main() {
@@ -165,6 +180,7 @@ fn_habitat_clean() {
   unset -f fn_habitat_git_check
   unset -f fn_habitat_exec
   unset -f fn_habitat_total
+  unset -f fn_habitat_find
   unset HABITAT_DEBUG
 }
 
