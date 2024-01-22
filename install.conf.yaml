@@ -1,0 +1,16 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+
+- clean: ['~']
+- link:
+  ~/.dotfiles: ""
+  ~/.config/ripgrep/config: dotfiles-3/configs/ripgrep
+
+- create:
+  - ~/Projects
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+  - [test -z "$ZSH_VERSION" && chsh -s "$(which zsh)" || echo "zsh is the default shell"]
